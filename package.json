@@ -1,0 +1,29 @@
+{
+  "name": "onlinepolygraph",
+  "version": "1.0.0",
+  "description": "Online Polygraph Game - iSchool",
+  "main": "index.js",
+  "dependencies": {
+    "express": "^4.17.1",
+    "nvm": "^0.0.4"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/iSensorGames/OnlinePolygraph.git"
+  },
+  "keywords": [
+    "online",
+    "polygraph",
+    "ischool"
+  ],
+  "author": "Giwoo G Lee",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/iSensorGames/OnlinePolygraph/issues"
+  },
+  "homepage": "https://github.com/iSensorGames/OnlinePolygraph#readme"
+}
