@@ -1,4 +1,7 @@
 import React from 'react';
+
+// Styles
+import './styles/palette.css';
 import './App.css';
 
 // Components

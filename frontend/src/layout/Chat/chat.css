@@ -1,3 +1,6 @@
 .Chat {
-    background-color: var(--popstar-color);
+    background-color: var(--white);
+    color: #434651;
+    height: 100%;
+    width: 75%;
 }

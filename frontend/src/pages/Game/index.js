@@ -11,8 +11,10 @@ import Chat from '../../layout/Chat';
 const Game = () => {
     return (
         <Container>
-            <PeopleList />
-            <Chat />
+            <div className="Game">
+                <PeopleList />
+                <Chat />
+            </div>
         </Container>
     )
 }

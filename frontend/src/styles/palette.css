@@ -1,0 +1,21 @@
+/* Font */
+@import url(https://fonts.googleapis.com/css?family=Lato:400,700);
+
+/* Color Palette
+   https://coolors.co/b24c63-5438dc-357ded-56eef4-32e875
+*/
+:root {
+    --green: #86BB71;
+    --blue: #94C2ED;
+    --blue-light: #C5DDEB;
+    --white: #F2F5F8;
+    --orange: #E38968;
+    --gray: #92959E;
+    --gray-dark: #444753;
+    --madarang: #C5DDEB;
+    --popstar: #B24C63;
+    --majorelle: #5438DC;
+    --blue-de-france: #357DED;
+    --electric-blue: #56EEF4;
+    --ufo-green: #32E875;
+}

@@ -1,6 +1,7 @@
 .Container {
-    margin: 0 auto;
-  width: 750px;
-  background: #444753;
+  background-color: var(--gray-dark);
   border-radius: 5px;
+  height: 100vh;
+  margin: 0 auto;
+  width: 750px;
 }
