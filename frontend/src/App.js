@@ -4,20 +4,17 @@ import { Switch } from "react-router";
 
 // Styles
 import "./styles/palette.css";
-import "./App.css";
 
 // Components
 import Home from "./Home";
 
 function App() {
   return (
-    <div className="App">
-      <Router>
-        <Switch>
-          <Route exact path="/" component={Home} />
-        </Switch>
-      </Router>
-    </div>
+    <Router>
+      <Switch>
+        <Route exact path="/" component={Home} />
+      </Switch>
+    </Router>
   );
 }
 

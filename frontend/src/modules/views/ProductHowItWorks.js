@@ -6,6 +6,12 @@ import Container from "@material-ui/core/Container";
 import Button from "../components/Button";
 import Typography from "../components/Typography";
 
+// Images
+import productCurvyLines from "../../static/img/productCurvyLines.png";
+import productHowItWorks1 from "../../static/img/productHowItWorks1.svg";
+import productHowItWorks2 from "../../static/img/productHowItWorks2.svg";
+import productHowItWorks3 from "../../static/img/productHowItWorks3.svg";
+
 const styles = theme => ({
   root: {
     display: "flex",
@@ -58,7 +64,7 @@ function ProductHowItWorks(props) {
     <section className={classes.root}>
       <Container className={classes.container}>
         <img
-          src="/static/themes/onepirate/productCurvyLines.png"
+          src={productCurvyLines}
           className={classes.curvyLines}
           alt="curvy lines"
         />
@@ -76,7 +82,7 @@ function ProductHowItWorks(props) {
               <div className={classes.item}>
                 <div className={classes.number}>1.</div>
                 <img
-                  src="/static/themes/onepirate/productHowItWorks1.svg"
+                  src={productHowItWorks1}
                   alt="suitcase"
                   className={classes.image}
                 />
@@ -89,7 +95,7 @@ function ProductHowItWorks(props) {
               <div className={classes.item}>
                 <div className={classes.number}>2.</div>
                 <img
-                  src="/static/themes/onepirate/productHowItWorks2.svg"
+                  src={productHowItWorks2}
                   alt="graph"
                   className={classes.image}
                 />
@@ -103,7 +109,7 @@ function ProductHowItWorks(props) {
               <div className={classes.item}>
                 <div className={classes.number}>3.</div>
                 <img
-                  src="/static/themes/onepirate/productHowItWorks3.svg"
+                  src={productHowItWorks3}
                   alt="clock"
                   className={classes.image}
                 />
