@@ -1,5 +1,6 @@
 .App {  
   background-color: var(--blue-light);
+  padding: 40px;
   text-align: center;
 }
 
