@@ -1,6 +1,7 @@
 import withRoot from "./modules/withRoot";
 // --- Post bootstrap -----
 import React from "react";
+import { Redirect } from "react-router";
 import { Field, Form, FormSpy } from "react-final-form";
 import { makeStyles } from "@material-ui/core/styles";
 import Link from "@material-ui/core/Link";
@@ -12,6 +13,7 @@ import { email, required } from "./modules/form/validation";
 import RFTextField from "./modules/form/RFTextField";
 import FormButton from "./modules/form/FormButton";
 import FormFeedback from "./modules/form/FormFeedback";
+import SelectInput from "@material-ui/core/Select/SelectInput";
 
 const useStyles = makeStyles(theme => ({
   form: {
@@ -43,7 +45,9 @@ function SignIn() {
     return errors;
   };
 
-  const handleSubmit = () => {
+  const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+  const onSubmit = async values => {
+    await sleep(300);
     setSent(true);
   };
 
@@ -63,56 +67,58 @@ function SignIn() {
           </Typography>
         </React.Fragment>
         <Form
-          onSubmit={handleSubmit}
+          onSubmit={onSubmit}
           subscription={{ submitting: true }}
           validate={validate}
         >
-          {({ handleSubmit2, submitting }) => (
-            <form onSubmit={handleSubmit2} className={classes.form} noValidate>
-              <Field
-                autoComplete="email"
-                autoFocus
-                component={RFTextField}
-                disabled={submitting || sent}
-                fullWidth
-                label="Email"
-                margin="normal"
-                name="email"
-                required
-                size="large"
-              />
-              <Field
-                fullWidth
-                size="large"
-                component={RFTextField}
-                disabled={submitting || sent}
-                required
-                name="password"
-                autoComplete="current-password"
-                label="Password"
-                type="password"
-                margin="normal"
-              />
-              <FormSpy subscription={{ submitError: true }}>
-                {({ submitError }) =>
-                  submitError ? (
-                    <FormFeedback className={classes.feedback} error>
-                      {submitError}
-                    </FormFeedback>
-                  ) : null
-                }
-              </FormSpy>
-              <FormButton
-                className={classes.button}
-                disabled={submitting || sent}
-                size="large"
-                color="secondary"
-                fullWidth
-              >
-                {submitting || sent ? "In progress…" : "Sign In"}
-              </FormButton>
-            </form>
-          )}
+          {({ handleSubmit, submitting }) => {
+            return (
+              <form onSubmit={handleSubmit} className={classes.form} noValidate>
+                <Field
+                  autoComplete="email"
+                  autoFocus
+                  component={RFTextField}
+                  disabled={submitting || sent}
+                  fullWidth
+                  label="Email"
+                  margin="normal"
+                  name="email"
+                  required
+                  size="large"
+                />
+                <Field
+                  fullWidth
+                  size="large"
+                  component={RFTextField}
+                  disabled={submitting || sent}
+                  required
+                  name="password"
+                  autoComplete="current-password"
+                  label="Password"
+                  type="password"
+                  margin="normal"
+                />
+                <FormSpy subscription={{ submitError: true }}>
+                  {({ submitError }) =>
+                    submitError ? (
+                      <FormFeedback className={classes.feedback} error>
+                        {submitError}
+                      </FormFeedback>
+                    ) : null
+                  }
+                </FormSpy>
+                <FormButton
+                  className={classes.button}
+                  disabled={submitting || sent}
+                  size="large"
+                  color="secondary"
+                  fullWidth
+                >
+                  {submitting || sent ? "In progress…" : "Sign In"}
+                </FormButton>
+              </form>
+            );
+          }}
         </Form>
         <Typography align="center">
           <Link underline="always" href="/forgot-password/">
