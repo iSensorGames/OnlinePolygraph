@@ -1,16 +1,22 @@
-import React from 'react';
+import React from "react";
+import { BrowserRouter as Router, Route } from "react-router-dom";
+import { Switch } from "react-router";
 
 // Styles
-import './styles/palette.css';
-import './App.css';
+import "./styles/palette.css";
+import "./App.css";
 
 // Components
-import Game from './pages/Game';
+import Home from "./Home";
 
 function App() {
   return (
     <div className="App">
-      <Game />
+      <Router>
+        <Switch>
+          <Route exact path="/" component={Home} />
+        </Switch>
+      </Router>
     </div>
   );
 }

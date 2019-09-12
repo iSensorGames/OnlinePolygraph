@@ -1,5 +1,4 @@
 module.exports = ({ app, db }) => {
-  // An API endpoint that returns a short list of items
   app.get("/api/users", (req, res) => {
     db.collection("users")
       .get()
@@ -8,7 +7,7 @@ module.exports = ({ app, db }) => {
         snapshot.forEach(doc => {
           documents.push(doc.data());
         });
-        res.json(documents);
+        res.json(documents).status(200);
       })
       .catch(err => {
         console.log("Error getting documents", err);
