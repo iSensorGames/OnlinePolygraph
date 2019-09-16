@@ -10,6 +10,8 @@ const morgan = require("morgan");
 const environment =
   process.env.NODE_ENV === "production" ? "production" : "development";
 const PORT = process.env.PORT || 5000;
+// index.js
+global.appRoot = path.resolve(__dirname);
 
 /**
  * Initial Express App Setup
