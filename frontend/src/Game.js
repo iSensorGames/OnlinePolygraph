@@ -14,8 +14,8 @@ function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
       {"Copyright © "}
-      <Link color="inherit" href="https://material-ui.com/">
-        Your Website
+      <Link color="inherit" href="https://isensoranalytics.com/">
+        iSensorAnalytics
       </Link>{" "}
       {new Date().getFullYear()}
       {"."}
@@ -162,7 +162,7 @@ const styles = {
   }
 };
 
-function Paperbase(props) {
+function Game(props) {
   const { classes } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
@@ -201,8 +201,8 @@ function Paperbase(props) {
   );
 }
 
-Paperbase.propTypes = {
+Game.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(Paperbase);
+export default withStyles(styles)(Game);

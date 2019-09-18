@@ -6,7 +6,8 @@ import * as serviceWorker from "./serviceWorker";
 
 // Firebase App (the core Firebase SDK) is always required and
 // must be listed before other Firebase SDKs
-import * as firebase from "firebase/app";
+import firebase from "firebase/app";
+import "firebase/auth";
 
 var firebaseConfig = {
   apiKey: "AIzaSyB8b4FvKUqPu1JkLRR3YaFHSDggzuvcRGg",

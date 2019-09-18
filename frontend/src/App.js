@@ -10,7 +10,8 @@ import Home from "./Home";
 import SignIn from "./SignIn";
 import SignUp from "./SignUp";
 import ForgotPassword from "./ForgotPassword";
-import Paperbase from "./Paperbase";
+import Welcome from "./Welcome";
+import Game from "./Game";
 
 function App() {
   return (
@@ -20,7 +21,8 @@ function App() {
         <Route exact path="/sign-in" component={SignIn} />
         <Route exact path="/sign-up" component={SignUp} />
         <Route exact path="/forgot-password" component={ForgotPassword} />
-        <Route exact path="/game" component={Paperbase} />
+        <Route exact path="/welcome" component={Welcome} />
+        <Route exact path="/game" component={Game} />
       </Switch>
     </Router>
   );

@@ -1,7 +1,7 @@
 import withRoot from "./modules/withRoot";
 // --- Post bootstrap -----
 import React from "react";
-import * as firebase from "firebase";
+import firebase from "firebase/app";
 import { Redirect } from "react-router";
 
 // Components
@@ -100,8 +100,6 @@ function SignIn() {
           validate={validate}
         >
           {({ handleSubmit, submitting }) => {
-            console.log("submitting", submitting);
-            console.log("sent", sent);
             return (
               <form onSubmit={handleSubmit} className={classes.form} noValidate>
                 <Field

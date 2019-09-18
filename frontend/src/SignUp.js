@@ -1,6 +1,10 @@
 import withRoot from "./modules/withRoot";
 // --- Post bootstrap -----
 import React from "react";
+import { Redirect } from "react-router";
+import firebase from "firebase/app";
+
+// Components
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Link from "@material-ui/core/Link";
@@ -30,6 +34,7 @@ const useStyles = makeStyles(theme => ({
 function SignUp() {
   const classes = useStyles();
   const [sent, setSent] = React.useState(false);
+  const [redirect, setRedirect] = React.useState(false);
 
   const validate = values => {
     const errors = required(
@@ -47,12 +52,35 @@ function SignUp() {
     return errors;
   };
 
-  const handleSubmit = () => {
+  const renderRedirect = () => {
+    if (redirect) {
+      return <Redirect to="/welcome" />;
+    }
+  };
+
+  const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+
+  const onSubmit = async values => {
+    const { email, password } = values;
+    await sleep(300);
     setSent(true);
+
+    await firebase
+      .auth()
+      .createUserWithEmailAndPassword(email, password)
+      .then(msg => {
+        setRedirect(true);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+
+    return;
   };
 
   return (
     <React.Fragment>
+      {renderRedirect()}
       <AppAppBar />
       <AppForm>
         <React.Fragment>
@@ -66,12 +94,12 @@ function SignUp() {
           </Typography>
         </React.Fragment>
         <Form
-          onSubmit={handleSubmit}
+          onSubmit={onSubmit}
           subscription={{ submitting: true }}
           validate={validate}
         >
-          {({ handleSubmit2, submitting }) => (
-            <form onSubmit={handleSubmit2} className={classes.form} noValidate>
+          {({ handleSubmit, submitting }) => (
+            <form onSubmit={handleSubmit} className={classes.form} noValidate>
               <Grid container spacing={2}>
                 <Grid item xs={12} sm={6}>
                   <Field
