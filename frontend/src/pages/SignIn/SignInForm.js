@@ -59,9 +59,7 @@ const SignInForm = ({ firebase, history }) => {
         history.push(ROUTES.GAME);
       })
       .catch(error => {
-        let errorMessage = error.message;
-
-        setSubmitError(errorMessage);
+        setSubmitError(error.message);
         setSent(false);
       });
 

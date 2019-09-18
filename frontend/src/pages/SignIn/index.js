@@ -5,9 +5,9 @@ import { withFirebase } from "../../Firebase";
 import SignInForm from "./SignInForm";
 
 const SignInPage = () => {
-  return <SignIpForm />;
+  return <SignInFormBase />;
 };
 
-const SignIpForm = withRouter(withFirebase(SignInForm));
+const SignInFormBase = withRouter(withFirebase(SignInForm));
 
 export default SignInPage;
