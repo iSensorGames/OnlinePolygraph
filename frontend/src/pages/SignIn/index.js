@@ -1,7 +1,7 @@
 // --- Post bootstrap -----
 import React from "react";
 import { withRouter } from "react-router";
-import { withFirebase } from "../../Firebase";
+import { withFirebase } from "../../modules/components/Firebase";
 import SignInForm from "./SignInForm";
 
 const SignInPage = () => {

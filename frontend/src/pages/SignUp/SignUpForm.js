@@ -58,8 +58,7 @@ const SignUp = ({ firebase, history }) => {
     setSent(true);
 
     await firebase
-      .auth()
-      .createUserWithEmailAndPassword(email, password)
+      .doCreateUserWithEmailAndPassword(email, password)
       .then(msg => {
         history.push(ROUTES.WELCOME);
       })
