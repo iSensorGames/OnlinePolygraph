@@ -1,8 +1,11 @@
 import withRoot from "./modules/withRoot";
 // --- Post bootstrap -----
 import React from "react";
+import * as firebase from "firebase";
 import { Redirect } from "react-router";
-import { Field, Form, FormSpy } from "react-final-form";
+
+// Components
+import { Field, Form } from "react-final-form";
 import { makeStyles } from "@material-ui/core/styles";
 import Link from "@material-ui/core/Link";
 import Typography from "./modules/components/Typography";
@@ -13,7 +16,7 @@ import { email, required } from "./modules/form/validation";
 import RFTextField from "./modules/form/RFTextField";
 import FormButton from "./modules/form/FormButton";
 import FormFeedback from "./modules/form/FormFeedback";
-import SelectInput from "@material-ui/core/Select/SelectInput";
+// import SelectInput from "@material-ui/core/Select/SelectInput";
 
 const useStyles = makeStyles(theme => ({
   form: {
@@ -31,6 +34,8 @@ const useStyles = makeStyles(theme => ({
 function SignIn() {
   const classes = useStyles();
   const [sent, setSent] = React.useState(false);
+  const [submitError, setSubmitError] = React.useState(null);
+  const [redirect, setRedirect] = React.useState(false);
 
   const validate = values => {
     const errors = required(["email", "password"], values);
@@ -45,14 +50,37 @@ function SignIn() {
     return errors;
   };
 
+  const renderRedirect = () => {
+    if (redirect) {
+      return <Redirect to="/game" />;
+    }
+  };
+
   const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
   const onSubmit = async values => {
+    const { email, password } = values;
     await sleep(300);
     setSent(true);
+
+    await firebase
+      .auth()
+      .signInWithEmailAndPassword(email, password)
+      .then(msg => {
+        setRedirect(true);
+      })
+      .catch(error => {
+        let errorMessage = error.message;
+
+        setSubmitError(errorMessage);
+        setSent(false);
+      });
+
+    return;
   };
 
   return (
     <React.Fragment>
+      {renderRedirect()}
       <AppAppBar />
       <AppForm>
         <React.Fragment>
@@ -72,11 +100,13 @@ function SignIn() {
           validate={validate}
         >
           {({ handleSubmit, submitting }) => {
+            console.log("submitting", submitting);
+            console.log("sent", sent);
             return (
               <form onSubmit={handleSubmit} className={classes.form} noValidate>
                 <Field
                   autoComplete="email"
-                  autoFocus
+                  autoFocus={!sent}
                   component={RFTextField}
                   disabled={submitting || sent}
                   fullWidth
@@ -98,15 +128,11 @@ function SignIn() {
                   type="password"
                   margin="normal"
                 />
-                <FormSpy subscription={{ submitError: true }}>
-                  {({ submitError }) =>
-                    submitError ? (
-                      <FormFeedback className={classes.feedback} error>
-                        {submitError}
-                      </FormFeedback>
-                    ) : null
-                  }
-                </FormSpy>
+                {submitError ? (
+                  <FormFeedback className={classes.feedback} error>
+                    {submitError}
+                  </FormFeedback>
+                ) : null}
                 <FormButton
                   className={classes.button}
                   disabled={submitting || sent}
