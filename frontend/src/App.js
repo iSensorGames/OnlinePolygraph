@@ -10,13 +10,13 @@ import * as ROUTES from "./modules/constants/routes";
 
 // Components
 import Home from "./Home";
-import SignIn from "./SignIn";
+import SignIn from "./pages/SignIn";
 import SignUp from "./SignUp";
 import ForgotPassword from "./ForgotPassword";
 import Welcome from "./Welcome";
 import Game from "./Game";
 
-function App() {
+const App = () => {
   return (
     <Router>
       <Switch>
@@ -29,6 +29,6 @@ function App() {
       </Switch>
     </Router>
   );
-}
+};
 
 export default App;

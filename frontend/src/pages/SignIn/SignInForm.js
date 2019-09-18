@@ -1,22 +1,20 @@
-import withRoot from "./modules/withRoot";
+import withRoot from "../../modules/withRoot";
 // --- Post bootstrap -----
 import React from "react";
-import firebase from "firebase/app";
-import { Redirect } from "react-router";
+import * as ROUTES from "../../modules/constants/routes";
 
 // Components
 import { Field, Form } from "react-final-form";
 import { makeStyles } from "@material-ui/core/styles";
 import Link from "@material-ui/core/Link";
-import Typography from "./modules/components/Typography";
-import AppFooter from "./modules/views/AppFooter";
-import AppAppBar from "./modules/views/AppAppBar";
-import AppForm from "./modules/views/AppForm";
-import { email, required } from "./modules/form/validation";
-import RFTextField from "./modules/form/RFTextField";
-import FormButton from "./modules/form/FormButton";
-import FormFeedback from "./modules/form/FormFeedback";
-// import SelectInput from "@material-ui/core/Select/SelectInput";
+import Typography from "../../modules/components/Typography";
+import AppFooter from "../../modules/views/AppFooter";
+import AppAppBar from "../../modules/views/AppAppBar";
+import AppForm from "../../modules/views/AppForm";
+import { email, required } from "../../modules/form/validation";
+import RFTextField from "../../modules/form/RFTextField";
+import FormButton from "../../modules/form/FormButton";
+import FormFeedback from "../../modules/form/FormFeedback";
 
 const useStyles = makeStyles(theme => ({
   form: {
@@ -31,11 +29,10 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function SignIn() {
+const SignInForm = ({ firebase, history }) => {
   const classes = useStyles();
   const [sent, setSent] = React.useState(false);
   const [submitError, setSubmitError] = React.useState(null);
-  const [redirect, setRedirect] = React.useState(false);
 
   const validate = values => {
     const errors = required(["email", "password"], values);
@@ -50,12 +47,6 @@ function SignIn() {
     return errors;
   };
 
-  const renderRedirect = () => {
-    if (redirect) {
-      return <Redirect to="/game" />;
-    }
-  };
-
   const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
   const onSubmit = async values => {
     const { email, password } = values;
@@ -63,10 +54,9 @@ function SignIn() {
     setSent(true);
 
     await firebase
-      .auth()
-      .signInWithEmailAndPassword(email, password)
-      .then(msg => {
-        setRedirect(true);
+      .doSignInWithEmailAndPassword(email, password)
+      .then(authUser => {
+        history.push(ROUTES.GAME);
       })
       .catch(error => {
         let errorMessage = error.message;
@@ -80,7 +70,6 @@ function SignIn() {
 
   return (
     <React.Fragment>
-      {renderRedirect()}
       <AppAppBar />
       <AppForm>
         <React.Fragment>
@@ -153,6 +142,6 @@ function SignIn() {
       <AppFooter />
     </React.Fragment>
   );
-}
+};
 
-export default withRoot(SignIn);
+export default withRoot(SignInForm);
