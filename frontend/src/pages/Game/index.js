@@ -6,9 +6,9 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import Hidden from "@material-ui/core/Hidden";
 import Typography from "@material-ui/core/Typography";
 import Link from "@material-ui/core/Link";
-import Navigator from "./modules/views/Navigator";
-import Content from "./modules/views/Content";
-import Header from "./modules/views/Header";
+import Navigator from "../../modules/views/Navigator";
+import Content from "../../modules/views/Content";
+import Header from "../../modules/views/Header";
 
 function Copyright() {
   return (

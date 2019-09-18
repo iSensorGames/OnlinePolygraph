@@ -1,15 +1,15 @@
-import withRoot from "./modules/withRoot";
+import withRoot from "../../modules/withRoot";
 // --- Post bootstrap -----
 import React from "react";
 import Container from "@material-ui/core/Container";
 import Box from "@material-ui/core/Box";
-import Markdown from "./modules/components/Markdown";
-import Typography from "./modules/components/Typography";
-import AppAppBar from "./modules/views/AppAppBar";
-import terms from "./modules/views/terms.md";
-import AppFooter from "./modules/views/AppFooter";
+import Markdown from "../../modules/components/Markdown";
+import Typography from "../../modules/components/Typography";
+import AppAppBar from "../../modules/views/AppAppBar";
+import terms from "../../modules/views/terms.md";
+import AppFooter from "../../modules/views/AppFooter";
 
-function Terms() {
+const Terms = () => {
   return (
     <React.Fragment>
       <AppAppBar />
@@ -24,6 +24,6 @@ function Terms() {
       <AppFooter />
     </React.Fragment>
   );
-}
+};
 
 export default withRoot(Terms);

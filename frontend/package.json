@@ -8,6 +8,7 @@
     "@material-ui/styles": "^4.4.1",
     "final-form": "^4.18.5",
     "firebase": "^6.6.1",
+    "markdown-to-jsx": "^6.10.3",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
     "react-final-form": "^6.3.0",

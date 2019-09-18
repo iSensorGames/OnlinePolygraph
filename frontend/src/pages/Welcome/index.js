@@ -1,10 +1,10 @@
-import withRoot from "./modules/withRoot";
+import withRoot from "../../modules/withRoot";
 // --- Post bootstrap -----
 import React from "react";
 
 // Components
-import AppAppBar from "./modules/views/AppAppBar";
-import AppFooter from "./modules/views/AppFooter";
+import AppAppBar from "../../modules/views/AppAppBar";
+import AppFooter from "../../modules/views/AppFooter";
 
 const Welcome = () => {
   return (

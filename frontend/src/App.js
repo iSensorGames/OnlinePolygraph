@@ -9,12 +9,14 @@ import "./styles/palette.css";
 import * as ROUTES from "./modules/constants/routes";
 
 // Components
-import Home from "./Home";
+import Home from "./pages/Home";
 import SignIn from "./pages/SignIn";
-import SignUp from "./SignUp";
-import ForgotPassword from "./ForgotPassword";
-import Welcome from "./Welcome";
-import Game from "./Game";
+import SignUp from "./pages/SignUp";
+import ForgotPassword from "./pages/ForgotPassword";
+import Welcome from "./pages/Welcome";
+import Game from "./pages/Game";
+import Terms from "./pages/Terms";
+import Privacy from "./pages/Privacy";
 
 const App = () => {
   return (
@@ -26,6 +28,8 @@ const App = () => {
         <Route exact path={ROUTES.FORGOT_PASSWORD} component={ForgotPassword} />
         <Route exact path={ROUTES.WELCOME} component={Welcome} />
         <Route exact path={ROUTES.GAME} component={Game} />
+        <Route exact path={ROUTES.TERMS} component={Terms} />
+        <Route exact path={ROUTES.PRIVACY} component={Privacy} />
       </Switch>
     </Router>
   );

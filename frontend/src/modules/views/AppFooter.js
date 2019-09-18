@@ -1,4 +1,7 @@
 import React from "react";
+import * as ROUTES from "../constants/routes";
+
+// Components
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Link from "@material-ui/core/Link";
@@ -6,6 +9,7 @@ import Container from "@material-ui/core/Container";
 import Typography from "../components/Typography";
 import TextField from "../components/TextField";
 
+// Static Assets
 import appFooterFacebook from "../../static/img/appFooterFacebook.png";
 import appFooterTwitter from "../../static/img/appFooterTwitter.png";
 
@@ -112,10 +116,10 @@ export default function AppFooter() {
             </Typography>
             <ul className={classes.list}>
               <li className={classes.listItem}>
-                <Link href="#">Terms</Link>
+                <Link href={ROUTES.TERMS}>Terms</Link>
               </li>
               <li className={classes.listItem}>
-                <Link href="#">Privacy</Link>
+                <Link href={ROUTES.PRIVACY}>Privacy</Link>
               </li>
             </ul>
           </Grid>
