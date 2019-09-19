@@ -18,6 +18,7 @@ import Welcome from "./pages/Welcome";
 import Game from "./pages/Game";
 import Terms from "./pages/Terms";
 import Privacy from "./pages/Privacy";
+import Admin from "./pages/Admin";
 
 const App = () => {
   return (
@@ -31,6 +32,7 @@ const App = () => {
         <Route exact path={ROUTES.GAME} component={Game} />
         <Route exact path={ROUTES.TERMS} component={Terms} />
         <Route exact path={ROUTES.PRIVACY} component={Privacy} />
+        <Route exact path={ROUTES.ADMIN} component={Admin} />
       </Switch>
     </Router>
   );

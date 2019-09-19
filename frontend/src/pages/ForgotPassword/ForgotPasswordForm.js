@@ -31,6 +31,7 @@ const ForgotPassword = ({ firebase }) => {
   const classes = useStyles();
   const [sent, setSent] = React.useState(false);
   const [submitError, setSubmitError] = React.useState(null);
+  const [submitSuccess, setSubmitSuccess] = React.useState(null);
 
   const validate = values => {
     const errors = required(["email"], values);
@@ -55,10 +56,12 @@ const ForgotPassword = ({ firebase }) => {
       .doPasswordReset(email)
       .then(() => {
         setSubmitError(null);
+        setSubmitSuccess("Successfully sent. Please check your e-mail.");
         setSent(false);
       })
       .catch(error => {
         setSubmitError(error.message);
+        setSubmitSuccess(null);
         setSent(false);
       });
 
@@ -101,6 +104,11 @@ const ForgotPassword = ({ firebase }) => {
                 {submitError ? (
                   <FormFeedback className={classes.feedback} error>
                     {submitError}
+                  </FormFeedback>
+                ) : null}
+                {submitSuccess ? (
+                  <FormFeedback className={classes.feedback} success>
+                    {submitSuccess}
                   </FormFeedback>
                 ) : null}
                 <FormButton

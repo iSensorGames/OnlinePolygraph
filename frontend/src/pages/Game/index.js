@@ -1,5 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
+
+// Components
+import { withAuthorization } from "../../modules/components/Session";
 import { createMuiTheme, withStyles } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -162,7 +165,7 @@ const styles = {
   }
 };
 
-function Game(props) {
+const Game = props => {
   const { classes } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
@@ -199,10 +202,12 @@ function Game(props) {
       </div>
     </ThemeProvider>
   );
-}
+};
 
 Game.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(Game);
+const condition = authUser => !!authUser;
+
+export default withAuthorization(condition)(withStyles(styles)(Game));
