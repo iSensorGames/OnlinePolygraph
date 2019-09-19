@@ -1,7 +1,6 @@
-import React, { Component } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import clsx from "clsx";
-import { withFirebase } from "../components/Firebase";
 import { withStyles } from "@material-ui/core/styles";
 import Link from "@material-ui/core/Link";
 import AppBar from "../components/AppBar";
@@ -36,42 +35,18 @@ const styles = theme => ({
   }
 });
 
-class AppAppBar extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      authUser: null
-    };
-  }
-
-  componentDidMount() {
-    this.props.firebase.auth.onAuthStateChanged(authUser => {
-      authUser
-        ? this.setState({ authUser })
-        : this.setState({ authUser: null });
-    });
-  }
-
-  componentWillUnmount() {
-    this.listener();
-  }
-
-  render() {
-    const { classes, authUser } = this.props;
-
-    return (
-      <div>
-        {authUser ? (
-          <AppAppBarAuth classes={classes} />
-        ) : (
-          <AppAppBarAuth classes={classes} />
-        )}
-        <div className={classes.placeholder} />
-      </div>
-    );
-  }
-}
+const AppAppBar = ({ classes, authUser }) => {
+  return (
+    <div>
+      {authUser ? (
+        <AppAppBarAuth classes={classes} />
+      ) : (
+        <AppAppBarNonAuth classes={classes} />
+      )}
+      <div className={classes.placeholder} />
+    </div>
+  );
+};
 
 const AppAppBarAuth = ({ classes }) => {
   return (
@@ -153,4 +128,4 @@ AppAppBar.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withFirebase(withStyles(styles)(AppAppBar));
+export default withStyles(styles)(AppAppBar);

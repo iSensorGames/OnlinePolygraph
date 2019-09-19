@@ -9,6 +9,7 @@ import "./styles/palette.css";
 import * as ROUTES from "./modules/constants/routes";
 
 // Components
+import { withAuthentication } from "./modules/components/Session";
 import Home from "./pages/Home";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
@@ -35,4 +36,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default withAuthentication(App);

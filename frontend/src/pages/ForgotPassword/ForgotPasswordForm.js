@@ -1,12 +1,10 @@
 import withRoot from "../../modules/withRoot";
 // --- Post bootstrap -----
 import React from "react";
-import * as ROUTES from "../../modules/constants/routes";
 
-// Components
+// Component
 import { Field, Form } from "react-final-form";
 import { makeStyles } from "@material-ui/core/styles";
-import Link from "@material-ui/core/Link";
 import Typography from "../../modules/components/Typography";
 import AppFooter from "../../modules/views/AppFooter";
 import AppAppBar from "../../modules/views/AppAppBar";
@@ -29,13 +27,13 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const SignInForm = ({ firebase, history }) => {
+const ForgotPassword = ({ firebase }) => {
   const classes = useStyles();
   const [sent, setSent] = React.useState(false);
   const [submitError, setSubmitError] = React.useState(null);
 
   const validate = values => {
-    const errors = required(["email", "password"], values);
+    const errors = required(["email"], values);
 
     if (!errors.email) {
       const emailError = email(values.email, values);
@@ -49,14 +47,15 @@ const SignInForm = ({ firebase, history }) => {
 
   const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
   const onSubmit = async values => {
-    const { email, password } = values;
+    const { email } = values;
     await sleep(300);
     setSent(true);
 
     await firebase
-      .doSignInWithEmailAndPassword(email, password)
-      .then(authUser => {
-        history.push(ROUTES.GAME);
+      .doPasswordReset(email)
+      .then(() => {
+        setSubmitError(null);
+        setSent(false);
       })
       .catch(error => {
         setSubmitError(error.message);
@@ -72,13 +71,11 @@ const SignInForm = ({ firebase, history }) => {
       <AppForm>
         <React.Fragment>
           <Typography variant="h3" gutterBottom marked="center" align="center">
-            Sign In
+            Forgot your password?
           </Typography>
           <Typography variant="body2" align="center">
-            {"Not a member yet? "}
-            <Link href={ROUTES.SIGN_UP} align="center" underline="always">
-              Sign Up here
-            </Link>
+            {"Enter your email address below and we'll " +
+              "send you a link to reset your password."}
           </Typography>
         </React.Fragment>
         <Form
@@ -90,8 +87,8 @@ const SignInForm = ({ firebase, history }) => {
             return (
               <form onSubmit={handleSubmit} className={classes.form} noValidate>
                 <Field
+                  autoFocus
                   autoComplete="email"
-                  autoFocus={!sent}
                   component={RFTextField}
                   disabled={submitting || sent}
                   fullWidth
@@ -100,18 +97,6 @@ const SignInForm = ({ firebase, history }) => {
                   name="email"
                   required
                   size="large"
-                />
-                <Field
-                  fullWidth
-                  size="large"
-                  component={RFTextField}
-                  disabled={submitting || sent}
-                  required
-                  name="password"
-                  autoComplete="current-password"
-                  label="Password"
-                  type="password"
-                  margin="normal"
                 />
                 {submitError ? (
                   <FormFeedback className={classes.feedback} error>
@@ -125,21 +110,16 @@ const SignInForm = ({ firebase, history }) => {
                   color="secondary"
                   fullWidth
                 >
-                  {submitting || sent ? "In progress…" : "Sign In"}
+                  {submitting || sent ? "In progress…" : "Send reset link"}
                 </FormButton>
               </form>
             );
           }}
         </Form>
-        <Typography align="center">
-          <Link underline="always" href={ROUTES.FORGOT_PASSWORD}>
-            Forgot password?
-          </Link>
-        </Typography>
       </AppForm>
       <AppFooter />
     </React.Fragment>
   );
 };
 
-export default withRoot(SignInForm);
+export default withRoot(ForgotPassword);
