@@ -1,1 +1,1 @@
-const ADMIN = "admin";
+export const ADMIN = "admin";

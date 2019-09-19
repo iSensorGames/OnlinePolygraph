@@ -3,36 +3,83 @@ import withRoot from "../../modules/withRoot";
 import React from "react";
 
 // Components
-import {
-  AuthUserContext,
-  withAuthorization
-} from "../../modules/components/Session";
+// import { AuthUserContext } from "../../modules/components/Session";
+import { withFirebase } from "../../modules/components/Firebase";
 import AppAppBar from "../../modules/views/AppAppBar";
 import AppFooter from "../../modules/views/AppFooter";
 
-const AdminPage = () => {
-  return (
-    <AuthUserContext.Consumer>
-      {authUser => (
-        <React.Fragment>
-          <AppAppBar />
-          <div className="Welcome">
-            <div className="title">Admin ({authUser.email})</div>
-            <div className="description">
-              Aliquam a dapibus magna. Nullam pretium vestibulum dolor, at
-              vestibulum turpis imperdiet euismod. Proin eu metus metus. Mauris
-              placerat neque id blandit malesuada. Aliquam id turpis tellus. Nam
-              convallis neque sed tellus pretium accumsan. Mauris libero felis,
-              consequat eu dictum id, convallis at neque.
-            </div>
-          </div>
-          <AppFooter />
-        </React.Fragment>
-      )}
-    </AuthUserContext.Consumer>
-  );
-};
+// Constants
+// import * as ROLES from "../../modules/constants/roles";
 
-const condition = authUser => !!authUser;
+class AdminPage extends React.Component {
+  constructor(props) {
+    super(props);
 
-export default withAuthorization(condition)(withRoot(AdminPage));
+    this.state = {
+      loading: false,
+      users: []
+    };
+  }
+
+  componentDidMount() {
+    this.setState({ loading: true });
+
+    this.props.firebase.users().on("value", snapshot => {
+      const usersObject = snapshot.val();
+
+      const usersList = Object.keys(usersObject).map(key => ({
+        ...usersObject[key],
+        uid: key
+      }));
+
+      this.setState({
+        users: usersList,
+        loading: false
+      });
+    });
+  }
+
+  componentWillUnmount() {
+    this.props.firebase.users().off();
+  }
+
+  render() {
+    const { users, loading } = this.state;
+
+    return (
+      <React.Fragment>
+        <AppAppBar />
+        <div className="Admin">
+          <div className="title">Admin</div>
+
+          {loading && <div>loading</div>}
+
+          <UserList users={users} />
+        </div>
+        <AppFooter />
+      </React.Fragment>
+    );
+  }
+}
+
+const UserList = ({ users }) => (
+  <ul>
+    {users.map(user => (
+      <li key={user.uid}>
+        <span>
+          <strong>ID:</strong> {user.uid}
+        </span>
+        <span>
+          <strong>E-Mail:</strong> {user.email}
+        </span>
+        <span>
+          <strong>Username:</strong> {user.username}
+        </span>
+      </li>
+    ))}
+  </ul>
+);
+
+// const condition = authUser => !!authUser.roles[ROLES.ADMIN];
+
+export default withFirebase(withRoot(AdminPage));

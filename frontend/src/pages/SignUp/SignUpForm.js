@@ -59,8 +59,11 @@ const SignUp = ({ firebase, history }) => {
 
     await firebase
       .doCreateUserWithEmailAndPassword(email, password)
-      .then(msg => {
+      .then(authUser => {
+        // Create a new user in the firebase realtime database
+        firebase.user(authUser.user.uid).set({ email });
         history.push(ROUTES.WELCOME);
+        return;
       })
       .catch(error => {
         setSubmitError(error.message);
