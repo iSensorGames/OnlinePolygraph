@@ -54,7 +54,7 @@ const SignUp = ({ firebase, history }) => {
 
   const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
   const onSubmit = async values => {
-    const { email, password, isAdmin } = values;
+    const { email, password, firstName, lastName, isAdmin } = values;
     const roles = {};
 
     if (isAdmin) {
@@ -70,7 +70,9 @@ const SignUp = ({ firebase, history }) => {
       .doCreateUserWithEmailAndPassword(email, password)
       .then(authUser => {
         // Create a new user in the firebase realtime database
-        firebase.user(authUser.user.uid).set({ email, roles });
+        firebase
+          .user(authUser.user.uid)
+          .set({ email, roles, firstName, lastName });
         history.push(ROUTES.WELCOME);
         return;
       })

@@ -212,7 +212,7 @@ Game.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-const condition = authUser => authUser && !!authUser[ROLES.USER];
+const condition = authUser => authUser && !!authUser.roles[ROLES.USER];
 
 export default compose(
   withAuthorization(condition),

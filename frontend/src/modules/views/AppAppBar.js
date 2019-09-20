@@ -1,10 +1,18 @@
 import React from "react";
 import PropTypes from "prop-types";
+
+// Components
+import { AuthUserContext } from "../components/Session";
 import clsx from "clsx";
 import { withStyles } from "@material-ui/core/styles";
 import Link from "@material-ui/core/Link";
 import AppBar from "../components/AppBar";
+import Logout from "../components/Logout";
 import Toolbar, { styles as toolbarStyles } from "../components/Toolbar";
+
+// Constants
+import * as ROUTES from "../constants/routes";
+import * as ROLES from "../constants/roles";
 
 const styles = theme => ({
   title: {
@@ -35,20 +43,19 @@ const styles = theme => ({
   }
 });
 
-const AppAppBar = ({ classes, authUser }) => {
-  return (
-    <div>
-      {authUser ? (
-        <AppAppBarAuth classes={classes} />
+const AppAppBar = ({ classes }) => (
+  <AuthUserContext.Consumer>
+    {authUser =>
+      authUser ? (
+        <AppAppBarAuth classes={classes} authUser={authUser} />
       ) : (
         <AppAppBarNonAuth classes={classes} />
-      )}
-      <div className={classes.placeholder} />
-    </div>
-  );
-};
+      )
+    }
+  </AuthUserContext.Consumer>
+);
 
-const AppAppBarAuth = ({ classes }) => {
+const AppAppBarAuth = ({ classes, authUser }) => {
   return (
     <AppBar position="fixed">
       <Toolbar className={classes.toolbar}>
@@ -58,7 +65,7 @@ const AppAppBarAuth = ({ classes }) => {
           underline="none"
           color="inherit"
           className={classes.title}
-          href="/"
+          href={ROUTES.HOME}
         >
           {"Online Polygraph"}
         </Link>
@@ -68,18 +75,21 @@ const AppAppBarAuth = ({ classes }) => {
             variant="h6"
             underline="none"
             className={classes.rightLink}
-            href="/sign-in/"
+            href={ROUTES.GAME}
           >
-            {"Sign In"}
+            {"Play Game"}
           </Link>
-          <Link
-            variant="h6"
-            underline="none"
-            className={clsx(classes.rightLink, classes.linkSecondary)}
-            href="/sign-up/"
-          >
-            {"Sign Up"}
-          </Link>
+          {!!authUser.roles[ROLES.ADMIN] && (
+            <Link
+              variant="h6"
+              underline="none"
+              className={classes.rightLink}
+              href={ROUTES.ADMIN}
+            >
+              {"Admin"}
+            </Link>
+          )}
+          <Logout />
         </div>
       </Toolbar>
     </AppBar>
@@ -96,7 +106,7 @@ const AppAppBarNonAuth = ({ classes }) => {
           underline="none"
           color="inherit"
           className={classes.title}
-          href="/"
+          href={ROUTES.HOME}
         >
           {"Online Polygraph"}
         </Link>
@@ -106,7 +116,7 @@ const AppAppBarNonAuth = ({ classes }) => {
             variant="h6"
             underline="none"
             className={classes.rightLink}
-            href="/sign-in/"
+            href={ROUTES.SIGN_IN}
           >
             {"Sign In"}
           </Link>
@@ -114,7 +124,7 @@ const AppAppBarNonAuth = ({ classes }) => {
             variant="h6"
             underline="none"
             className={clsx(classes.rightLink, classes.linkSecondary)}
-            href="/sign-up/"
+            href={ROUTES.SIGN_UP}
           >
             {"Sign Up"}
           </Link>
