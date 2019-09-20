@@ -3,13 +3,14 @@ import withRoot from "../../modules/withRoot";
 import React from "react";
 
 // Components
-// import { AuthUserContext } from "../../modules/components/Session";
+import { compose } from "recompose";
+import { withAuthorization } from "../../modules/components/Session";
 import { withFirebase } from "../../modules/components/Firebase";
 import AppAppBar from "../../modules/views/AppAppBar";
 import AppFooter from "../../modules/views/AppFooter";
 
 // Constants
-// import * as ROLES from "../../modules/constants/roles";
+import * as ROLES from "../../modules/constants/roles";
 
 class AdminPage extends React.Component {
   constructor(props) {
@@ -80,6 +81,10 @@ const UserList = ({ users }) => (
   </ul>
 );
 
-// const condition = authUser => !!authUser.roles[ROLES.ADMIN];
+const condition = authUser => authUser && !!authUser.roles[ROLES.ADMIN];
 
-export default withFirebase(withRoot(AdminPage));
+export default compose(
+  withAuthorization(condition),
+  withFirebase,
+  withRoot
+)(AdminPage);

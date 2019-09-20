@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 
 // Components
+import { compose } from "recompose";
 import { withAuthorization } from "../../modules/components/Session";
 import { createMuiTheme, withStyles } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
@@ -12,6 +13,9 @@ import Link from "@material-ui/core/Link";
 import Navigator from "../../modules/views/Navigator";
 import Content from "../../modules/views/Content";
 import Header from "../../modules/views/Header";
+
+// Constants
+import * as ROLES from "../../modules/constants/roles";
 
 function Copyright() {
   return (
@@ -208,6 +212,9 @@ Game.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-const condition = authUser => !!authUser;
+const condition = authUser => authUser && !!authUser[ROLES.USER];
 
-export default withAuthorization(condition)(withStyles(styles)(Game));
+export default compose(
+  withAuthorization(condition),
+  withStyles(styles)
+)(Game);

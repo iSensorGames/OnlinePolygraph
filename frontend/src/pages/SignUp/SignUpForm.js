@@ -2,6 +2,7 @@ import withRoot from "../../modules/withRoot";
 // --- Post bootstrap -----
 import React from "react";
 import * as ROUTES from "../../modules/constants/routes";
+import * as ROLES from "../../modules/constants/roles";
 
 // Components
 import { makeStyles } from "@material-ui/core/styles";
@@ -53,7 +54,15 @@ const SignUp = ({ firebase, history }) => {
 
   const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
   const onSubmit = async values => {
-    const { email, password } = values;
+    const { email, password, isAdmin } = values;
+    const roles = {};
+
+    if (isAdmin) {
+      roles[ROLES.ADMIN] = ROLES.ADMIN;
+    } else {
+      roles[ROLES.USER] = ROLES.USER;
+    }
+
     await sleep(300);
     setSent(true);
 
@@ -61,7 +70,7 @@ const SignUp = ({ firebase, history }) => {
       .doCreateUserWithEmailAndPassword(email, password)
       .then(authUser => {
         // Create a new user in the firebase realtime database
-        firebase.user(authUser.user.uid).set({ email });
+        firebase.user(authUser.user.uid).set({ email, roles });
         history.push(ROUTES.WELCOME);
         return;
       })

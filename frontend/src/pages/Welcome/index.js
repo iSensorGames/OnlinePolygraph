@@ -6,8 +6,13 @@ import React from "react";
 import "./welcome.css";
 
 // Components
+import { compose } from "recompose";
+import { withAuthorization } from "../../modules/components/Session";
 import AppAppBar from "../../modules/views/AppAppBar";
 import AppFooter from "../../modules/views/AppFooter";
+
+// Constants
+import * as ROLES from "../../modules/constants/roles";
 
 // Static Assets
 import wolfInSheepsClothing from "../../static/img/wolf-in-sheeps-clothing.jpg";
@@ -34,4 +39,9 @@ const Welcome = () => {
   );
 };
 
-export default withRoot(Welcome);
+const condition = authUser => authUser && !!authUser[ROLES.USER];
+
+export default compose(
+  withAuthorization(condition),
+  withRoot
+)(Welcome);
