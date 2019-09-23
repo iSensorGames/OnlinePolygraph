@@ -12,15 +12,16 @@ import avatarGroup5 from "../../../../static/img/avatars/avatar-group-5.jpg";
 
 export default [
   {
+    id: 1,
     name: "Ham Chuwon",
     type: "direct",
     img: avatarMale1,
     lastText: "Please review and sign the binding agreement.",
     messageSentDate: "Today",
-    isOnline: true,
-    isActive: true
+    isOnline: true
   },
   {
+    id: 2,
     name: "Quincy Hensen",
     type: "direct",
     img: avatarMale2,
@@ -28,13 +29,16 @@ export default [
     messageSentDate: "Today"
   },
   {
+    id: 3,
     name: "Mark Hog",
     type: "direct",
     img: avatarMale3,
     lastText: "I'm looking to get a quote for the move from LA to NY.",
-    messageSentDate: "Feb 13"
+    messageSentDate: "Feb 13",
+    isOnline: true
   },
   {
+    id: 4,
     name: "Sanne Viscaal",
     type: "direct",
     img: avatarMale4,
@@ -42,6 +46,7 @@ export default [
     messageSentDate: "Jan 10"
   },
   {
+    id: 5,
     name: "Alex Just",
     type: "direct",
     img: avatarMale5,
@@ -49,6 +54,7 @@ export default [
     messageSentDate: "May 2"
   },
   {
+    id: 6,
     name: "The Musketeers",
     type: "groups",
     img: avatarGroup1,
@@ -56,6 +62,7 @@ export default [
     messageSentDate: "Today"
   },
   {
+    id: 7,
     name: "Watts Up",
     type: "groups",
     img: avatarGroup2,
@@ -63,6 +70,7 @@ export default [
     messageSentDate: "Today"
   },
   {
+    id: 8,
     name: "Memes",
     type: "groups",
     img: avatarGroup3,
@@ -70,6 +78,7 @@ export default [
     messageSentDate: "Feb 23"
   },
   {
+    id: 9,
     name: "Supernovas",
     type: "groups",
     img: avatarGroup4,
@@ -77,6 +86,7 @@ export default [
     messageSentDate: "Feb 23"
   },
   {
+    id: 10,
     name: "Squad Ghouls",
     type: "groups",
     img: avatarGroup5,

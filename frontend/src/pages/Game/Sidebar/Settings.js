@@ -5,7 +5,7 @@ import avatarMale1 from "../../../static/img/avatars/avatar-male-1.jpg";
 
 const Settings = ({ isActive }) => (
   <div
-    className={`tab-pane fade${isActive ? " active show" : ""}`}
+    className={`settings tab-pane fade${isActive ? " active show" : ""}`}
     role="tabpanel"
   >
     <div className="user">

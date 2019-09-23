@@ -13,10 +13,6 @@ import * as ROLES from "../../modules/constants/roles";
 import * as ROUTES from "../../modules/constants/routes";
 import * as CURRENT_PAGE from "../../modules/constants/sidebar";
 
-// Styles
-import "../../static/css/lib/bootstrap.min.css";
-import "./template.css";
-
 // Static assets
 import avatarMale1 from "../../static/img/avatars/avatar-male-1.jpg";
 import avatarMale2 from "../../static/img/avatars/avatar-male-2.jpg";
@@ -39,8 +35,6 @@ const MenuItem = ({ isCurrentPage, iconName, classes, setCurrentPage }) => (
   <li>
     <a
       className={clsx(classes.link, isCurrentPage ? "active" : "")}
-      role="tab"
-      data-toggle="tab"
       onClick={setCurrentPage}
     >
       <Icon
