@@ -1,15 +1,17 @@
 import React from "react";
-import PropTypes from "prop-types";
 
 // Components
 import Icon from "react-eva-icons";
+import clsx from "clsx";
 import { compose } from "recompose";
+import { withStyles } from "@material-ui/core/styles";
 import { withAuthorization } from "../../modules/components/Session";
-import Sidebar from "./Sidebar";
+import Sidebar from "./Sidebar/";
 
 // Constants
 import * as ROLES from "../../modules/constants/roles";
 import * as ROUTES from "../../modules/constants/routes";
+import * as CURRENT_PAGE from "../../modules/constants/sidebar";
 
 // Styles
 import "../../static/css/lib/bootstrap.min.css";
@@ -27,8 +29,38 @@ import avatarFemale2 from "../../static/img/avatars/avatar-female-2.jpg";
 import avatarFemale3 from "../../static/img/avatars/avatar-female-3.jpg";
 import avatarGroup1 from "../../static/img/avatars/avatar-group-1.jpg";
 
-const Game = props => {
+const styles = () => ({
+  link: {
+    cursor: "pointer"
+  }
+});
+
+const MenuItem = ({ isCurrentPage, iconName, classes, setCurrentPage }) => (
+  <li>
+    <a
+      className={clsx(classes.link, isCurrentPage ? "active" : "")}
+      role="tab"
+      data-toggle="tab"
+      onClick={setCurrentPage}
+    >
+      <Icon
+        name={iconName}
+        size="medium"
+        animation={{
+          type: "pulse",
+          hover: true,
+          infinite: false
+        }}
+      />
+    </a>
+  </li>
+);
+
+const Game = ({ classes }) => {
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [currentPage, setCurrentPage] = React.useState(
+    CURRENT_PAGE.CONVERSATIONS
+  );
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -45,90 +77,54 @@ const Game = props => {
             />
           </a>
           <ul className="nav" role="tablist">
+            <MenuItem
+              isCurrentPage={currentPage === CURRENT_PAGE.CONVERSATIONS}
+              setCurrentPage={() => setCurrentPage(CURRENT_PAGE.CONVERSATIONS)}
+              iconName="message-square"
+              classes={classes}
+            />
+            <MenuItem
+              isCurrentPage={currentPage === CURRENT_PAGE.FRIENDS}
+              setCurrentPage={() => setCurrentPage(CURRENT_PAGE.FRIENDS)}
+              iconName="people"
+              classes={classes}
+            />
+            <MenuItem
+              isCurrentPage={currentPage === CURRENT_PAGE.NOTIFICATIONS}
+              setCurrentPage={() => setCurrentPage(CURRENT_PAGE.NOTIFICATIONS)}
+              iconName="bell"
+              classes={classes}
+            />
+            <MenuItem
+              isCurrentPage={currentPage === CURRENT_PAGE.SETTINGS}
+              setCurrentPage={() => setCurrentPage(CURRENT_PAGE.SETTINGS)}
+              iconName="settings"
+              classes={classes}
+            />
+
             <li>
-              <a
-                href="#conversations"
-                className="active"
-                data-toggle="tab"
-                role="tab"
-                aria-controls="conversations"
-                aria-selected="true"
-              >
+              <button type="button" className="btn mode">
                 <Icon
-                  name="message-square"
-                  size="medium"
-                  animation={{
-                    type: "pulse",
-                    hover: true,
-                    infinite: false
-                  }}
-                />
-              </a>
-            </li>
-            <li>
-              <a
-                href="#friends"
-                data-toggle="tab"
-                role="tab"
-                aria-controls="friends"
-                aria-selected="false"
-              >
-                <Icon
-                  name="people"
-                  size="medium"
-                  animation={{
-                    type: "pulse",
-                    hover: true,
-                    infinite: false
-                  }}
-                />
-              </a>
-            </li>
-            <li>
-              <a
-                href="#notifications"
-                data-toggle="tab"
-                role="tab"
-                aria-controls="notifications"
-                aria-selected="false"
-              >
-                <Icon
-                  name="bell"
+                  name="bulb"
                   size="large"
                   animation={{
                     type: "pulse",
                     hover: true,
-                    infinite: false
+                    infinite: true
                   }}
                 />
-              </a>
-            </li>
-            <li>
-              <a
-                href="#settings"
-                data-toggle="tab"
-                role="tab"
-                aria-controls="settings"
-                aria-selected="false"
-              >
-                <i data-eva="settings" data-eva-animation="pulse"></i>
-              </a>
-            </li>
-            <li>
-              <button type="button" className="btn mode">
-                <i data-eva="bulb" data-eva-animation="pulse"></i>
               </button>
             </li>
             <li>
               <button type="button" className="btn">
                 <img src={avatarMale1} alt="avatar" />
-                <i data-eva="radio-button-on"></i>
+                <Icon name="radio-button-on" />
               </button>
             </li>
           </ul>
         </div>
       </nav>
-      <Sidebar />
+      <Sidebar currentPage={currentPage} />
       <div className="chat">
         <div className="tab-content">
           <div className="tab-pane fade show active" id="chat1" role="tabpanel">
@@ -1843,4 +1839,7 @@ const Game = props => {
 
 const condition = authUser => authUser && !!authUser.roles[ROLES.USER];
 
-export default compose(withAuthorization(condition))(Game);
+export default compose(
+  withAuthorization(condition),
+  withStyles(styles)
+)(Game);

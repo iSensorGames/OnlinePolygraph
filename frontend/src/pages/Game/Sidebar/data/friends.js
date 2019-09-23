@@ -1,12 +1,12 @@
-import avatarMale1 from "../../static/img/avatars/avatar-male-1.jpg";
-import avatarMale2 from "../../static/img/avatars/avatar-male-2.jpg";
-import avatarMale3 from "../../static/img/avatars/avatar-male-3.jpg";
-import avatarMale4 from "../../static/img/avatars/avatar-male-4.jpg";
-import avatarMale5 from "../../static/img/avatars/avatar-male-5.jpg";
-import avatarMale6 from "../../static/img/avatars/avatar-male-6.jpg";
-import avatarFemale1 from "../../static/img/avatars/avatar-female-1.jpg";
-import avatarFemale2 from "../../static/img/avatars/avatar-female-2.jpg";
-import avatarFemale3 from "../../static/img/avatars/avatar-female-3.jpg";
+import avatarMale1 from "../../../../static/img/avatars/avatar-male-1.jpg";
+import avatarMale2 from "../../../../static/img/avatars/avatar-male-2.jpg";
+import avatarMale3 from "../../../../static/img/avatars/avatar-male-3.jpg";
+import avatarMale4 from "../../../../static/img/avatars/avatar-male-4.jpg";
+import avatarMale5 from "../../../../static/img/avatars/avatar-male-5.jpg";
+import avatarMale6 from "../../../../static/img/avatars/avatar-male-6.jpg";
+import avatarFemale1 from "../../../../static/img/avatars/avatar-female-1.jpg";
+import avatarFemale2 from "../../../../static/img/avatars/avatar-female-2.jpg";
+import avatarFemale3 from "../../../../static/img/avatars/avatar-female-3.jpg";
 
 export default [
   {

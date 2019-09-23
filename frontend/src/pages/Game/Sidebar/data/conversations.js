@@ -1,14 +1,14 @@
-import avatarMale1 from "../../static/img/avatars/avatar-male-1.jpg";
-import avatarMale2 from "../../static/img/avatars/avatar-male-2.jpg";
-import avatarMale3 from "../../static/img/avatars/avatar-male-3.jpg";
-import avatarMale4 from "../../static/img/avatars/avatar-male-4.jpg";
-import avatarMale5 from "../../static/img/avatars/avatar-male-5.jpg";
+import avatarMale1 from "../../../../static/img/avatars/avatar-male-1.jpg";
+import avatarMale2 from "../../../../static/img/avatars/avatar-male-2.jpg";
+import avatarMale3 from "../../../../static/img/avatars/avatar-male-3.jpg";
+import avatarMale4 from "../../../../static/img/avatars/avatar-male-4.jpg";
+import avatarMale5 from "../../../../static/img/avatars/avatar-male-5.jpg";
 
-import avatarGroup1 from "../../static/img/avatars/avatar-group-1.jpg";
-import avatarGroup2 from "../../static/img/avatars/avatar-group-2.jpg";
-import avatarGroup3 from "../../static/img/avatars/avatar-group-3.jpg";
-import avatarGroup4 from "../../static/img/avatars/avatar-group-4.jpg";
-import avatarGroup5 from "../../static/img/avatars/avatar-group-5.jpg";
+import avatarGroup1 from "../../../../static/img/avatars/avatar-group-1.jpg";
+import avatarGroup2 from "../../../../static/img/avatars/avatar-group-2.jpg";
+import avatarGroup3 from "../../../../static/img/avatars/avatar-group-3.jpg";
+import avatarGroup4 from "../../../../static/img/avatars/avatar-group-4.jpg";
+import avatarGroup5 from "../../../../static/img/avatars/avatar-group-5.jpg";
 
 export default [
   {
