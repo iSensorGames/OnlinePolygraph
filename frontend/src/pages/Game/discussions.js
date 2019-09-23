@@ -17,7 +17,7 @@ export default [
     img: avatarMale1,
     lastText: "Please review and sign the binding agreement.",
     messageSentDate: "Today",
-    status: "online",
+    isOnline: true,
     isActive: true
   },
   {

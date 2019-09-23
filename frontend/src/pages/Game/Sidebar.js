@@ -63,7 +63,7 @@ const Sidebar = () => {
               <hr />
               <ul className="nav discussions" role="tablist">
                 {discussions
-                  ? discussions.map((idx, discussion) => {
+                  ? discussions.map((discussion, idx) => {
                       return (
                         <li key={idx}>
                           <a
@@ -118,7 +118,7 @@ const Sidebar = () => {
               <hr />
               <ul className="users">
                 {friends
-                  ? friends.map((idx, friend) => {
+                  ? friends.map((friend, idx) => {
                       return (
                         <li key={idx}>
                           <a href="#">
