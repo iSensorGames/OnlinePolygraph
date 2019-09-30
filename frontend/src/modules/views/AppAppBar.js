@@ -43,6 +43,14 @@ const styles = theme => ({
   }
 });
 
+const settings = {
+  title: "RealSpiel",
+  game: "Play Game",
+  admin: "Admin",
+  signin: "Sign In",
+  signup: "Sign Up"
+};
+
 const AppAppBar = ({ classes }) => (
   <AuthUserContext.Consumer>
     {authUser =>
@@ -67,7 +75,7 @@ const AppAppBarAuth = ({ classes, authUser }) => {
           className={classes.title}
           href={ROUTES.HOME}
         >
-          {"Online Polygraph"}
+          {settings.title}
         </Link>
         <div className={classes.right}>
           <Link
@@ -77,7 +85,7 @@ const AppAppBarAuth = ({ classes, authUser }) => {
             className={classes.rightLink}
             href={ROUTES.GAME}
           >
-            {"Play Game"}
+            {settings.game}
           </Link>
           {!!authUser.roles[ROLES.ADMIN] && (
             <Link
@@ -86,7 +94,7 @@ const AppAppBarAuth = ({ classes, authUser }) => {
               className={classes.rightLink}
               href={ROUTES.ADMIN}
             >
-              {"Admin"}
+              {settings.admin}
             </Link>
           )}
           <Logout />
@@ -108,7 +116,7 @@ const AppAppBarNonAuth = ({ classes }) => {
           className={classes.title}
           href={ROUTES.HOME}
         >
-          {"Online Polygraph"}
+          {settings.title}
         </Link>
         <div className={classes.right}>
           <Link
@@ -118,7 +126,7 @@ const AppAppBarNonAuth = ({ classes }) => {
             className={classes.rightLink}
             href={ROUTES.SIGN_IN}
           >
-            {"Sign In"}
+            {settings.signin}
           </Link>
           <Link
             variant="h6"
@@ -126,7 +134,7 @@ const AppAppBarNonAuth = ({ classes }) => {
             className={clsx(classes.rightLink, classes.linkSecondary)}
             href={ROUTES.SIGN_UP}
           >
-            {"Sign Up"}
+            {settings.signup}
           </Link>
         </div>
       </Toolbar>
