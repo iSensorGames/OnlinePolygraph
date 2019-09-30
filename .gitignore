@@ -6,3 +6,5 @@ node_modules
 
 # Keys
 dev.js
+public.key
+private.key
