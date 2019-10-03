@@ -5,7 +5,7 @@ import React from "react";
 // Components
 import { compose } from "recompose";
 import { withAuthorization } from "../../modules/components/Session";
-import { withFirebase } from "../../modules/components/Firebase";
+import { withDatabase } from "../../modules/components/Database";
 import AppAppBar from "../../modules/views/AppAppBar";
 import AppFooter from "../../modules/views/AppFooter";
 
@@ -25,7 +25,7 @@ class AdminPage extends React.Component {
   componentDidMount() {
     this.setState({ loading: true });
 
-    this.props.firebase.users().on("value", snapshot => {
+    this.props.database.users().on("value", snapshot => {
       const usersObject = snapshot.val();
 
       const usersList = Object.keys(usersObject).map(key => ({
@@ -41,7 +41,7 @@ class AdminPage extends React.Component {
   }
 
   componentWillUnmount() {
-    this.props.firebase.users().off();
+    this.props.database.users().off();
   }
 
   render() {
@@ -85,6 +85,6 @@ const condition = authUser => authUser && !!authUser.roles[ROLES.ADMIN];
 
 export default compose(
   withAuthorization(condition),
-  withFirebase,
+  withDatabase,
   withRoot
 )(AdminPage);

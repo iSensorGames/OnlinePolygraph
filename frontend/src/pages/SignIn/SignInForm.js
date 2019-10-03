@@ -29,7 +29,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const SignInForm = ({ firebase, history }) => {
+const SignInForm = ({ database, history }) => {
   const classes = useStyles();
   const [sent, setSent] = React.useState(false);
   const [submitError, setSubmitError] = React.useState(null);
@@ -53,12 +53,14 @@ const SignInForm = ({ firebase, history }) => {
     await sleep(300);
     setSent(true);
 
-    await firebase
+    await database
       .doSignInWithEmailAndPassword(email, password)
-      .then(authUser => {
+      .then(({ data }) => {
+        localStorage.setItem("token", data.token);
         history.push(ROUTES.GAME);
       })
       .catch(error => {
+        console.log("error");
         setSubmitError(error.message);
         setSent(false);
       });

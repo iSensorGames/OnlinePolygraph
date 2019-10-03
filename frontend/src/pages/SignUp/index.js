@@ -1,12 +1,12 @@
 import React from "react";
 import { withRouter } from "react-router";
-import { withFirebase } from "../../modules/components/Firebase";
+import { withDatabase } from "../../modules/components/Database";
 import SignUpForm from "./SignUpForm";
 
 const SignUpPage = () => {
   return <SignUpFormBase />;
 };
 
-const SignUpFormBase = withRouter(withFirebase(SignUpForm));
+const SignUpFormBase = withRouter(withDatabase(SignUpForm));
 
 export default SignUpPage;

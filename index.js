@@ -1,4 +1,7 @@
 const express = require("express");
+const app = express();
+const server = require("http").createServer(app);
+const io = require("socket.io")(server);
 const path = require("path");
 const bodyParser = require("body-parser");
 const morgan = require("morgan");
@@ -16,7 +19,6 @@ global.appRoot = path.resolve(__dirname);
 /*****************************
  * INITIAL EXPRESS APP SETUP *
  *****************************/
-const app = express();
 app.use(express.static(path.join(__dirname, "frontend/build")));
 app.use(morgan(environment === "development" ? "dev" : ""));
 app.use(bodyParser.json());
@@ -25,17 +27,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 /**************************************
  * SOCKET & DATABASE CONNECTION SETUP *
  **************************************/
-// io.sockets.on("connection", socket => {
-//   socketCount++; // Socket has connected, increase socket count
-//   io.socket.emit("users connected", socketCount);
-
-//   socket.on("disconnect", () => {
-//     socketCount--;
-//     io.sockets.emit("users connected", socketCount);
-//   });
-
-//   socket.on("initial_messages", ["aaa", "bbb", "ccc", "ddd"]);
-
 db.connect(err => {
   if (err) {
     console.log("Err: ", err);
@@ -44,10 +35,26 @@ db.connect(err => {
 
   // ROUTES
   require("./routes")({ app, db });
-
-  // SERVER
-  app.listen(PORT, () => {
-    console.log("Server listening to Port: " + PORT);
-  });
 });
-// });
+
+io.sockets.on("connection", socket => {
+  console.log("Client connected...");
+  socketCount++; // Socket has connected, increase socket count
+  io.socket.emit("users connected", socketCount);
+
+  socket.on("join", data => {
+    console.log(data);
+  });
+
+  socket.on("disconnect", () => {
+    socketCount--;
+    io.sockets.emit("users connected", socketCount);
+  });
+
+  socket.on("initial_messages", ["aaa", "bbb", "ccc", "ddd"]);
+});
+
+// SERVER
+server.listen(PORT, () => {
+  console.log("Server listening to Port: " + PORT);
+});

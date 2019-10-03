@@ -1,13 +1,13 @@
 // --- Post bootstrap -----
 import React from "react";
 import { withRouter } from "react-router";
-import { withFirebase } from "../../modules/components/Firebase";
+import { withDatabase } from "../../modules/components/Database";
 import SignInForm from "./SignInForm";
 
 const SignInPage = () => {
   return <SignInFormBase />;
 };
 
-const SignInFormBase = withRouter(withFirebase(SignInForm));
+const SignInFormBase = withRouter(withDatabase(SignInForm));
 
 export default SignInPage;

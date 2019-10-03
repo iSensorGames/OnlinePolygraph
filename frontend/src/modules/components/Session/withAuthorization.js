@@ -3,13 +3,13 @@ import React from "react";
 import AuthUserContext from "./context";
 import { compose } from "recompose";
 import { withRouter } from "react-router-dom";
-import { withFirebase } from "../Firebase";
+import { withDatabase } from "../Database";
 import * as ROUTES from "../../constants/routes";
 
 const withAuthorization = condition => Component => {
   class WithAuthorization extends React.Component {
     componentDidMount() {
-      this.listener = this.props.firebase.onAuthUserListener(
+      this.listener = this.props.database.onAuthUserListener(
         authUser => {
           if (!condition(authUser)) {
             this.props.history.push(ROUTES.SIGN_IN);
@@ -36,7 +36,7 @@ const withAuthorization = condition => Component => {
 
   return compose(
     withRouter,
-    withFirebase
+    withDatabase
   )(WithAuthorization);
 };
 

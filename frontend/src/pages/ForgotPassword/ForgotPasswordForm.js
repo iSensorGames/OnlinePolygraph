@@ -27,7 +27,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const ForgotPassword = ({ firebase }) => {
+const ForgotPassword = ({ database }) => {
   const classes = useStyles();
   const [sent, setSent] = React.useState(false);
   const [submitError, setSubmitError] = React.useState(null);
@@ -52,7 +52,7 @@ const ForgotPassword = ({ firebase }) => {
     await sleep(300);
     setSent(true);
 
-    await firebase
+    await database
       .doPasswordReset(email)
       .then(() => {
         setSubmitError(null);

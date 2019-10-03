@@ -2,12 +2,12 @@ import React from "react";
 
 // Components
 import clsx from "clsx";
-import { withFirebase } from "../Firebase";
+import { withDatabase } from "../Database";
 
 // Styles
 import "./logout.css";
 
-const Logout = ({ firebase }) => (
+const Logout = ({ database }) => (
   <div
     className={clsx(
       "Logout-btn",
@@ -16,10 +16,10 @@ const Logout = ({ firebase }) => (
       "Logout-rightLink-10",
       "Logout-linkSecondary-11"
     )}
-    onClick={() => firebase.doSignOut()}
+    onClick={() => database.doSignOut()}
   >
     {"Logout"}
   </div>
 );
 
-export default withFirebase(Logout);
+export default withDatabase(Logout);

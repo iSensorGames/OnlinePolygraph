@@ -31,7 +31,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const SignUp = ({ firebase, history }) => {
+const SignUp = ({ database, history }) => {
   const classes = useStyles();
   const [sent, setSent] = React.useState(false);
   const [submitError, setSubmitError] = React.useState(null);
@@ -66,11 +66,11 @@ const SignUp = ({ firebase, history }) => {
     await sleep(300);
     setSent(true);
 
-    await firebase
+    await database
       .doCreateUserWithEmailAndPassword(email, password)
       .then(authUser => {
-        // Create a new user in the firebase realtime database
-        firebase
+        // Create a new user in the realtime database
+        database
           .user(authUser.user.uid)
           .set({ email, roles, firstName, lastName });
         history.push(ROUTES.WELCOME);
