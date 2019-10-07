@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const config = require("../config/jwt/config");
+const config = require("../config/auth/config");
 
 /**
  * @description Endpoint middleware to ensure only authenticated users have access to specific endpoints.

@@ -33,7 +33,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const SignInForm = ({ database, history, saveUser }) => {
+const SignInForm = ({ database, history }) => {
   const classes = useStyles();
   const [sent, setSent] = React.useState(false);
   const [submitError, setSubmitError] = React.useState(null);

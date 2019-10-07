@@ -1,13 +1,65 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const config = require("../config/jwt/config");
+const config = require("../config/auth/config");
 const middleware = require("../services/middleware");
+
+// Utility Function
+const emailIsValid = email => {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+};
 
 module.exports = ({ app, db }) => {
   app.get("/api/verify", middleware.checkToken, (req, res) => {
     return res.json({
       success: true,
       ...req.payload
+    });
+  });
+  app.post("/api/signup", (req, res) => {
+    const { first_name, last_name, email, password, roles } = req.body;
+
+    if (!emailIsValid(email)) {
+      return res
+        .json({
+          message: "Email format is invalid!",
+          error: "email_validation"
+        })
+        .status(200);
+    }
+
+    bcrypt.hash(password, config.bcryptSaltRound, (err, hash) => {
+      if (err) throw err;
+      db.query(
+        `INSERT INTO users (first_name, last_name, email, password, roles) VALUES ("${first_name}", "${last_name}", "${email}", "${hash}", ${roles})`,
+        (err, results) => {
+          if (err) {
+            return res.json(errorMessage).status(200);
+          }
+
+          // Create a new token with the email in the payload
+          // and which expires 300 seconds after issue
+          const token = jwt.sign(
+            { email, first_name, last_name, roles },
+            config.secret,
+            {
+              algorithm: "HS256",
+              expiresIn: config.jwtExpirySeconds
+            }
+          );
+
+          return res.json({
+            success: true,
+            message: "Authentication successful!",
+            token: token,
+            user: {
+              email,
+              first_name,
+              last_name,
+              roles
+            }
+          });
+        }
+      );
     });
   });
   app.post("/api/signin", (req, res) => {

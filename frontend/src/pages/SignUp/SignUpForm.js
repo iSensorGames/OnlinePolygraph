@@ -4,6 +4,9 @@ import React from "react";
 import * as ROUTES from "../../modules/constants/routes";
 import * as ROLES from "../../modules/constants/roles";
 
+// Constants
+import * as authConstants from "../../modules/constants/auth";
+
 // Components
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
@@ -17,6 +20,7 @@ import { email, required } from "../../modules/form/validation";
 import RFTextField from "../../modules/form/RFTextField";
 import FormButton from "../../modules/form/FormButton";
 import FormFeedback from "../../modules/form/FormFeedback";
+import { AuthUserContext } from "../../modules/components/Session";
 
 const useStyles = makeStyles(theme => ({
   form: {
@@ -53,28 +57,33 @@ const SignUp = ({ database, history }) => {
   };
 
   const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
-  const onSubmit = async values => {
+  const onSubmit = async (values, setAuthUser) => {
     const { email, password, firstName, lastName, isAdmin } = values;
-    const roles = {};
+    const roles = ROLES.USER;
 
     if (isAdmin) {
-      roles[ROLES.ADMIN] = ROLES.ADMIN;
-    } else {
-      roles[ROLES.USER] = ROLES.USER;
+      roles = ROLES.ADMIN;
     }
 
     await sleep(300);
     setSent(true);
 
+    const user = {
+      email,
+      password,
+      firstName,
+      lastName,
+      roles
+    };
+
     await database
-      .doCreateUserWithEmailAndPassword(email, password)
-      .then(authUser => {
-        // Create a new user in the realtime database
-        database
-          .user(authUser.user.uid)
-          .set({ email, roles, firstName, lastName });
+      .doCreateUserWithEmailAndPassword(user)
+      .then(async result => {
+        const { data } = result;
+
+        await setAuthUser(user);
+        localStorage.setItem(authConstants.KEY, JSON.stringify({ ...data }));
         history.push(ROUTES.WELCOME);
-        return;
       })
       .catch(error => {
         setSubmitError(error.message);
@@ -98,73 +107,81 @@ const SignUp = ({ database, history }) => {
             </Link>
           </Typography>
         </React.Fragment>
-        <Form
-          onSubmit={onSubmit}
-          subscription={{ submitting: true }}
-          validate={validate}
-        >
-          {({ handleSubmit, submitting }) => (
-            <form onSubmit={handleSubmit} className={classes.form} noValidate>
-              <Grid container spacing={2}>
-                <Grid item xs={12} sm={6}>
+        <AuthUserContext.Consumer>
+          {({ setAuthUser }) => (
+            <Form
+              onSubmit={values => onSubmit(values, setAuthUser)}
+              subscription={{ submitting: true }}
+              validate={validate}
+            >
+              {({ handleSubmit, submitting }) => (
+                <form
+                  onSubmit={handleSubmit}
+                  className={classes.form}
+                  noValidate
+                >
+                  <Grid container spacing={2}>
+                    <Grid item xs={12} sm={6}>
+                      <Field
+                        autoFocus
+                        component={RFTextField}
+                        autoComplete="fname"
+                        fullWidth
+                        label="First name"
+                        name="firstName"
+                        required
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <Field
+                        component={RFTextField}
+                        autoComplete="lname"
+                        fullWidth
+                        label="Last name"
+                        name="lastName"
+                        required
+                      />
+                    </Grid>
+                  </Grid>
                   <Field
-                    autoFocus
+                    autoComplete="email"
                     component={RFTextField}
-                    autoComplete="fname"
+                    disabled={submitting || sent}
                     fullWidth
-                    label="First name"
-                    name="firstName"
+                    label="Email"
+                    margin="normal"
+                    name="email"
                     required
                   />
-                </Grid>
-                <Grid item xs={12} sm={6}>
                   <Field
-                    component={RFTextField}
-                    autoComplete="lname"
                     fullWidth
-                    label="Last name"
-                    name="lastName"
+                    component={RFTextField}
+                    disabled={submitting || sent}
                     required
+                    name="password"
+                    autoComplete="current-password"
+                    label="Password"
+                    type="password"
+                    margin="normal"
                   />
-                </Grid>
-              </Grid>
-              <Field
-                autoComplete="email"
-                component={RFTextField}
-                disabled={submitting || sent}
-                fullWidth
-                label="Email"
-                margin="normal"
-                name="email"
-                required
-              />
-              <Field
-                fullWidth
-                component={RFTextField}
-                disabled={submitting || sent}
-                required
-                name="password"
-                autoComplete="current-password"
-                label="Password"
-                type="password"
-                margin="normal"
-              />
-              {submitError ? (
-                <FormFeedback className={classes.feedback} error>
-                  {submitError}
-                </FormFeedback>
-              ) : null}
-              <FormButton
-                className={classes.button}
-                disabled={submitting || sent}
-                color="secondary"
-                fullWidth
-              >
-                {submitting || sent ? "In progress…" : "Sign Up"}
-              </FormButton>
-            </form>
+                  {submitError ? (
+                    <FormFeedback className={classes.feedback} error>
+                      {submitError}
+                    </FormFeedback>
+                  ) : null}
+                  <FormButton
+                    className={classes.button}
+                    disabled={submitting || sent}
+                    color="secondary"
+                    fullWidth
+                  >
+                    {submitting || sent ? "In progress…" : "Sign Up"}
+                  </FormButton>
+                </form>
+              )}
+            </Form>
           )}
-        </Form>
+        </AuthUserContext.Consumer>
       </AppForm>
       <AppFooter />
     </React.Fragment>
