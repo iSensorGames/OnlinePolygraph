@@ -25,12 +25,19 @@ const withAuthentication = Component => {
         .then(result => {
           if (result) {
             const { data } = result;
-            if (data.result) {
+
+            if (!data.success) {
               this.setState({
-                authUser: {
-                  ...data
-                }
+                authUser: null
               });
+            } else {
+              if (data) {
+                this.setState({
+                  authUser: {
+                    ...data
+                  }
+                });
+              }
             }
           }
         })

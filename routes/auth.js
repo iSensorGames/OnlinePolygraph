@@ -30,7 +30,7 @@ module.exports = ({ app, db }) => {
     bcrypt.hash(password, config.bcryptSaltRound, (err, hash) => {
       if (err) throw err;
       db.query(
-        `INSERT INTO users (first_name, last_name, email, password, roles) VALUES ("${first_name}", "${last_name}", "${email}", "${hash}", ${roles})`,
+        `INSERT INTO users (first_name, last_name, email, password, roles, created_at) VALUES ("${first_name}", "${last_name}", "${email}", "${hash}", ${roles}, NOW())`,
         (err, results) => {
           if (err) {
             return res.json(errorMessage).status(200);

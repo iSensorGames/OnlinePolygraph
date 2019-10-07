@@ -8,19 +8,35 @@ import * as ROUTES from "../../constants/routes";
 
 const withAuthorization = condition => Component => {
   class WithAuthorization extends React.Component {
-    componentDidMount() {
-      this.props.database
-        .onAuthUserListener()
-        .then(result => {
-          const { data } = result;
+    constructor(props) {
+      super(props);
 
-          if (!condition(data)) {
-            this.props.history.push(ROUTES.SIGN_IN);
-          }
-        })
-        .catch(err => {
-          this.props.history.push(ROUTES.SIGN_IN);
+      this.state = {
+        location: ""
+      };
+    }
+    componentDidMount() {
+      const { location } = this.state;
+
+      // Only verify authorization on the initial page load
+      if (location !== this.props.location.pathname) {
+        this.setState({
+          location: this.props.location.pathname
         });
+
+        this.props.database
+          .onAuthUserListener()
+          .then(result => {
+            const { data } = result;
+
+            if (!condition(data)) {
+              this.props.history.push(ROUTES.SIGN_IN);
+            }
+          })
+          .catch(err => {
+            this.props.history.push(ROUTES.SIGN_IN);
+          });
+      }
     }
 
     render() {

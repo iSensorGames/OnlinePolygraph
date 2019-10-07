@@ -34,7 +34,6 @@ const Welcome = () => {
           consequat eu dictum id, convallis at neque.
         </div>
       </div>
-      <AppFooter />
     </React.Fragment>
   );
 };
