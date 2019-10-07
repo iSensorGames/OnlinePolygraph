@@ -16,17 +16,20 @@ const checkToken = (req, res, next) => {
       token = token.slice(7, token.length);
     }
 
-    jwt.verify(token, config.secret, (err, decoded) => {
-      if (err) {
+    let payload = {};
+    try {
+      payload = jwt.verify(token, config.secret);
+      req.payload = payload;
+      next();
+    } catch (e) {
+      if (e instanceof jwt.JsonWebTokenError) {
         return res.json({
           success: false,
           message: "Token is not valid"
         });
-      } else {
-        req.decoded = decoded;
-        next();
       }
-    });
+      return res.status(400).end();
+    }
   } else {
     return res.json({
       success: false,

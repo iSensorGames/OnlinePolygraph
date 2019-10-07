@@ -53,7 +53,7 @@ const settings = {
 
 const AppAppBar = ({ classes }) => (
   <AuthUserContext.Consumer>
-    {authUser =>
+    {({ authUser }) =>
       authUser ? (
         <AppAppBarAuth classes={classes} authUser={authUser} />
       ) : (
@@ -87,7 +87,7 @@ const AppAppBarAuth = ({ classes, authUser }) => {
           >
             {settings.game}
           </Link>
-          {!!authUser.roles[ROLES.ADMIN] && (
+          {!!authUser.roles && !!authUser.roles === ROLES.ADMIN && (
             <Link
               variant="h6"
               underline="none"

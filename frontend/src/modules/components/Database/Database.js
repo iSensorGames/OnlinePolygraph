@@ -9,7 +9,8 @@ class Database {
   doSignOut = () => auth.signOut();
   doPasswordReset = email => auth.passwordReset(email);
   doPasswordUpdate = password => auth.passwordUpdate(password);
-  onAuthUserListener = () => () => {};
+  onAuthUserListener = async JWT_VARIABLE =>
+    auth.onAuthUserListener(JWT_VARIABLE);
   currentUser = () => () => {};
 }
 

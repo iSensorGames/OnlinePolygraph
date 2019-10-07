@@ -9,26 +9,26 @@ import * as ROUTES from "../../constants/routes";
 const withAuthorization = condition => Component => {
   class WithAuthorization extends React.Component {
     componentDidMount() {
-      this.listener = this.props.database.onAuthUserListener(
-        authUser => {
-          if (!condition(authUser)) {
+      this.props.database
+        .onAuthUserListener()
+        .then(result => {
+          const { data } = result;
+
+          if (!condition(data)) {
             this.props.history.push(ROUTES.SIGN_IN);
           }
-        },
-        () => this.props.history.push(ROUTES.SIGN_IN)
-      );
-    }
-
-    componentWillUnmount() {
-      this.listener();
+        })
+        .catch(err => {
+          this.props.history.push(ROUTES.SIGN_IN);
+        });
     }
 
     render() {
       return (
         <AuthUserContext.Consumer>
-          {authUser =>
-            condition(authUser) ? <Component {...this.props} /> : null
-          }
+          {({ authUser }) => {
+            return condition(authUser) ? <Component {...this.props} /> : null;
+          }}
         </AuthUserContext.Consumer>
       );
     }

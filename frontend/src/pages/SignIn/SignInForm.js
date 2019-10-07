@@ -3,6 +3,9 @@ import withRoot from "../../modules/withRoot";
 import React from "react";
 import * as ROUTES from "../../modules/constants/routes";
 
+// Constants
+import * as authConstants from "../../modules/constants/auth";
+
 // Components
 import { Field, Form } from "react-final-form";
 import { makeStyles } from "@material-ui/core/styles";
@@ -15,6 +18,7 @@ import { email, required } from "../../modules/form/validation";
 import RFTextField from "../../modules/form/RFTextField";
 import FormButton from "../../modules/form/FormButton";
 import FormFeedback from "../../modules/form/FormFeedback";
+import { AuthUserContext } from "../../modules/components/Session";
 
 const useStyles = makeStyles(theme => ({
   form: {
@@ -29,7 +33,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const SignInForm = ({ database, history }) => {
+const SignInForm = ({ database, history, saveUser }) => {
   const classes = useStyles();
   const [sent, setSent] = React.useState(false);
   const [submitError, setSubmitError] = React.useState(null);
@@ -48,19 +52,19 @@ const SignInForm = ({ database, history }) => {
   };
 
   const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
-  const onSubmit = async values => {
+  const onSubmit = async (values, setAuthUser) => {
     const { email, password } = values;
     await sleep(300);
     setSent(true);
 
     await database
       .doSignInWithEmailAndPassword(email, password)
-      .then(({ data }) => {
-        localStorage.setItem("token", data.token);
+      .then(async ({ data }) => {
+        await setAuthUser(data.user);
+        localStorage.setItem(authConstants.KEY, JSON.stringify({ ...data }));
         history.push(ROUTES.GAME);
       })
       .catch(error => {
-        console.log("error");
         setSubmitError(error.message);
         setSent(false);
       });
@@ -83,56 +87,62 @@ const SignInForm = ({ database, history }) => {
             </Link>
           </Typography>
         </React.Fragment>
-        <Form
-          onSubmit={onSubmit}
-          subscription={{ submitting: true }}
-          validate={validate}
-        >
-          {({ handleSubmit, submitting }) => {
-            return (
-              <form onSubmit={handleSubmit} className={classes.form} noValidate>
-                <Field
-                  autoComplete="email"
-                  autoFocus={!sent}
-                  component={RFTextField}
-                  disabled={submitting || sent}
-                  fullWidth
-                  label="Email"
-                  margin="normal"
-                  name="email"
-                  required
-                  size="large"
-                />
-                <Field
-                  fullWidth
-                  size="large"
-                  component={RFTextField}
-                  disabled={submitting || sent}
-                  required
-                  name="password"
-                  autoComplete="current-password"
-                  label="Password"
-                  type="password"
-                  margin="normal"
-                />
-                {submitError ? (
-                  <FormFeedback className={classes.feedback} error>
-                    {submitError}
-                  </FormFeedback>
-                ) : null}
-                <FormButton
-                  className={classes.button}
-                  disabled={submitting || sent}
-                  size="large"
-                  color="secondary"
-                  fullWidth
+        <AuthUserContext.Consumer>
+          {({ setAuthUser }) => (
+            <Form
+              onSubmit={values => onSubmit(values, setAuthUser)}
+              subscription={{ submitting: true }}
+              validate={validate}
+            >
+              {({ handleSubmit, submitting }) => (
+                <form
+                  onSubmit={handleSubmit}
+                  className={classes.form}
+                  noValidate
                 >
-                  {submitting || sent ? "In progress…" : "Sign In"}
-                </FormButton>
-              </form>
-            );
-          }}
-        </Form>
+                  <Field
+                    autoComplete="email"
+                    autoFocus={!sent}
+                    component={RFTextField}
+                    disabled={submitting || sent}
+                    fullWidth
+                    label="Email"
+                    margin="normal"
+                    name="email"
+                    required
+                    size="large"
+                  />
+                  <Field
+                    fullWidth
+                    size="large"
+                    component={RFTextField}
+                    disabled={submitting || sent}
+                    required
+                    name="password"
+                    autoComplete="current-password"
+                    label="Password"
+                    type="password"
+                    margin="normal"
+                  />
+                  {submitError ? (
+                    <FormFeedback className={classes.feedback} error>
+                      {submitError}
+                    </FormFeedback>
+                  ) : null}
+                  <FormButton
+                    className={classes.button}
+                    disabled={submitting || sent}
+                    size="large"
+                    color="secondary"
+                    fullWidth
+                  >
+                    {submitting || sent ? "In progress…" : "Sign In"}
+                  </FormButton>
+                </form>
+              )}
+            </Form>
+          )}
+        </AuthUserContext.Consumer>
         <Typography align="center">
           <Link underline="always" href={ROUTES.FORGOT_PASSWORD}>
             Forgot password?

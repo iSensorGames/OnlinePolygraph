@@ -1831,7 +1831,7 @@ const Game = ({ classes }) => {
   );
 };
 
-const condition = authUser => authUser && !!authUser.roles[ROLES.USER];
+const condition = authUser => !!authUser && authUser.roles === ROLES.USER;
 
 export default compose(
   withAuthorization(condition),
