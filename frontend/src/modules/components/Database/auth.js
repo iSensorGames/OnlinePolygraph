@@ -23,7 +23,7 @@ export const onAuthUserListener = async () => {
 };
 
 export const signOut = () => {
-  return () => {};
+  localStorage.removeItem(authConstants.KEY);
 };
 
 export const passwordReset = () => {
