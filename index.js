@@ -5,7 +5,6 @@ const io = require("socket.io")(server);
 const path = require("path");
 const bodyParser = require("body-parser");
 const morgan = require("morgan");
-const db = require("./services/database");
 
 /**************************
  ** ENVIRONENT VARIABLES **
@@ -32,6 +31,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 /**************************************
  * SOCKET & DATABASE CONNECTION SETUP *
  **************************************/
+const db = require("./services/database");
 db.connect(err => {
   if (err) {
     console.log("Err: ", err);

@@ -12,4 +12,5 @@ const connection = mysql.createConnection({
   user: KEYS.MYSQL_USER,
   password: KEYS.MYSQL_PASSWORD
 });
+
 module.exports = connection;
