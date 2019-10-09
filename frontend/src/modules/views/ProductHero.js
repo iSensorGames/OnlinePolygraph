@@ -4,13 +4,12 @@ import { withStyles } from "@material-ui/core/styles";
 import Button from "../components/Button";
 import Typography from "../components/Typography";
 import ProductHeroLayout from "./ProductHeroLayout";
+import backgroundImage from "../../static/img/112605-purple-and-green-blurred-background-vector-min.jpg";
 
-const backgroundImage =
-  "https://images.unsplash.com/photo-1534854638093-bada1813ca19?auto=format&fit=crop&w=1400&q=80";
+// "https://images.unsplash.com/photo-1534854638093-bada1813ca19?auto=format&fit=crop&w=1400&q=80";
 
 const styles = theme => ({
   background: {
-    backgroundImage: `url(${backgroundImage})`,
     backgroundColor: "#7fc7d9", // Average color of the background image.
     backgroundPosition: "center"
   },

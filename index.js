@@ -8,6 +8,11 @@ const morgan = require("morgan");
 const db = require("./services/database");
 
 /**************************
+ ** ENVIRONENT VARIABLES **
+ **************************/
+if (process.env.NODE_ENV === "production") require("dotenv").config();
+
+/**************************
  * SETUP GLOBAL VARIABLES *
  **************************/
 const environment =
