@@ -1,9 +1,15 @@
 import React from "react";
 import PropTypes from "prop-types";
+
+// Assets
+import logo from "../../static/img/logo.png";
+
+// Components
+import clsx from "clsx";
 import { withStyles } from "@material-ui/core/styles";
 import Button from "../components/Button";
 import Typography from "../components/Typography";
-import ProductHeroLayout from "./ProductHeroLayout";
+import WelcomeLayout from "./WelcomeLayout";
 
 const styles = theme => ({
   background: {
@@ -11,7 +17,14 @@ const styles = theme => ({
     backgroundPosition: "center"
   },
   button: {
+    marginBottom: 20,
     minWidth: 200
+  },
+  logo: {
+    height: 200,
+    [theme.breakpoints.up("sm")]: {
+      height: "inherit"
+    }
   },
   h5: {
     marginBottom: theme.spacing(4),
@@ -20,26 +33,29 @@ const styles = theme => ({
       marginTop: theme.spacing(10)
     }
   },
+  slogan: {
+    fontWeight: "bold",
+    fontSize: 25
+  },
   more: {
     marginTop: theme.spacing(2)
   }
 });
 
-function ProductHero(props) {
+function WelcomeCover(props) {
   const { classes } = props;
 
   return (
-    <ProductHeroLayout backgroundClassName={classes.background}>
-      {/* Increase the network loading priority of the background image. */}
-      <img style={{ display: "none" }} alt="increase priority" />
-      <Typography color="inherit" align="center" variant="h2" marked="center">
-        Upgrade your Senses
-      </Typography>
+    <WelcomeLayout backgroundClassName={classes.background}>
+      {/* <Typography color="inherit" align="center" variant="h2" marked="center">
+        Welcome to Real or Spiel
+      </Typography> */}
+      <img src={logo} className={classes.logo} alt="Real or Spiel?" />
       <Typography
         color="inherit"
         align="center"
         variant="h5"
-        className={classes.h5}
+        className={clsx(classes.h5, classes.slogan)}
       >
         Enhancing your detection and convincing skills. Gain extra points. Be
         the winner.
@@ -50,19 +66,29 @@ function ProductHero(props) {
         size="large"
         className={classes.button}
         component="a"
-        href="/game/"
+        href="/rules"
+      >
+        Rules
+      </Button>
+      <Button
+        color="primary"
+        variant="contained"
+        size="large"
+        className={classes.button}
+        component="a"
+        href="/game"
       >
         Play Game
       </Button>
       <Typography variant="body2" color="inherit" className={classes.more}>
         Discover the experience
       </Typography>
-    </ProductHeroLayout>
+    </WelcomeLayout>
   );
 }
 
-ProductHero.propTypes = {
+WelcomeCover.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(ProductHero);
+export default withStyles(styles)(WelcomeCover);

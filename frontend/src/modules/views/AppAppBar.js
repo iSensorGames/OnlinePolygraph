@@ -8,22 +8,42 @@ import { withStyles } from "@material-ui/core/styles";
 import Link from "@material-ui/core/Link";
 import AppBar from "../components/AppBar";
 import Logout from "../components/Logout";
+import Typography from "../components/Typography";
 import Toolbar, { styles as toolbarStyles } from "../components/Toolbar";
 
 // Constants
 import * as ROUTES from "../constants/routes";
 import * as ROLES from "../constants/roles";
 
+// Assets
+import logo from "../../static/img/logo.png";
+
 const styles = theme => ({
+  logoContainer: {
+    alignItems: "center",
+    display: "flex",
+    flexDirection: "row",
+    height: 20
+  },
+  logo: {
+    height: 60
+  },
   title: {
-    fontSize: 24
+    color: "var(--white)",
+    fontSize: 24,
+    marginLeft: 10,
+    [theme.breakpoints.down("sm")]: {
+      display: "none"
+    }
   },
   placeholder: toolbarStyles(theme).root,
   toolbar: {
     justifyContent: "space-between"
   },
   left: {
-    flex: 1
+    [theme.breakpoints.up("sm")]: {
+      flex: 1
+    }
   },
   leftLinkActive: {
     color: theme.palette.common.white
@@ -44,7 +64,7 @@ const styles = theme => ({
 });
 
 const settings = {
-  title: "RealSpiel",
+  title: "Real or Spiel?",
   game: "Play Game",
   admin: "Admin",
   signin: "Sign In",
@@ -69,13 +89,14 @@ const AppAppBarAuth = ({ classes, authUser }) => {
       <Toolbar className={classes.toolbar}>
         <div className={classes.left} />
         <Link
-          variant="h6"
           underline="none"
-          color="inherit"
-          className={classes.title}
           href={ROUTES.HOME}
+          className={classes.logoContainer}
         >
-          {settings.title}
+          <img src={logo} alt="Real or Spiel logo" className={classes.logo} />
+          <Typography className={classes.title} variant="h6">
+            {settings.title}
+          </Typography>
         </Link>
         <div className={classes.right}>
           <Link

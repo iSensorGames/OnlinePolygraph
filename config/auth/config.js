@@ -1,5 +1,5 @@
 module.exports = {
   secret: "IltQOhG2Dp",
-  jwtExpirySeconds: 300,
+  jwtExpirySeconds: 3600,
   bcryptSaltRound: 10
 };
