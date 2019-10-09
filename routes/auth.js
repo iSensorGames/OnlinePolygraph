@@ -32,6 +32,11 @@ module.exports = ({ app, db }) => {
       db.query(
         `INSERT INTO users (first_name, last_name, email, password, roles, created_at) VALUES ("${first_name}", "${last_name}", "${email}", "${hash}", ${roles}, NOW())`,
         (err, results) => {
+          const errorMessage = {
+            message: err.message,
+            error: "email_password_validation"
+          };
+
           if (err) {
             return res.json(errorMessage).status(200);
           }
