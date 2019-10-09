@@ -17,8 +17,8 @@
   },
   "devDependencies": {},
   "scripts": {
-    "start": "nodemon index.js",
-    "prod": "NODE_ENV=production && node index.js"
+    "dev": "npm run build --prefix frontend && nodemon index.js",
+    "start": "npm run build --prefix frontend && node index.js"
   },
   "repository": {
     "type": "git",
