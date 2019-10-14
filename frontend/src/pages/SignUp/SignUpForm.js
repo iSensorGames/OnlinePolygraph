@@ -59,7 +59,7 @@ const SignUp = ({ database, history }) => {
   const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
   const onSubmit = async (values, setAuthUser) => {
     const { email, password, firstName, lastName, isAdmin } = values;
-    const roles = ROLES.USER;
+    let roles = ROLES.USER;
 
     if (isAdmin) {
       roles = ROLES.ADMIN;

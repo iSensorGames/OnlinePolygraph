@@ -104,7 +104,7 @@ const AppAppBarAuth = ({ classes, authUser }) => {
             variant="h6"
             underline="none"
             className={classes.rightLink}
-            href={ROUTES.GAME}
+            href={ROUTES.WELCOME}
           >
             {settings.game}
           </Link>

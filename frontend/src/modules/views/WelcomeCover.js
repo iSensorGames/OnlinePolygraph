@@ -20,6 +20,11 @@ const styles = theme => ({
     marginBottom: 20,
     minWidth: 200
   },
+  actionButton: {
+    backgroundColor: "#FFDE07",
+    marginBottom: 20,
+    minWidth: 200
+  },
   logo: {
     height: 200,
     [theme.breakpoints.up("sm")]: {
@@ -47,9 +52,6 @@ function WelcomeCover(props) {
 
   return (
     <WelcomeLayout backgroundClassName={classes.background}>
-      {/* <Typography color="inherit" align="center" variant="h2" marked="center">
-        Welcome to Real or Spiel
-      </Typography> */}
       <img src={logo} className={classes.logo} alt="Real or Spiel?" />
       <Typography
         color="inherit"
@@ -57,8 +59,8 @@ function WelcomeCover(props) {
         variant="h5"
         className={clsx(classes.h5, classes.slogan)}
       >
-        Enhancing your detection and convincing skills. Gain extra points. Be
-        the winner.
+        A multiplayer game for devious people. Enhance your detection and
+        persuading skills. Gain extra points. Be the winner.
       </Typography>
       <Button
         color="secondary"
@@ -74,11 +76,11 @@ function WelcomeCover(props) {
         color="primary"
         variant="contained"
         size="large"
-        className={classes.button}
+        className={classes.actionButton}
         component="a"
         href="/game"
       >
-        Play Game
+        Start
       </Button>
       <Typography variant="body2" color="inherit" className={classes.more}>
         Discover the experience
