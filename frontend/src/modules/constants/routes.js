@@ -5,6 +5,7 @@ export const FORGOT_PASSWORD = "/forgot-password";
 export const WELCOME = "/welcome";
 export const RULES = "/rules";
 export const GAME = "/game";
+export const GAME_SETUP = "/game-setup";
 export const TERMS = "/terms";
 export const PRIVACY = "/privacy";
 export const ADMIN = "/admin";

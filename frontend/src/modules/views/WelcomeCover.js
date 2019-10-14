@@ -78,7 +78,7 @@ function WelcomeCover(props) {
         size="large"
         className={classes.actionButton}
         component="a"
-        href="/game"
+        href="/game-setup"
       >
         Start
       </Button>
