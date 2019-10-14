@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { withStyles, Typography } from "@material-ui/core";
 
 // Layout
@@ -82,7 +82,7 @@ const User = ({ classes, userName, isOnline }) => (
   </ListItem>
 );
 
-const OpponentSelectionCover = ({ classes }) => {
+const OpponentSelectionCover = ({ database }) => {
   return (
     <RulesLayout backgroundClassName={classes.background}>
       <Typography align="center" color="inherit" variant="h5">

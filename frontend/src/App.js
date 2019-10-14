@@ -21,7 +21,7 @@ import ForgotPassword from "./pages/ForgotPassword";
 import Welcome from "./pages/Welcome";
 import Rules from "./pages/Rules";
 import Game from "./pages/Game";
-import GameSetup from "./pages/GameSetup";
+import GameSetup from "./pages/Game/Setup";
 import Terms from "./pages/Terms";
 import Privacy from "./pages/Privacy";
 import Admin from "./pages/Admin";

@@ -1,21 +1,21 @@
-import withRoot from "../../modules/withRoot";
+import withRoot from "../../../modules/withRoot";
 // --- Post bootstrap -----
 import React from "react";
 
 // Components
 import { compose } from "recompose";
-import { withAuthorization } from "../../modules/components/Session";
-import AppAppBar from "../../modules/views/AppAppBar";
-import OpponentSelectionCover from "../../modules/views/OpponentSelectionCover";
+import { withAuthorization } from "../../../modules/components/Session";
+import AppAppBar from "../../../modules/views/AppAppBar";
+import OpponentSelection from "../Setup/OpponentSelection";
 
 // Constants
-import * as ROLES from "../../modules/constants/roles";
+import * as ROLES from "../../../modules/constants/roles";
 
 const GameSetup = () => {
   return (
     <React.Fragment>
       <AppAppBar />
-      <OpponentSelectionCover />
+      <OpponentSelection />
     </React.Fragment>
   );
 };

@@ -1,6 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
 
+// Contants
+import * as ROUTES from "../constants/routes";
+
 // Assets
 import logo from "../../static/img/logo.png";
 
@@ -78,7 +81,7 @@ function WelcomeCover(props) {
         size="large"
         className={classes.actionButton}
         component="a"
-        href="/game-setup"
+        href={ROUTES.GAME_SETUP}
       >
         Start
       </Button>
