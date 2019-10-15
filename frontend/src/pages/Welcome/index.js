@@ -24,8 +24,6 @@ import * as ROLES from "../../modules/constants/roles";
 const Welcome = ({ isSubscribed, subscribeUser }) => {
   let unsubscribe = () => {};
 
-  console.log("isSubscribed", isSubscribed);
-
   useEffect(
     () => {
       if (isSubscribed) {

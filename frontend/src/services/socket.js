@@ -3,11 +3,9 @@ import io from "socket.io-client";
 import { RESPONSE_DATA, RESPONSE_USERS_COUNT } from "../actions/user";
 
 export const subscribeUser = listener => {
-  const socket = io.connect("ws://localhost:5000");
+  const socket = io.connect("ws://isensoranalytics.com/realspiel");
 
   const connectListener = () => {
-    console.log("Connected to WS");
-
     socket.emit("subscribe", { message: "From Frontend" });
   };
 

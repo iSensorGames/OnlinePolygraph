@@ -33,10 +33,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
  ********************/
 const httpsOptions = {
   key: fs.readFileSync(
-    isProduction ? "/home/isensorlab/cert.key" : "./security/cert.key"
+    isProduction ? "./security/ssl.key" : "./security/cert.key"
   ),
   cert: fs.readFileSync(
-    isProduction ? "/home/isensorlab/cert.cert" : "./security/cert.pem"
+    isProduction ? "./security/ssl.cert" : "./security/cert.pem"
   )
 };
 
