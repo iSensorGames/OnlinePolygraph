@@ -47,7 +47,9 @@ const server = https.createServer(httpsOptions, app).listen(PORT, () => {
 /**************************************
  * SOCKET & DATABASE CONNECTION SETUP *
  **************************************/
-const io = socket(server);
+const io = socket(server, {
+  path: "/users/socket.io"
+});
 
 const db = require("./services/database");
 db.connect(err => {
