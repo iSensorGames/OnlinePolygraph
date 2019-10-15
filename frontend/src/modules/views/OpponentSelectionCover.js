@@ -82,7 +82,9 @@ const User = ({ classes, userName, isOnline }) => (
   </ListItem>
 );
 
-const OpponentSelectionCover = ({ classes, database }) => {
+const OpponentSelectionCover = ({ classes, database, connectedUsersCount }) => {
+  console.log("connectedUsersCount", connectedUsersCount);
+
   return (
     <RulesLayout backgroundClassName={classes.background}>
       <Typography align="center" color="inherit" variant="h5">

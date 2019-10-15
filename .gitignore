@@ -9,5 +9,8 @@ dev.js
 public.key
 private.key
 
+# Cert
+security
+
 # Environment Variable
 .env

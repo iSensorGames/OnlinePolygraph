@@ -22,7 +22,7 @@ import WelcomeCover from "../../modules/views/WelcomeCover";
 import * as ROLES from "../../modules/constants/roles";
 
 const Welcome = ({ isSubscribed, subscribeUser }) => {
-  const unsubscribe = () => {};
+  let unsubscribe = () => {};
 
   console.log("isSubscribed", isSubscribed);
 
@@ -49,9 +49,7 @@ const condition = authUser => authUser && authUser.roles === ROLES.USER;
 
 const mapStateToProps = state => {
   return {
-    isSubscribed: userSelectors.getIsSubscribed(state),
-    data: userSelectors.getData(state),
-    conectedUsersCount: userSelectors.getUserConnectedCount(state)
+    isSubscribed: userSelectors.getIsSubscribed(state)
   };
 };
 

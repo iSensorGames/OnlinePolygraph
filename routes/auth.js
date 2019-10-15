@@ -33,7 +33,7 @@ module.exports = ({ app, db }) => {
         `INSERT INTO users (first_name, last_name, email, password, roles, created_at) VALUES ("${first_name}", "${last_name}", "${email}", "${hash}", ${roles}, NOW())`,
         (err, results) => {
           const errorMessage = {
-            message: err.message,
+            message: err,
             error: "email_password_validation"
           };
 

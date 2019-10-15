@@ -43,6 +43,7 @@ const reducer = (state = INITIAL_STATE, action) => {
         data: action.payload
       };
     case USER_CONNECTED_COUNT:
+      console.log("USER_CONNECTED_COUNT", action.payload);
       return {
         ...state,
         connectedUsersCount: action.payload
@@ -68,7 +69,7 @@ export const getIsSubscribed = state => {
   return select(state).isSubscribed;
 };
 
-export const getUserConnectedCount = state => {
+export const getConnectedUsersCount = state => {
   return select(state).connectedUsersCount;
 };
 

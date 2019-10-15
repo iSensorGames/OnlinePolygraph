@@ -1,9 +1,11 @@
 const express = require("express");
+const https = require("https");
 const app = express();
 const socket = require("socket.io");
 const path = require("path");
 const bodyParser = require("body-parser");
 const morgan = require("morgan");
+const fs = require("fs");
 
 /**************************
  ** ENVIRONENT VARIABLES **
@@ -13,24 +15,32 @@ if (process.env.NODE_ENV === "production") require("dotenv").config();
 /**************************
  * SETUP GLOBAL VARIABLES *
  **************************/
-const environment =
-  process.env.NODE_ENV === "production" ? "production" : "development";
+const isProduction = process.env.NODE_ENV === "production";
 const PORT = process.env.PORT || 5000;
-const socketCount = 0;
+let socketCount = 0;
 global.appRoot = path.resolve(__dirname);
 
 /*****************************
  * INITIAL EXPRESS APP SETUP *
  *****************************/
 app.use(express.static(path.join(__dirname, "frontend/build")));
-app.use(morgan(environment === "development" ? "dev" : ""));
+app.use(morgan(isProduction ? "" : "dev"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 /********************
  *** SERVER SETUP ***
  ********************/
-const server = app.listen(PORT, () => {
+const httpsOptions = {
+  key: fs.readFileSync(
+    isProduction ? "/home/isensorlab/cert.key" : "./security/cert.key"
+  ),
+  cert: fs.readFileSync(
+    isProduction ? "/home/isensorlab/cert.cert" : "./security/cert.pem"
+  )
+};
+
+const server = https.createServer(httpsOptions, app).listen(PORT, () => {
   console.log("Server listening to Port: " + PORT);
 });
 
@@ -54,9 +64,10 @@ io.on("connection", socket => {
   console.log("Client connected...");
 
   socketCount++; // Socket has connected, increase socket count
-  io.socket.emit("UsersConnected", socketCount);
 
   socket.on("subscribe", data => {
+    console.log("subscribe", data);
+    socket.emit("UsersConnected", socketCount);
     socket.emit("Data", {
       data,
       success: true
@@ -65,8 +76,6 @@ io.on("connection", socket => {
 
   socket.on("disconnect", () => {
     socketCount--;
-    io.sockets.emit("UsersConnected", socketCount);
+    socket.emit("UsersConnected", socketCount);
   });
-
-  socket.on("initial_messages", ["aaa", "bbb", "ccc", "ddd"]);
 });
