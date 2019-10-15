@@ -37,7 +37,7 @@ global.appRoot = path.resolve(__dirname);
 app.use(
   express.static(
     isProduction
-      ? path.join(__dirname, "realspiel/frontend/build")
+      ? path.join(__dirname, "frontend/build")
       : path.join(__dirname, "frontend/build")
   )
 );
