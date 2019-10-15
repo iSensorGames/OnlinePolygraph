@@ -6,7 +6,6 @@
 module.exports = reqParams => {
   return {
     auth: require("./auth")(reqParams),
-    users: require("./users")(reqParams),
-    main: require("./main")(reqParams)
+    users: require("./users")(reqParams)
   };
 };
