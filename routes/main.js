@@ -2,7 +2,9 @@ const path = require("path");
 
 module.exports = ({ app, db }) => {
   app.get("/", (req, res) => {
-    console.log("appRoot", appRoot);
-    res.sendFile(path.join(appRoot + "/frontend/build/index.html"));
+    res.status(200).json({
+      message: "Index.html",
+      success: true
+    });
   });
 };

@@ -7,22 +7,6 @@ const bodyParser = require("body-parser");
 const morgan = require("morgan");
 const fs = require("fs");
 
-/********************
- *** ALLOW ORIGINS **
- ********************/
-app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "X-Requested-With");
-  res.header("Access-Control-Allow-Headers", "Content-Type");
-  res.header("Access-Control-Allow-Methods", "PUT, GET, POST, DELETE, OPTIONS");
-  next();
-});
-
-/**************************
- ** ENVIRONENT VARIABLES **
- **************************/
-if (process.env.NODE_ENV === "production") require("dotenv").config();
-
 /**************************
  * SETUP GLOBAL VARIABLES *
  **************************/
@@ -34,13 +18,18 @@ global.appRoot = path.resolve(__dirname);
 /*****************************
  * INITIAL EXPRESS APP SETUP *
  *****************************/
-app.use(
-  express.static(
-    isProduction
-      ? path.join(__dirname, "frontend/build")
-      : path.join(__dirname, "frontend/build")
-  )
-);
+if (isProduction) {
+  app.use(express.static(path.join(__dirname, "frontend/build")));
+}
+
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "X-Requested-With");
+  res.header("Access-Control-Allow-Headers", "Content-Type");
+  res.header("Access-Control-Allow-Methods", "PUT, GET, POST, DELETE, OPTIONS");
+  next();
+});
+
 app.use(morgan(isProduction ? "" : "dev"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));

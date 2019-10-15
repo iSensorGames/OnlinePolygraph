@@ -16,10 +16,13 @@
     "nvm": "^0.0.4",
     "socket.io": "^2.3.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "concurrently": "^5.0.0"
+  },
   "scripts": {
-    "dev": "npm run build --prefix frontend && nodemon index.js",
-    "start": "npm run build --prefix frontend && node index.js"
+    "client": "cd frontend && npm start",
+    "server": "nodemon server.js",
+    "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\""
   },
   "repository": {
     "type": "git",

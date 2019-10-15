@@ -2,7 +2,6 @@ import React from "react";
 import PropTypes from "prop-types";
 
 // Components
-import clsx from "clsx";
 import { withStyles } from "@material-ui/core/styles";
 import Button from "../components/Button";
 import Typography from "../components/Typography";
@@ -51,6 +50,7 @@ const styles = theme => ({
 
 const rolesData = [
   {
+    id: 1,
     outerRole: "Speaker",
     innerRole: "Sinner",
     title: "Liar",
@@ -60,6 +60,7 @@ const rolesData = [
     backgroundColor: "#e62958"
   },
   {
+    id: 2,
     outerRole: "Speaker",
     innerRole: "Saint",
     title: "Truth-teller",
@@ -68,6 +69,7 @@ const rolesData = [
     backgroundColor: "#FFDE07"
   },
   {
+    id: 3,
     outerRole: "Detector",
     innerRole: "",
     title: "Liar",
@@ -134,6 +136,7 @@ function RulesCover(props) {
 
       {rolesData.map(
         ({
+          id,
           outerRole,
           innerRole,
           title,
@@ -142,6 +145,7 @@ function RulesCover(props) {
           backgroundColor
         }) => (
           <Roles
+            key={id}
             classes={classes}
             outerRole={outerRole}
             innerRole={innerRole}

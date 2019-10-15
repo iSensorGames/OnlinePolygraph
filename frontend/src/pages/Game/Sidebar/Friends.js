@@ -3,8 +3,15 @@ import Icon from "react-eva-icons";
 
 // Mock data
 import friends from "./data/friends";
+import { withStyles } from "@material-ui/core/styles";
 
-const Friends = ({ isActive }) => (
+const styles = () => ({
+  link: {
+    cursor: "pointer"
+  }
+});
+
+const Friends = ({ isActive, classes }) => (
   <div
     className={`tab-pane fade${isActive ? " active show" : ""}`}
     role="tabpanel"
@@ -24,20 +31,18 @@ const Friends = ({ isActive }) => (
         {friends
           ? friends.map((friend, idx) => {
               return (
-                <li key={idx}>
-                  <a href="#">
-                    <div className="status online">
-                      <img src={friend.img} alt="avatar" />
-                      <Icon name="radio-button-on" size="medium" />
-                    </div>
-                    <div className="content">
-                      <h5>{friend.name}</h5>
-                      <span>{friend.location}</span>
-                    </div>
-                    <div className="icon">
-                      <Icon name="person" size="medium" />
-                    </div>
-                  </a>
+                <li key={idx} className={classes.link}>
+                  <div className="status online">
+                    <img src={friend.img} alt="avatar" />
+                    <Icon name="radio-button-on" size="medium" />
+                  </div>
+                  <div className="content">
+                    <h5>{friend.name}</h5>
+                    <span>{friend.location}</span>
+                  </div>
+                  <div className="icon">
+                    <Icon name="person" size="medium" />
+                  </div>
                 </li>
               );
             })
@@ -47,4 +52,4 @@ const Friends = ({ isActive }) => (
   </div>
 );
 
-export default Friends;
+export default withStyles(styles)(Friends);

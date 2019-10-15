@@ -1,6 +1,6 @@
 import withRoot from "../../modules/withRoot";
 // --- Post bootstrap -----
-import React, { useEffect } from "react";
+import React, { Component } from "react";
 import { connect } from "react-redux";
 
 // Reducers
@@ -21,27 +21,28 @@ import WelcomeCover from "../../modules/views/WelcomeCover";
 // Constants
 import * as ROLES from "../../modules/constants/roles";
 
-const Welcome = ({ isSubscribed, subscribeUser }) => {
-  let unsubscribe = () => {};
+class Welcome extends Component {
+  componentDidMount() {
+    if (this.props.isSubscribed) {
+      return;
+    }
 
-  useEffect(
-    () => {
-      if (isSubscribed) {
-        return;
-      }
+    this.unsubscribe = this.props.subscribeUser();
+  }
 
-      unsubscribe = subscribeUser();
-    },
-    () => unsubscribe()
-  );
+  componentWillUnmount() {
+    this.unsubscribe();
+  }
 
-  return (
-    <React.Fragment>
-      <AppAppBar />
-      <WelcomeCover />
-    </React.Fragment>
-  );
-};
+  render() {
+    return (
+      <React.Fragment>
+        <AppAppBar />
+        <WelcomeCover />
+      </React.Fragment>
+    );
+  }
+}
 
 const condition = authUser => authUser && authUser.roles === ROLES.USER;
 

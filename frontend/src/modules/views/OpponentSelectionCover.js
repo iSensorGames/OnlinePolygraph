@@ -1,10 +1,11 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { withStyles, Typography } from "@material-ui/core";
 
 // Layout
 import RulesLayout from "./RulesLayout";
 
 // Components
+import clsx from "clsx";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
@@ -69,22 +70,15 @@ const User = ({ classes, userName, isOnline }) => (
         <ImageIcon />
       </Avatar>
     </ListItemAvatar>
+    <ListItemText className={classes.listItemMiddle} primary={userName} />
     <ListItemText
-      className={classes.listItemMiddle}
-      primary={userName}
-      primaryTypographyProps={{
-        color: "#e62958"
-      }}
+      className={clsx(classes.listItemRight, classes.isOnline)}
+      primary={isOnline ? "Online" : ""}
     />
-    <ListItem className={classes.listItemRight}>
-      <div className={classes.isOnline}>{isOnline ? "Online" : ""}</div>
-    </ListItem>
   </ListItem>
 );
 
 const OpponentSelectionCover = ({ classes, database, connectedUsersCount }) => {
-  console.log("connectedUsersCount", connectedUsersCount);
-
   return (
     <RulesLayout backgroundClassName={classes.background}>
       <Typography align="center" color="inherit" variant="h5">

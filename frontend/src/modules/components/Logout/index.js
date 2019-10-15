@@ -11,7 +11,7 @@ import { AuthUserContext } from "../../components/Session";
 import "./logout.css";
 
 const Logout = ({ database, history }) => (
-  <AuthUserContext>
+  <AuthUserContext.Consumer>
     {({ setAuthUser }) => (
       <div
         className={clsx(
@@ -30,7 +30,7 @@ const Logout = ({ database, history }) => (
         {"Logout"}
       </div>
     )}
-  </AuthUserContext>
+  </AuthUserContext.Consumer>
 );
 
 export default withRouter(withDatabase(Logout));

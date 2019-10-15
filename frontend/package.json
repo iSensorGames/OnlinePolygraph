@@ -28,11 +28,10 @@
     "socket.io-client": "^2.3.0",
     "validator": "^11.1.0"
   },
+  "proxy": "https://localhost:5000/",
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "build": "react-scripts build"
   },
   "eslintConfig": {
     "extends": "react-app"

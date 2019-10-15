@@ -24,19 +24,17 @@ const styles = () => ({
 });
 
 const ConversationTypeMenuItem = ({ classes, title, isActive, onClick }) => (
-  <li>
-    <a
-      className={clsx(classes.link, "filter-btn", isActive ? "active" : "")}
-      onClick={onClick}
-    >
-      {title}
-    </a>
+  <li
+    className={clsx(classes.link, "filter-btn", isActive ? "active" : "")}
+    onClick={onClick}
+  >
+    {title}
   </li>
 );
 
 const ConversationList = ({ conversation, classes }) => (
   <li key={conversation.id}>
-    <a
+    <div
       className={clsx(
         "filter direct",
         classes.link,
@@ -56,7 +54,7 @@ const ConversationList = ({ conversation, classes }) => (
         </div>
         <p>{conversation.lastText}</p>
       </div>
-    </a>
+    </div>
   </li>
 );
 

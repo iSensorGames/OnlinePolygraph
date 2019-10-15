@@ -21,21 +21,14 @@ const Settings = ({ isActive }) => (
     <h4>Settings</h4>
     <ul id="preferences">
       <li>
-        <a
-          href="#"
-          className="headline"
-          data-toggle="collapse"
-          aria-expanded="false"
-          data-target="#account"
-          aria-controls="account"
-        >
+        <div className="headline">
           <div className="title">
             <h5>Account</h5>
             <p>Update your profile details</p>
           </div>
           <i data-eva="arrow-ios-forward"></i>
           <i data-eva="arrow-ios-downward"></i>
-        </a>
+        </div>
         <div
           className="content collapse"
           id="account"
@@ -104,21 +97,14 @@ const Settings = ({ isActive }) => (
         </div>
       </li>
       <li>
-        <a
-          href="#"
-          className="headline"
-          data-toggle="collapse"
-          aria-expanded="false"
-          data-target="#privacy"
-          aria-controls="privacy"
-        >
+        <div className="headline">
           <div className="title">
             <h5>Privacy & Safety</h5>
             <p>Control your privacy settings</p>
           </div>
           <i data-eva="arrow-ios-forward"></i>
           <i data-eva="arrow-ios-downward"></i>
-        </a>
+        </div>
         <div
           className="content collapse"
           id="privacy"
@@ -183,21 +169,14 @@ const Settings = ({ isActive }) => (
         </div>
       </li>
       <li>
-        <a
-          href="#"
-          className="headline"
-          data-toggle="collapse"
-          aria-expanded="false"
-          data-target="#alerts"
-          aria-controls="alerts"
-        >
+        <div className="headline">
           <div className="title">
             <h5>Notifications</h5>
             <p>Turn notifications on or off</p>
           </div>
           <i data-eva="arrow-ios-forward"></i>
           <i data-eva="arrow-ios-downward"></i>
-        </a>
+        </div>
         <div
           className="content collapse"
           id="alerts"
@@ -262,21 +241,14 @@ const Settings = ({ isActive }) => (
         </div>
       </li>
       <li>
-        <a
-          href="#"
-          className="headline"
-          data-toggle="collapse"
-          aria-expanded="false"
-          data-target="#integrations"
-          aria-controls="integrations"
-        >
+        <div className="headline">
           <div className="title">
             <h5>Integrations</h5>
             <p>Sync your social accounts</p>
           </div>
           <i data-eva="arrow-ios-forward"></i>
           <i data-eva="arrow-ios-downward"></i>
-        </a>
+        </div>
         <div
           className="content collapse"
           id="integrations"
@@ -349,21 +321,14 @@ const Settings = ({ isActive }) => (
         </div>
       </li>
       <li>
-        <a
-          href="#"
-          className="headline"
-          data-toggle="collapse"
-          aria-expanded="false"
-          data-target="#appearance"
-          aria-controls="appearance"
-        >
+        <div className="headline">
           <div className="title">
             <h5>Appearance</h5>
             <p>Customize the look of Swipe</p>
           </div>
           <i data-eva="arrow-ios-forward"></i>
           <i data-eva="arrow-ios-downward"></i>
-        </a>
+        </div>
         <div
           className="content collapse"
           id="appearance"

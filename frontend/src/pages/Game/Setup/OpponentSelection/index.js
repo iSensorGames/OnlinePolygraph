@@ -11,6 +11,12 @@ import { withDatabase } from "../../../../modules/components/Database";
 
 const OpponentSelection = () => <OpponentSelectionBase />;
 
+const mapStateToProps = state => {
+  return {
+    connectedUsersCount: userSelectors.getConnectedUsersCount(state)
+  };
+};
+
 const OpponentSelectionBase = compose(
   connect(
     mapStateToProps,
@@ -18,11 +24,5 @@ const OpponentSelectionBase = compose(
   ),
   withDatabase
 )(OpponentSelectionCover);
-
-const mapStateToProps = state => {
-  return {
-    connectedUsersCount: userSelectors.getConnectedUsersCount(state)
-  };
-};
 
 export default OpponentSelection;

@@ -32,33 +32,26 @@ const styles = () => ({
 });
 
 const MenuItem = ({ isCurrentPage, iconName, classes, setCurrentPage }) => (
-  <li>
-    <a
-      className={clsx(classes.link, isCurrentPage ? "active" : "")}
-      onClick={setCurrentPage}
-    >
-      <Icon
-        name={iconName}
-        size="medium"
-        animation={{
-          type: "pulse",
-          hover: true,
-          infinite: false
-        }}
-      />
-    </a>
+  <li
+    className={clsx(classes.link, isCurrentPage ? "active" : "")}
+    onClick={setCurrentPage}
+  >
+    <Icon
+      name={iconName}
+      size="medium"
+      animation={{
+        type: "pulse",
+        hover: true,
+        infinite: false
+      }}
+    />
   </li>
 );
 
 const Game = ({ classes }) => {
-  const [mobileOpen, setMobileOpen] = React.useState(false);
   const [currentPage, setCurrentPage] = React.useState(
     CURRENT_PAGE.CONVERSATIONS
   );
-
-  const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
-  };
 
   return (
     <div className="layout">
@@ -248,13 +241,13 @@ const Game = ({ classes }) => {
                           <div className="message">
                             <div className="bubble">
                               <div className="attachment">
-                                <a href="#" className="round">
+                                <div className="round">
                                   <i data-eva="file-text"></i>
-                                </a>
+                                </div>
                                 <div className="meta">
-                                  <a href="#">
+                                  <div>
                                     <h5>build-plugins.js</h5>
-                                  </a>
+                                  </div>
                                   <span>3kb</span>
                                 </div>
                               </div>
@@ -335,28 +328,9 @@ const Game = ({ classes }) => {
                   </button>
                   <ul className="nav" role="tablist">
                     <li>
-                      <a
-                        href="#users"
-                        className="active"
-                        data-toggle="tab"
-                        role="tab"
-                        aria-controls="users"
-                        aria-selected="true"
-                      >
-                        Users
-                      </a>
+                      <div className="active">Users</div>
                     </li>
-                    <li>
-                      <a
-                        href="#files"
-                        data-toggle="tab"
-                        role="tab"
-                        aria-controls="files"
-                        aria-selected="false"
-                      >
-                        Files
-                      </a>
-                    </li>
+                    <li>Files</li>
                   </ul>
                   <div className="tab-content">
                     <div
@@ -578,15 +552,15 @@ const Game = ({ classes }) => {
                               </button>
                             </li>
                             <li>
-                              <a href="#">
+                              <div>
                                 <img src={avatarMale1} alt="avatar" />
-                              </a>
+                              </div>
                             </li>
                           </ul>
                           <div className="meta">
-                            <a href="#">
+                            <div>
                               <h5>workbox.js</h5>
-                            </a>
+                            </div>
                             <span>2kb</span>
                           </div>
                           <div className="dropdown">
@@ -620,15 +594,15 @@ const Game = ({ classes }) => {
                               </button>
                             </li>
                             <li>
-                              <a href="#">
+                              <div>
                                 <img src={avatarMale2} alt="avatar" />
-                              </a>
+                              </div>
                             </li>
                           </ul>
                           <div className="meta">
-                            <a href="#">
+                            <div>
                               <h5>bug_report</h5>
-                            </a>
+                            </div>
                             <span>1kb</span>
                           </div>
                           <div className="dropdown">
@@ -662,15 +636,15 @@ const Game = ({ classes }) => {
                               </button>
                             </li>
                             <li>
-                              <a href="#">
+                              <div>
                                 <img src={avatarMale3} alt="avatar" />
-                              </a>
+                              </div>
                             </li>
                           </ul>
                           <div className="meta">
-                            <a href="#">
+                            <div>
                               <h5>nuget.zip</h5>
-                            </a>
+                            </div>
                             <span>7mb</span>
                           </div>
                           <div className="dropdown">
@@ -704,15 +678,15 @@ const Game = ({ classes }) => {
                               </button>
                             </li>
                             <li>
-                              <a href="#">
+                              <div>
                                 <img src={avatarMale4} alt="avatar" />
-                              </a>
+                              </div>
                             </li>
                           </ul>
                           <div className="meta">
-                            <a href="#">
+                            <div>
                               <h5>clearfix.jpg</h5>
-                            </a>
+                            </div>
                             <span>1kb</span>
                           </div>
                           <div className="dropdown">
@@ -746,15 +720,15 @@ const Game = ({ classes }) => {
                               </button>
                             </li>
                             <li>
-                              <a href="#">
+                              <div>
                                 <img src={avatarMale5} alt="avatar" />
-                              </a>
+                              </div>
                             </li>
                           </ul>
                           <div className="meta">
-                            <a href="#">
+                            <div>
                               <h5>package</h5>
-                            </a>
+                            </div>
                             <span>4mb</span>
                           </div>
                           <div className="dropdown">
@@ -788,15 +762,15 @@ const Game = ({ classes }) => {
                               </button>
                             </li>
                             <li>
-                              <a href="#">
+                              <div>
                                 <img src={avatarMale6} alt="avatar" />
-                              </a>
+                              </div>
                             </li>
                           </ul>
                           <div className="meta">
-                            <a href="#">
+                            <div>
                               <h5>plugins.js</h5>
-                            </a>
+                            </div>
                             <span>3kb</span>
                           </div>
                           <div className="dropdown">
@@ -1039,27 +1013,10 @@ const Game = ({ classes }) => {
                   </button>
                   <ul className="nav" role="tablist">
                     <li>
-                      <a
-                        href="#users2"
-                        className="active"
-                        data-toggle="tab"
-                        role="tab"
-                        aria-controls="users2"
-                        aria-selected="true"
-                      >
-                        Users
-                      </a>
+                      <div className="active">Users</div>
                     </li>
                     <li>
-                      <a
-                        href="#files2"
-                        data-toggle="tab"
-                        role="tab"
-                        aria-controls="files2"
-                        aria-selected="false"
-                      >
-                        Files
-                      </a>
+                      <div>Files</div>
                     </li>
                   </ul>
                   <div className="tab-content">
@@ -1282,15 +1239,15 @@ const Game = ({ classes }) => {
                               </button>
                             </li>
                             <li>
-                              <a href="#">
+                              <div>
                                 <img src={avatarMale1} alt="avatar" />
-                              </a>
+                              </div>
                             </li>
                           </ul>
                           <div className="meta">
-                            <a href="#">
+                            <div>
                               <h5>workbox.js</h5>
-                            </a>
+                            </div>
                             <span>2kb</span>
                           </div>
                           <div className="dropdown">
@@ -1324,15 +1281,15 @@ const Game = ({ classes }) => {
                               </button>
                             </li>
                             <li>
-                              <a href="#">
+                              <div>
                                 <img src={avatarMale2} alt="avatar" />
-                              </a>
+                              </div>
                             </li>
                           </ul>
                           <div className="meta">
-                            <a href="#">
+                            <div>
                               <h5>bug_report</h5>
-                            </a>
+                            </div>
                             <span>1kb</span>
                           </div>
                           <div className="dropdown">
@@ -1366,15 +1323,15 @@ const Game = ({ classes }) => {
                               </button>
                             </li>
                             <li>
-                              <a href="#">
+                              <div>
                                 <img src={avatarMale3} alt="avatar" />
-                              </a>
+                              </div>
                             </li>
                           </ul>
                           <div className="meta">
-                            <a href="#">
+                            <div>
                               <h5>nuget.zip</h5>
-                            </a>
+                            </div>
                             <span>7mb</span>
                           </div>
                           <div className="dropdown">
@@ -1408,15 +1365,15 @@ const Game = ({ classes }) => {
                               </button>
                             </li>
                             <li>
-                              <a href="#">
+                              <div>
                                 <img src={avatarMale4} alt="avatar" />
-                              </a>
+                              </div>
                             </li>
                           </ul>
                           <div className="meta">
-                            <a href="#">
+                            <div>
                               <h5>clearfix.jpg</h5>
-                            </a>
+                            </div>
                             <span>1kb</span>
                           </div>
                           <div className="dropdown">
@@ -1450,15 +1407,15 @@ const Game = ({ classes }) => {
                               </button>
                             </li>
                             <li>
-                              <a href="#">
+                              <div>
                                 <img src={avatarMale5} alt="avatar" />
-                              </a>
+                              </div>
                             </li>
                           </ul>
                           <div className="meta">
-                            <a href="#">
+                            <div>
                               <h5>package</h5>
-                            </a>
+                            </div>
                             <span>4mb</span>
                           </div>
                           <div className="dropdown">
@@ -1492,15 +1449,15 @@ const Game = ({ classes }) => {
                               </button>
                             </li>
                             <li>
-                              <a href="#">
+                              <div>
                                 <img src={avatarMale6} alt="avatar" />
-                              </a>
+                              </div>
                             </li>
                           </ul>
                           <div className="meta">
-                            <a href="#">
+                            <div>
                               <h5>plugins.js</h5>
-                            </a>
+                            </div>
                             <span>3kb</span>
                           </div>
                           <div className="dropdown">
@@ -1559,27 +1516,10 @@ const Game = ({ classes }) => {
             <div className="modal-body">
               <ul className="nav" role="tablist">
                 <li>
-                  <a
-                    href="#details"
-                    className="active"
-                    data-toggle="tab"
-                    role="tab"
-                    aria-controls="details"
-                    aria-selected="true"
-                  >
-                    Details
-                  </a>
+                  <div className="active">Details</div>
                 </li>
                 <li>
-                  <a
-                    href="#participants"
-                    data-toggle="tab"
-                    role="tab"
-                    aria-controls="participants"
-                    aria-selected="false"
-                  >
-                    Participants
-                  </a>
+                  <div>Participants</div>
                 </li>
               </ul>
               <div className="tab-content">
