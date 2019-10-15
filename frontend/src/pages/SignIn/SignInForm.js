@@ -62,7 +62,7 @@ const SignInForm = ({ database, history }) => {
       .then(async ({ data }) => {
         await setAuthUser(data.user);
         localStorage.setItem(authConstants.KEY, JSON.stringify({ ...data }));
-        history.push(ROUTES.GAME);
+        history.push(ROUTES.WELCOME);
       })
       .catch(error => {
         setSubmitError(error.message);

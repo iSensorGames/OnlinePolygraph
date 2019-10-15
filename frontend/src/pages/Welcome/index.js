@@ -1,6 +1,13 @@
 import withRoot from "../../modules/withRoot";
 // --- Post bootstrap -----
-import React from "react";
+import React, { useEffect } from "react";
+import { connect } from "react-redux";
+
+// Reducers
+import * as userSelectors from "../../reducers/user";
+
+// Actions
+import * as userActions from "../../actions/user";
 
 // Styles
 import "./welcome.css";
@@ -14,7 +21,22 @@ import WelcomeCover from "../../modules/views/WelcomeCover";
 // Constants
 import * as ROLES from "../../modules/constants/roles";
 
-const Welcome = () => {
+const Welcome = ({ isSubscribed, subscribeUser }) => {
+  const unsubscribe = () => {};
+
+  console.log("isSubscribed", isSubscribed);
+
+  useEffect(
+    () => {
+      if (isSubscribed) {
+        return;
+      }
+
+      unsubscribe = subscribeUser();
+    },
+    () => unsubscribe()
+  );
+
   return (
     <React.Fragment>
       <AppAppBar />
@@ -25,7 +47,23 @@ const Welcome = () => {
 
 const condition = authUser => authUser && authUser.roles === ROLES.USER;
 
+const mapStateToProps = state => {
+  return {
+    isSubscribed: userSelectors.getIsSubscribed(state),
+    data: userSelectors.getData(state),
+    conectedUsersCount: userSelectors.getUserConnectedCount(state)
+  };
+};
+
+const actionCreators = {
+  subscribeUser: userActions.subscribeUser
+};
+
 export default compose(
   withAuthorization(condition),
-  withRoot
+  withRoot,
+  connect(
+    mapStateToProps,
+    actionCreators
+  )
 )(Welcome);

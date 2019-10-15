@@ -2,10 +2,6 @@ import React from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import { Switch } from "react-router";
 
-// Redux Setup
-import { Provider } from "react-redux";
-import store from "./store";
-
 // Styles
 import "./styles/palette.css";
 
@@ -28,27 +24,21 @@ import Admin from "./pages/Admin";
 
 const App = () => {
   return (
-    <Provider store={store}>
-      <Router>
-        <Switch>
-          <Route exact path={ROUTES.HOME} component={Home} />
-          <Route exact path={ROUTES.SIGN_IN} component={SignIn} />
-          <Route exact path={ROUTES.SIGN_UP} component={SignUp} />
-          <Route
-            exact
-            path={ROUTES.FORGOT_PASSWORD}
-            component={ForgotPassword}
-          />
-          <Route exact path={ROUTES.WELCOME} component={Welcome} />
-          <Route exact path={ROUTES.RULES} component={Rules} />
-          <Route exact path={ROUTES.GAME_SETUP} component={GameSetup} />
-          <Route exact path={ROUTES.GAME} component={Game} />
-          <Route exact path={ROUTES.TERMS} component={Terms} />
-          <Route exact path={ROUTES.PRIVACY} component={Privacy} />
-          <Route exact path={ROUTES.ADMIN} component={Admin} />
-        </Switch>
-      </Router>
-    </Provider>
+    <Router>
+      <Switch>
+        <Route exact path={ROUTES.HOME} component={Home} />
+        <Route exact path={ROUTES.SIGN_IN} component={SignIn} />
+        <Route exact path={ROUTES.SIGN_UP} component={SignUp} />
+        <Route exact path={ROUTES.FORGOT_PASSWORD} component={ForgotPassword} />
+        <Route exact path={ROUTES.WELCOME} component={Welcome} />
+        <Route exact path={ROUTES.RULES} component={Rules} />
+        <Route exact path={ROUTES.GAME_SETUP} component={GameSetup} />
+        <Route exact path={ROUTES.GAME} component={Game} />
+        <Route exact path={ROUTES.TERMS} component={Terms} />
+        <Route exact path={ROUTES.PRIVACY} component={Privacy} />
+        <Route exact path={ROUTES.ADMIN} component={Admin} />
+      </Switch>
+    </Router>
   );
 };
 

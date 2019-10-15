@@ -39,24 +39,25 @@ const server = app.listen(PORT, () => {
  **************************************/
 const io = socket(server);
 
+const db = require("./services/database");
+db.connect(err => {
+  if (err) {
+    console.log("Err: ", err);
+    throw new Error("Could not connect to the Database");
+  }
+
+  // ROUTES
+  require("./routes")({ app, db });
+});
+
 io.on("connection", socket => {
   console.log("Client connected...");
 
-  const db = require("./services/database");
-  db.connect(err => {
-    if (err) {
-      console.log("Err: ", err);
-      throw new Error("Could not connect to the Database");
-    }
-
-    // ROUTES
-    require("./routes")({ app, db });
-  });
   socketCount++; // Socket has connected, increase socket count
-  io.socket.emit("users connected", socketCount);
+  io.socket.emit("UsersConnected", socketCount);
 
   socket.on("subscribe", data => {
-    socket.emit({
+    socket.emit("Data", {
       data,
       success: true
     });
@@ -64,7 +65,7 @@ io.on("connection", socket => {
 
   socket.on("disconnect", () => {
     socketCount--;
-    io.sockets.emit("users connected", socketCount);
+    io.sockets.emit("UsersConnected", socketCount);
   });
 
   socket.on("initial_messages", ["aaa", "bbb", "ccc", "ddd"]);

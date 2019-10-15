@@ -82,7 +82,7 @@ const User = ({ classes, userName, isOnline }) => (
   </ListItem>
 );
 
-const OpponentSelectionCover = ({ database }) => {
+const OpponentSelectionCover = ({ classes, database }) => {
   return (
     <RulesLayout backgroundClassName={classes.background}>
       <Typography align="center" color="inherit" variant="h5">

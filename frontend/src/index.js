@@ -4,16 +4,23 @@ import "./index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 
+// Components
 import Database, { DatabaseContext } from "./modules/components/Database";
+
+// Redux Setup
+import { Provider } from "react-redux";
+import store from "./store";
 
 // Styles
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./template.css";
 
 ReactDOM.render(
-  <DatabaseContext.Provider value={new Database()}>
-    <App />
-  </DatabaseContext.Provider>,
+  <Provider store={store}>
+    <DatabaseContext.Provider value={new Database()}>
+      <App />
+    </DatabaseContext.Provider>
+  </Provider>,
   document.getElementById("root")
 );
 
