@@ -7,6 +7,17 @@ const bodyParser = require("body-parser");
 const morgan = require("morgan");
 const fs = require("fs");
 
+/********************
+ *** ALLOW ORIGINS **
+ ********************/
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "X-Requested-With");
+  res.header("Access-Control-Allow-Headers", "Content-Type");
+  res.header("Access-Control-Allow-Methods", "PUT, GET, POST, DELETE, OPTIONS");
+  next();
+});
+
 /**************************
  ** ENVIRONENT VARIABLES **
  **************************/
@@ -23,7 +34,13 @@ global.appRoot = path.resolve(__dirname);
 /*****************************
  * INITIAL EXPRESS APP SETUP *
  *****************************/
-app.use(express.static(path.join(__dirname, "frontend/build")));
+app.use(
+  express.static(
+    isProduction
+      ? path.join(__dirname, "realspiel/frontend/build")
+      : path.join(__dirname, "frontend/build")
+  )
+);
 app.use(morgan(isProduction ? "" : "dev"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -48,7 +65,9 @@ const server = https.createServer(httpsOptions, app).listen(PORT, () => {
  * SOCKET & DATABASE CONNECTION SETUP *
  **************************************/
 const io = socket(server, {
-  path: "/users/socket.io"
+  path: "/users/socket.io",
+  log: false,
+  origin: "*:*"
 });
 
 const db = require("./services/database");
