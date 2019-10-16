@@ -29,7 +29,7 @@ export const subscribeUser = listener => {
   socket.on("connect", connectListener);
   socket.on("disconnect", disconnectListener);
   socket.on(RESPONSE_DATA, dataListener);
-  socket.on(RESPONSE_USERS_COUNT, usersConnectedListener);
+  socket.on(RESPONSE_USERS, usersConnectedListener);
 
   return () => {
     socket.emit("unsubscribe");
