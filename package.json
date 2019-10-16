@@ -20,10 +20,12 @@
     "concurrently": "^5.0.0"
   },
   "scripts": {
-    "client": "cd frontend && npm start",
-    "server": "nodemon server.js",
-    "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
-    "prod": "NODE_ENV=production node server.js && cd frontend && npm install && npm install --only=dev --no-shrinkwrap && npm run build "
+    "client-dev": "cd frontend && npm start",
+    "client-prod": "cd frontend && npm run build",
+    "server-dev": "nodemon server.js",
+    "server-prod": "node server.js",
+    "dev": "concurrently --kill-others-on-fail \"npm run server-dev\" \"npm run client-dev\"",
+    "prod": "NODE_ENV=production concurrently \"npm run server-prod\" \"npm run client-prod\""
   },
   "repository": {
     "type": "git",
