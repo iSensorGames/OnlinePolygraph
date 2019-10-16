@@ -3,8 +3,10 @@ import axios from "axios";
 // Constants
 import * as authConstants from "../../../modules/constants/auth";
 
-export const signInWithEmailAndPassword = async (email, password) =>
-  await axios.post("/api/signin", { email, password });
+export const signInWithEmailAndPassword = async (email, password) => {
+  console.log("process.env", process.env);
+  return await axios.post("/api/signin", { email, password });
+};
 
 export const createUserWithEmailAndPassword = async ({
   email,
