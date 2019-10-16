@@ -24,7 +24,7 @@ import Admin from "./pages/Admin";
 
 const App = () => {
   return (
-    <Router basename="/realspiel"/>
+    <Router basename="/realspiel">
       <Switch>
         <Route exact path={ROUTES.HOME} component={Home} />
         <Route exact path={ROUTES.SIGN_IN} component={SignIn} />
