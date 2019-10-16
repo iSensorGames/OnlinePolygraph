@@ -6,6 +6,7 @@ const path = require("path");
 const bodyParser = require("body-parser");
 const morgan = require("morgan");
 const fs = require("fs");
+const dotenv = require("dotenv");
 
 /**************************
  * SETUP GLOBAL VARIABLES *
@@ -19,6 +20,9 @@ global.appRoot = path.resolve(__dirname);
  * INITIAL EXPRESS APP SETUP *
  *****************************/
 if (isProduction) {
+  // Load Environment Variables from .env
+  dotenv.config();
+
   app.use(express.static(path.join(__dirname, "frontend/build")));
 
   // Handle React routing, return all requests to React app

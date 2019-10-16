@@ -1,6 +1,6 @@
 import io from "socket.io-client";
 
-import { RESPONSE_DATA, RESPONSE_USERS_COUNT } from "../actions/user";
+import { RESPONSE_DATA, RESPONSE_USERS } from "../actions/user";
 
 export const subscribeUser = listener => {
   const socket = io.connect("https://localhost:5000/realspiel", {
@@ -18,7 +18,7 @@ export const subscribeUser = listener => {
   };
 
   const usersConnectedListener = res => {
-    listener(RESPONSE_USERS_COUNT, res);
+    listener(RESPONSE_USERS, res);
   };
 
   const disconnectListener = res => {

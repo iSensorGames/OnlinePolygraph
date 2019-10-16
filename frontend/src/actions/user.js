@@ -1,12 +1,12 @@
 export const USER_SIGNIN_SUCCESS = "user/USER_SIGNIN_SUCCESS";
 export const USER_SUBSCRIBE = "users/USER_SUBSCRIBE";
 export const USER_UNSUBSCRIBE = "users/USER_UNSUBSCRIBE";
-export const USER_CONNECTED_COUNT = "users/USER_CONNECTED_COUNT";
+export const USER_CONNECTED = "users/USER_CONNECTED";
 export const USER_DATA = "users/USER_DATA";
 
 // Socket Response
 export const RESPONSE_DATA = "Data";
-export const RESPONSE_USERS_COUNT = "UsersConnected";
+export const RESPONSE_USERS = "UsersConnected";
 
 export const saveUser = user => {
   return dispatch => {
@@ -25,9 +25,9 @@ export const subscribeUser = () => {
             type: USER_DATA,
             payload: data
           });
-        case RESPONSE_USERS_COUNT:
+        case RESPONSE_USERS:
           return dispatch({
-            type: USER_CONNECTED_COUNT,
+            type: USER_CONNECTED,
             payload: data
           });
       }

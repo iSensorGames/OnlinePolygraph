@@ -3,7 +3,7 @@ import {
   USER_SUBSCRIBE,
   USER_UNSUBSCRIBE,
   USER_DATA,
-  USER_CONNECTED_COUNT
+  USER_CONNECTED
 } from "../actions/user";
 
 const INITIAL_STATE = {
@@ -42,8 +42,8 @@ const reducer = (state = INITIAL_STATE, action) => {
         ...state,
         data: action.payload
       };
-    case USER_CONNECTED_COUNT:
-      console.log("USER_CONNECTED_COUNT", action.payload);
+    case USER_CONNECTED:
+      console.log("USER_CONNECTED", action.payload);
       return {
         ...state,
         connectedUsersCount: action.payload
