@@ -3,10 +3,8 @@ import axios from "axios";
 // Constants
 import * as authConstants from "../../../modules/constants/auth";
 
-export const signInWithEmailAndPassword = async (email, password) => {
-  console.log("process.env", process.env);
-  return await axios.post("/api/signin", { email, password });
-};
+export const signInWithEmailAndPassword = async (email, password) =>
+  await axios.post(`${process.env.PUBLIC_URL}/api/signin`, { email, password });
 
 export const createUserWithEmailAndPassword = async ({
   email,
@@ -15,7 +13,7 @@ export const createUserWithEmailAndPassword = async ({
   lastName,
   roles
 }) =>
-  await axios.post("/api/signup", {
+  await axios.post(`${process.env.PUBLIC_URL}/api/signup`, {
     email,
     password,
     first_name: firstName,
@@ -30,7 +28,7 @@ export const onAuthUserListener = async () => {
 
   if (!token) return null;
 
-  return await axios.get("/api/verify", {
+  return await axios.get(`${process.env.PUBLIC_URL}/api/verify`, {
     headers: { Authorization: `Bearer ${token}` }
   });
 };

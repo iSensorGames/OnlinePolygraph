@@ -1,4 +1,4 @@
-export const BASENAME = "/realspiel";
+export const BASENAME = `${process.env.PUBLIC_URL}`;
 
 export const HOME = `${BASENAME}`;
 export const SIGN_IN = `${BASENAME}/sign-in`;
