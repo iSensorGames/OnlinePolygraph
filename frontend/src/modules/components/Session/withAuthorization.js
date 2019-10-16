@@ -29,12 +29,14 @@ const withAuthorization = condition => Component => {
           .then(result => {
             const { data } = result;
 
+            console.log("withAuthorization data", data);
+
             if (!condition(data)) {
-              this.props.history.push(ROUTES.SIGN_IN);
+              this.props.history.push(ROUTES.SIGN_IN_ROUTE);
             }
           })
           .catch(err => {
-            this.props.history.push(ROUTES.SIGN_IN);
+            this.props.history.push(ROUTES.SIGN_IN_ROUTE);
           });
       }
     }
