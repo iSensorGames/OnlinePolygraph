@@ -12,6 +12,7 @@ const dotenv = require("dotenv");
  * SETUP GLOBAL VARIABLES *
  **************************/
 const isProduction = process.env.NODE_ENV === "production";
+const isTest = process.env.NODE_ENV === "test";
 const PORT = process.env.PORT || 5000;
 let socketCount = 0;
 global.appRoot = path.resolve(__dirname);
@@ -19,7 +20,7 @@ global.appRoot = path.resolve(__dirname);
 /*****************************
  * INITIAL EXPRESS APP SETUP *
  *****************************/
-if (isProduction) {
+if (isProduction || isTest) {
   // Load Environment Variables from .env
   dotenv.config();
 
