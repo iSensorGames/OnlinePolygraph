@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter, Route } from "react-router-dom";
 import { Switch } from "react-router";
 
 // Styles
@@ -24,7 +24,7 @@ import Admin from "./pages/Admin";
 
 const App = () => {
   return (
-    <Router basename="/realspiel">
+    <BrowserRouter basename={ROUTES.BASENAME}>
       <Switch>
         <Route exact path={ROUTES.HOME} component={Home} />
         <Route exact path={ROUTES.SIGN_IN} component={SignIn} />
@@ -38,7 +38,7 @@ const App = () => {
         <Route exact path={ROUTES.PRIVACY} component={Privacy} />
         <Route exact path={ROUTES.ADMIN} component={Admin} />
       </Switch>
-    </Router>
+    </BrowserRouter>
   );
 };
 

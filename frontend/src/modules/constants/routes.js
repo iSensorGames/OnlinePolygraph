@@ -1,12 +1,14 @@
+export const BASENAME = "/realspiel";
+
 export const HOME = "/";
-export const SIGN_IN = "/sign-in";
-export const SIGN_UP = "/sign-up";
-export const FORGOT_PASSWORD = "/forgot-password";
-export const WELCOME = "/welcome";
-export const RULES = "/rules";
-export const GAME = "/game";
-export const GAME_SETUP = "/game/setup";
-export const TERMS = "/terms";
-export const PRIVACY = "/privacy";
-export const ADMIN = "/admin";
-export const LOGOUT = "/logout";
+export const SIGN_IN = `${BASENAME}/sign-in`;
+export const SIGN_UP = `${BASENAME}/sign-up`;
+export const FORGOT_PASSWORD = `${BASENAME}/forgot-password`;
+export const WELCOME = `${BASENAME}/welcome`;
+export const RULES = `${BASENAME}/rules`;
+export const GAME = `${BASENAME}/game`;
+export const GAME_SETUP = `${BASENAME}/game/setup`;
+export const TERMS = `${BASENAME}/terms`;
+export const PRIVACY = `${BASENAME}/privacy`;
+export const ADMIN = `${BASENAME}/admin`;
+export const LOGOUT = `${BASENAME}/logout`;
