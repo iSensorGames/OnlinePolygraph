@@ -83,7 +83,7 @@ const SignUp = ({ database, history }) => {
 
         await setAuthUser(user);
         localStorage.setItem(authConstants.KEY, JSON.stringify({ ...data }));
-        history.push(ROUTES.WELCOME);
+        history.push(ROUTES.WELCOME_ROUTE);
       })
       .catch(error => {
         setSubmitError(error.message);

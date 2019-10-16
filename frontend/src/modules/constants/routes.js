@@ -1,6 +1,6 @@
 export const BASENAME = `${process.env.PUBLIC_URL}`;
 
-export const HOME = `${BASENAME}`;
+export const HOME = `/`;
 export const SIGN_IN = `${BASENAME}/sign-in`;
 export const SIGN_UP = `${BASENAME}/sign-up`;
 export const FORGOT_PASSWORD = `${BASENAME}/forgot-password`;
