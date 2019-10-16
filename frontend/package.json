@@ -1,7 +1,7 @@
 {
   "name": "realspiel-frontend",
   "version": "0.1.0",
-  "homepage": ".",
+  "homepage": "https://isensoranalytics.com:5000",
   "private": true,
   "dependencies": {
     "@material-ui/core": "^4.4.2",
