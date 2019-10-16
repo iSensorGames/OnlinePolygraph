@@ -3,7 +3,7 @@ import io from "socket.io-client";
 import { RESPONSE_DATA, RESPONSE_USERS } from "../actions/user";
 
 export const subscribeUser = listener => {
-  const socket = io.connect("https://localhost:5000/realspiel", {
+  const socket = io.connect("https://isensoranalytics.com/realspiel", {
     secure: true,
     rejectUnauthorized: false,
     path: "/users/socket.io"
