@@ -5,6 +5,9 @@ import Button from "../components/Button";
 import Typography from "../components/Typography";
 import ProductHeroLayout from "./ProductHeroLayout";
 
+// Constants
+import * as ROUTES from "../constants/routes";
+
 const styles = theme => ({
   background: {
     backgroundColor: "#43CEEB", // Average color of the background image.
@@ -50,7 +53,7 @@ function ProductHero(props) {
         size="large"
         className={classes.button}
         component="a"
-        href="/game/"
+        href={ROUTES.GAME_SETUP}
       >
         Play Game
       </Button>

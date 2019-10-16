@@ -26,17 +26,21 @@ const App = () => {
   return (
     <BrowserRouter basename={ROUTES.BASENAME}>
       <Switch>
-        <Route exact path={ROUTES.HOME} component={Home} />
-        <Route exact path={ROUTES.SIGN_IN} component={SignIn} />
-        <Route exact path={ROUTES.SIGN_UP} component={SignUp} />
-        <Route exact path={ROUTES.FORGOT_PASSWORD} component={ForgotPassword} />
-        <Route exact path={ROUTES.WELCOME} component={Welcome} />
-        <Route exact path={ROUTES.RULES} component={Rules} />
-        <Route exact path={ROUTES.GAME_SETUP} component={GameSetup} />
-        <Route exact path={ROUTES.GAME} component={Game} />
-        <Route exact path={ROUTES.TERMS} component={Terms} />
-        <Route exact path={ROUTES.PRIVACY} component={Privacy} />
-        <Route exact path={ROUTES.ADMIN} component={Admin} />
+        <Route exact path={ROUTES.HOME_ROUTE} component={Home} />
+        <Route exact path={ROUTES.SIGN_IN_ROUTE} component={SignIn} />
+        <Route exact path={ROUTES.SIGN_UP_ROUTE} component={SignUp} />
+        <Route
+          exact
+          path={ROUTES.FORGOT_PASSWORD_ROUTE}
+          component={ForgotPassword}
+        />
+        <Route exact path={ROUTES.WELCOME_ROUTE} component={Welcome} />
+        <Route exact path={ROUTES.RULES_ROUTE} component={Rules} />
+        <Route exact path={ROUTES.GAME_SETUP_ROUTE} component={GameSetup} />
+        <Route exact path={ROUTES.GAME_ROUTE} component={Game} />
+        <Route exact path={ROUTES.TERMS_ROUTE} component={Terms} />
+        <Route exact path={ROUTES.PRIVACY_ROUTE} component={Privacy} />
+        <Route exact path={ROUTES.ADMIN_ROUTE} component={Admin} />
       </Switch>
     </BrowserRouter>
   );
