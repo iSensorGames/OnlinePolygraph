@@ -9,7 +9,9 @@ const emailIsValid = email => {
 };
 
 module.exports = ({ app, db }) => {
-  app.get("/api/verify", middleware.checkToken, (req, res) => {
+  app.post("/api/verify", middleware.checkToken, (req, res) => {
+    console.log("/api/verify");
+    console.log(req.payload);
     return res.json({
       success: true,
       ...req.payload

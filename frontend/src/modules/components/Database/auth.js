@@ -26,11 +26,9 @@ export const onAuthUserListener = async () => {
     ? JSON.parse(localStorage.getItem(authConstants.KEY)).token
     : null;
 
-  console.log("onAuthUserListener token", token);
-
   if (!token) return null;
 
-  return await axios.get(`${process.env.PUBLIC_URL}/api/verify`, {
+  return await axios.post(`${process.env.PUBLIC_URL}/api/verify`, {
     headers: { Authorization: `Bearer ${token}` }
   });
 };
