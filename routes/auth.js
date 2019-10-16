@@ -10,8 +10,6 @@ const emailIsValid = email => {
 
 module.exports = ({ app, db }) => {
   app.post("/api/verify", middleware.checkToken, (req, res) => {
-    console.log("/api/verify");
-    console.log(req.payload);
     return res.json({
       success: true,
       ...req.payload
@@ -26,7 +24,7 @@ module.exports = ({ app, db }) => {
           message: "Email format is invalid!",
           error: "email_validation"
         })
-        .status(200);
+        .status(403);
     }
 
     bcrypt.hash(password, config.bcryptSaltRound, (err, hash) => {
@@ -40,7 +38,7 @@ module.exports = ({ app, db }) => {
           };
 
           if (err) {
-            return res.json(errorMessage).status(200);
+            return res.status(403).json(errorMessage);
           }
 
           // Create a new token with the email in the payload
@@ -114,7 +112,7 @@ module.exports = ({ app, db }) => {
                 }
               });
             } else {
-              return res.json(errorMessage).status(200);
+              return res.status(401).json(errorMessage);
             }
           });
         } else {

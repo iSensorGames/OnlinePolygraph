@@ -10,8 +10,6 @@ const config = require("../config/auth/config");
  */
 const checkToken = (req, res, next) => {
   let token = req.body.headers["Authorization"]; // Express headers are auto converted to lowercase
-  console.log("checkToken req", req);
-  console.log("checkToken token", token);
   if (token) {
     if (token.startsWith("Bearer ")) {
       // Remove Bearer from String

@@ -71,7 +71,7 @@ function WelcomeCover(props) {
         size="large"
         className={classes.button}
         component="a"
-        href="/rules"
+        href={ROUTES.RULES}
       >
         Rules
       </Button>

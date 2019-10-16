@@ -53,7 +53,7 @@ function ProductHero(props) {
         size="large"
         className={classes.button}
         component="a"
-        href={ROUTES.GAME_SETUP}
+        href={ROUTES.WELCOME}
       >
         Play Game
       </Button>
