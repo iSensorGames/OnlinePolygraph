@@ -60,6 +60,8 @@ const SignInForm = ({ database, history }) => {
     await database
       .doSignInWithEmailAndPassword(email, password)
       .then(async ({ data }) => {
+        console.log("SignInForm data", data);
+
         await setAuthUser(data.user);
         localStorage.setItem(authConstants.KEY, JSON.stringify({ ...data }));
         history.push(ROUTES.WELCOME_ROUTE);
