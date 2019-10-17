@@ -1,4 +1,4 @@
-import * as database from "./database";
-import * as socket from "./socket";
+import * as api from './api';
+import * as socket from './socket';
 
-export { database, socket };
+export { api, socket };

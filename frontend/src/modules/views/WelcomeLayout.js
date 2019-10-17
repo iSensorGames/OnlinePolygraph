@@ -1,51 +1,50 @@
-import React from "react";
-import PropTypes from "prop-types";
-import clsx from "clsx";
-import { withStyles } from "@material-ui/core/styles";
-import Container from "@material-ui/core/Container";
+import React from 'react';
+import PropTypes from 'prop-types';
+import clsx from 'clsx';
+import { withStyles } from '@material-ui/core/styles';
+import Container from '@material-ui/core/Container';
 
 const styles = theme => ({
   root: {
     color: theme.palette.common.white,
-    position: "relative",
-    display: "flex",
-    alignItems: "center",
-    height: "100vh",
-    [theme.breakpoints.up("sm")]: {
+    position: 'relative',
+    display: 'flex',
+    alignItems: 'center',
+    [theme.breakpoints.up('sm')]: {
       minHeight: 500,
-      maxHeight: 1300
-    }
+      maxHeight: 1300,
+    },
   },
   container: {
     marginTop: theme.spacing(3),
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center"
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
   },
   backdrop: {
-    position: "absolute",
+    position: 'absolute',
     left: 0,
     right: 0,
     top: 0,
     bottom: 0,
     backgroundColor: theme.palette.common.black,
     opacity: 0.5,
-    zIndex: -1
+    zIndex: -1,
   },
   background: {
-    position: "absolute",
+    position: 'absolute',
     left: 0,
     right: 0,
     top: 0,
     bottom: 0,
-    backgroundSize: "cover",
-    backgroundRepeat: "no-repeat",
-    zIndex: -2
+    backgroundSize: 'cover',
+    backgroundRepeat: 'no-repeat',
+    zIndex: -2,
   },
   arrowDown: {
-    position: "absolute",
-    bottom: theme.spacing(4)
-  }
+    position: 'absolute',
+    bottom: theme.spacing(4),
+  },
 });
 
 function WelcomeLayout(props) {
@@ -65,7 +64,7 @@ function WelcomeLayout(props) {
 WelcomeLayout.propTypes = {
   backgroundClassName: PropTypes.string.isRequired,
   children: PropTypes.node.isRequired,
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
 };
 
 export default withStyles(styles)(WelcomeLayout);
