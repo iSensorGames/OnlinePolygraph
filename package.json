@@ -25,7 +25,7 @@
     "server-dev": "nodemon server.js",
     "server-prod": "node server.js",
     "dev": "concurrently --kill-others-on-fail \"npm run server-dev\" \"npm run client-dev\"",
-    "test": "NODE_ENV=test concurrently \"npm run server-prod\" \"npm run client-prod\"",
+    "test": "NODE_ENV=test concurrently \"npm run server-dev\" \"npm run client-prod\"",
     "start": "NODE_ENV=production PUBLIC_URL=/realspiel concurrently \"npm run server-prod\" \"npm run client-prod\""
   },
   "repository": {

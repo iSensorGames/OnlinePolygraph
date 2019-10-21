@@ -3,18 +3,14 @@ import {
   USER_SUBSCRIBE,
   USER_UNSUBSCRIBE,
   USER_DATA,
-  USER_CONNECTED
-} from "../actions/user";
+  USER_CONNECTED,
+} from '../actions/user';
 
 const INITIAL_STATE = {
-  user: {
-    email: "",
-    first_name: "",
-    last_name: ""
-  },
-  data: {},
+  user: null,
+  data: null,
   isSubscribed: false,
-  connectedUsersCount: 0
+  connectedUsersCount: 0,
 };
 
 const reducer = (state = INITIAL_STATE, action) => {
@@ -24,29 +20,28 @@ const reducer = (state = INITIAL_STATE, action) => {
         ...state,
         user: {
           ...state.user,
-          ...action.payload
-        }
+          ...action.payload,
+        },
       };
     case USER_SUBSCRIBE:
       return {
         ...state,
-        isSubscribed: true
+        isSubscribed: true,
       };
     case USER_UNSUBSCRIBE:
       return {
         ...state,
-        isSubscribed: false
+        isSubscribed: false,
       };
     case USER_DATA:
       return {
         ...state,
-        data: action.payload
+        data: action.payload,
       };
     case USER_CONNECTED:
-      console.log("USER_CONNECTED", action.payload);
       return {
         ...state,
-        connectedUsersCount: action.payload
+        connectedUsersCount: action.payload,
       };
     default:
       return state;

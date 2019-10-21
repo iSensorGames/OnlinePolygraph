@@ -1,36 +1,36 @@
-import withRoot from "../../modules/withRoot";
+import withRoot from '../../modules/withRoot';
 // --- Post bootstrap -----
-import React from "react";
-import * as ROUTES from "../../modules/constants/routes";
+import React from 'react';
+import * as ROUTES from '../../modules/constants/routes';
 
 // Constants
-import * as authConstants from "../../modules/constants/auth";
+import * as authConstants from '../../modules/constants/auth';
 
 // Components
-import { Field, Form } from "react-final-form";
-import { makeStyles } from "@material-ui/core/styles";
-import Link from "@material-ui/core/Link";
-import Typography from "../../modules/components/Typography";
-import AppFooter from "../../modules/views/AppFooter";
-import AppAppBar from "../../modules/views/AppAppBar";
-import AppForm from "../../modules/views/AppForm";
-import { email, required } from "../../modules/form/validation";
-import RFTextField from "../../modules/form/RFTextField";
-import FormButton from "../../modules/form/FormButton";
-import FormFeedback from "../../modules/form/FormFeedback";
-import { AuthUserContext } from "../../modules/components/Session";
+import { Field, Form } from 'react-final-form';
+import { makeStyles } from '@material-ui/core/styles';
+import Link from '@material-ui/core/Link';
+import Typography from '../../modules/components/Typography';
+import AppFooter from '../../modules/views/AppFooter';
+import AppAppBar from '../../modules/views/AppAppBar';
+import AppForm from '../../modules/views/AppForm';
+import { email, required } from '../../modules/form/validation';
+import RFTextField from '../../modules/form/RFTextField';
+import FormButton from '../../modules/form/FormButton';
+import FormFeedback from '../../modules/form/FormFeedback';
+import { AuthUserContext } from '../../modules/components/Session';
 
 const useStyles = makeStyles(theme => ({
   form: {
-    marginTop: theme.spacing(6)
+    marginTop: theme.spacing(6),
   },
   button: {
     marginTop: theme.spacing(3),
-    marginBottom: theme.spacing(2)
+    marginBottom: theme.spacing(2),
   },
   feedback: {
-    marginTop: theme.spacing(2)
-  }
+    marginTop: theme.spacing(2),
+  },
 }));
 
 const SignInForm = ({ database, history }) => {
@@ -39,7 +39,7 @@ const SignInForm = ({ database, history }) => {
   const [submitError, setSubmitError] = React.useState(null);
 
   const validate = values => {
-    const errors = required(["email", "password"], values);
+    const errors = required(['email', 'password'], values);
 
     if (!errors.email) {
       const emailError = email(values.email, values);
@@ -60,7 +60,11 @@ const SignInForm = ({ database, history }) => {
     await database
       .doSignInWithEmailAndPassword(email, password)
       .then(async ({ data }) => {
-        console.log("SignInForm data", data);
+        if ('error' in data) {
+          setSubmitError(data.error.message);
+          setSent(false);
+          return;
+        }
 
         await setAuthUser(data.user);
         localStorage.setItem(authConstants.KEY, JSON.stringify({ ...data }));
@@ -83,7 +87,7 @@ const SignInForm = ({ database, history }) => {
             Sign In
           </Typography>
           <Typography variant="body2" align="center">
-            {"Not a member yet? "}
+            {'Not a member yet? '}
             <Link href={ROUTES.SIGN_UP} align="center" underline="always">
               Sign Up here
             </Link>
@@ -138,7 +142,7 @@ const SignInForm = ({ database, history }) => {
                     color="secondary"
                     fullWidth
                   >
-                    {submitting || sent ? "In progress…" : "Sign In"}
+                    {submitting || sent ? 'In progress…' : 'Sign In'}
                   </FormButton>
                 </form>
               )}
