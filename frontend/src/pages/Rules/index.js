@@ -9,7 +9,7 @@ import "./rules.css";
 import { compose } from "recompose";
 import { withAuthorization } from "../../modules/components/Session";
 import AppAppBar from "../../modules/views/AppAppBar";
-import RulesCover from "../../modules/views/RulesCover";
+import RulesCover from "../../modules/views/Cover/Rules";
 
 // Constants
 import * as ROLES from "../../modules/constants/roles";

@@ -1,8 +1,13 @@
 import io from "socket.io-client";
 
-import { RESPONSE_DATA, RESPONSE_USERS } from "../actions/user";
+import {
+  RESPONSE_CONNECT,
+  RESPONSE_DISCONNECT,
+  RESPONSE_CONNECT_USER,
+  RESPONSE_SERVER_MESSAGE
+} from "../actions/user";
 
-export const subscribeUser = listener => {
+export const connectUser = (listener, user) => {
   const socket = io.connect(`${process.env.PUBLIC_URL}`, {
     secure: true,
     rejectUnauthorized: false,
@@ -10,15 +15,11 @@ export const subscribeUser = listener => {
   });
 
   const connectListener = () => {
-    socket.emit("subscribe", { message: "From Frontend" });
+    socket.emit(RESPONSE_CONNECT_USER, { user });
   };
 
-  const dataListener = res => {
-    listener(RESPONSE_DATA, res);
-  };
-
-  const usersConnectedListener = res => {
-    listener(RESPONSE_USERS, res);
+  const serverMessage = res => {
+    listener(RESPONSE_SERVER_MESSAGE, res);
   };
 
   const disconnectListener = res => {
@@ -26,12 +27,11 @@ export const subscribeUser = listener => {
     console.log("res", res);
   };
 
-  socket.on("connect", connectListener);
-  socket.on("disconnect", disconnectListener);
-  socket.on(RESPONSE_DATA, dataListener);
-  socket.on(RESPONSE_USERS, usersConnectedListener);
+  socket.on(RESPONSE_CONNECT, connectListener);
+  socket.on(RESPONSE_DISCONNECT, disconnectListener);
+  socket.on(RESPONSE_SERVER_MESSAGE, serverMessage);
 
   return () => {
-    socket.emit("unsubscribe");
+    socket.emit(RESPONSE_DISCONNECT);
   };
 };

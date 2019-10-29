@@ -1,16 +1,14 @@
 import {
   USER_SIGNIN_SUCCESS,
-  USER_SUBSCRIBE,
-  USER_UNSUBSCRIBE,
-  USER_DATA,
-  USER_CONNECTED
+  USER_CONNECT,
+  USER_DISCONNECT,
+  USER_SERVER_MESSAGE
 } from "../actions/user";
 
 const INITIAL_STATE = {
   user: null,
-  data: null,
-  isSubscribed: false,
-  connectedUsersCount: 0
+  serverMessage: null,
+  isConnected: false
 };
 
 const reducer = (state = INITIAL_STATE, action) => {
@@ -20,25 +18,20 @@ const reducer = (state = INITIAL_STATE, action) => {
         ...state,
         user: action.payload
       };
-    case USER_SUBSCRIBE:
+    case USER_CONNECT:
       return {
         ...state,
-        isSubscribed: true
+        isConnected: true
       };
-    case USER_UNSUBSCRIBE:
+    case USER_DISCONNECT:
       return {
         ...state,
-        isSubscribed: false
+        isConnected: false
       };
-    case USER_DATA:
+    case USER_SERVER_MESSAGE:
       return {
         ...state,
-        data: action.payload
-      };
-    case USER_CONNECTED:
-      return {
-        ...state,
-        connectedUsersCount: action.payload
+        serverMessage: action.payload
       };
     default:
       return state;
@@ -53,16 +46,12 @@ export const getUser = state => {
   return select(state).user;
 };
 
-export const getData = state => {
-  return select(state).data;
+export const getServerMessage = state => {
+  return select(state).serverMessage;
 };
 
-export const getIsSubscribed = state => {
-  return select(state).isSubscribed;
-};
-
-export const getConnectedUsersCount = state => {
-  return select(state).connectedUsersCount;
+export const isConnected = state => {
+  return select(state).isConnected;
 };
 
 export default reducer;

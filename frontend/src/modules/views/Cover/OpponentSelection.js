@@ -2,7 +2,7 @@ import React from "react";
 import { withStyles, Typography } from "@material-ui/core";
 
 // Layout
-import RulesLayout from "./RulesLayout";
+import GameLayout from "../../../layout/Game";
 
 // Components
 import clsx from "clsx";
@@ -80,7 +80,7 @@ const User = ({ classes, userName, isOnline }) => (
 
 const OpponentSelectionCover = ({ classes, database, connectedUsersCount }) => {
   return (
-    <RulesLayout backgroundClassName={classes.background}>
+    <GameLayout backgroundClassName={classes.background}>
       <Typography align="center" color="inherit" variant="h5">
         Choose opponent
       </Typography>
@@ -95,7 +95,7 @@ const OpponentSelectionCover = ({ classes, database, connectedUsersCount }) => {
             />
           ))}
       </List>
-    </RulesLayout>
+    </GameLayout>
   );
 };
 

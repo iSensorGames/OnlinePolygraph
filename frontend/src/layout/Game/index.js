@@ -10,6 +10,7 @@ const styles = theme => ({
     display: "flex",
     alignItems: "center",
     [theme.breakpoints.up("sm")]: {
+      position: "relative",
       minHeight: 500,
       maxHeight: 1300
     }
@@ -46,7 +47,7 @@ const styles = theme => ({
   }
 });
 
-function WelcomeLayout(props) {
+function Game(props) {
   const { backgroundClassName, children, classes } = props;
 
   return (
@@ -60,10 +61,10 @@ function WelcomeLayout(props) {
   );
 }
 
-WelcomeLayout.propTypes = {
+Game.propTypes = {
   backgroundClassName: PropTypes.string.isRequired,
   children: PropTypes.node.isRequired,
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(WelcomeLayout);
+export default withStyles(styles)(Game);

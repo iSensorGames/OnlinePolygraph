@@ -1,12 +1,16 @@
 export const USER_SIGNIN_SUCCESS = "user/USER_SIGNIN_SUCCESS";
-export const USER_SUBSCRIBE = "users/USER_SUBSCRIBE";
-export const USER_UNSUBSCRIBE = "users/USER_UNSUBSCRIBE";
-export const USER_CONNECTED = "users/USER_CONNECTED";
-export const USER_DATA = "users/USER_DATA";
+export const USER_CONNECT = "users/USER_CONNECT";
+export const USER_DISCONNECT = "users/USER_DISCONNECT";
+export const USER_SERVER_MESSAGE = "users/USER_SERVER_MESSAGE";
+export const USERS_ONLINE = "users/USERS_ONLINE";
 
 // Socket Response
-export const RESPONSE_DATA = "Data";
-export const RESPONSE_USERS = "UsersConnected";
+export const RESPONSE_CONNECT = "connect";
+export const RESPONSE_DISCONNECT = "disconnect";
+export const RESPONSE_JOIN_ROOM = "join_room";
+export const RESPONSE_CONNECT_USER = "connect_user";
+export const RESPONSE_USERS = "users";
+export const RESPONSE_SERVER_MESSAGE = "server_message";
 
 export const saveUser = user => {
   return dispatch => {
@@ -23,28 +27,32 @@ export const saveUser = user => {
   };
 };
 
-export const subscribeUser = () => {
+export const connectUser = () => {
   return (dispatch, getState, { socket }) => {
-    dispatch({ type: USER_SUBSCRIBE });
+    dispatch({ type: USER_CONNECT });
 
-    const unsubscribe = socket.subscribeUser((type, data) => {
+    const user = getState().user;
+
+    const disconnectUser = socket.connectUser((type, data) => {
+      console.log("type", type);
+      console.log("data", data);
       switch (type) {
-        case RESPONSE_DATA:
-          return dispatch({
-            type: USER_DATA,
-            payload: data
-          });
         case RESPONSE_USERS:
           return dispatch({
-            type: USER_CONNECTED,
+            type: USERS_ONLINE,
+            payload: data
+          });
+        case RESPONSE_SERVER_MESSAGE:
+          return dispatch({
+            type: USER_SERVER_MESSAGE,
             payload: data
           });
       }
-    });
+    }, user);
 
     return () => {
-      dispatch({ type: USER_UNSUBSCRIBE });
-      unsubscribe();
+      dispatch({ type: USER_DISCONNECT });
+      disconnectUser();
     };
   };
 };

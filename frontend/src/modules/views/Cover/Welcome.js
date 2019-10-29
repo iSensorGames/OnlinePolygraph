@@ -2,17 +2,17 @@ import React from "react";
 import PropTypes from "prop-types";
 
 // Contants
-import * as ROUTES from "../constants/routes";
+import * as ROUTES from "../../constants/routes";
 
 // Assets
-import logo from "../../static/img/logo.png";
+import logo from "../../../static/img/logo.png";
 
 // Components
 import clsx from "clsx";
 import { withStyles } from "@material-ui/core/styles";
-import Button from "../components/Button";
-import Typography from "../components/Typography";
-import WelcomeLayout from "./WelcomeLayout";
+import Button from "../../components/Button";
+import Typography from "../../components/Typography";
+import GameLayout from "../../../layout/Game";
 
 const styles = theme => ({
   background: {
@@ -54,7 +54,7 @@ function WelcomeCover(props) {
   const { classes } = props;
 
   return (
-    <WelcomeLayout backgroundClassName={classes.background}>
+    <GameLayout backgroundClassName={classes.background}>
       <img src={logo} className={classes.logo} alt="Real or Spiel?" />
       <Typography
         color="inherit"
@@ -88,7 +88,7 @@ function WelcomeCover(props) {
       <Typography variant="body2" color="inherit" className={classes.more}>
         Discover the experience
       </Typography>
-    </WelcomeLayout>
+    </GameLayout>
   );
 }
 

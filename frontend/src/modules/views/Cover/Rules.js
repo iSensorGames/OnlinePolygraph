@@ -3,9 +3,9 @@ import PropTypes from "prop-types";
 
 // Components
 import { withStyles } from "@material-ui/core/styles";
-import Button from "../components/Button";
-import Typography from "../components/Typography";
-import RulesLayout from "./RulesLayout";
+import Button from "../../components/Button";
+import Typography from "../../components/Typography";
+import GameLayout from "../../../layout/Game";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
@@ -129,7 +129,7 @@ function RulesCover(props) {
   const { classes } = props;
 
   return (
-    <RulesLayout backgroundClassName={classes.background}>
+    <GameLayout backgroundClassName={classes.background}>
       <Typography align="center" variant="h3" className={classes.title}>
         Rules
       </Typography>
@@ -156,7 +156,7 @@ function RulesCover(props) {
           />
         )
       )}
-    </RulesLayout>
+    </GameLayout>
   );
 }
 
