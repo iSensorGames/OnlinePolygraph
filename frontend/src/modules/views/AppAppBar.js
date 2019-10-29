@@ -1,82 +1,81 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { compose } from 'recompose';
-import PropTypes from 'prop-types';
+import React from "react";
+import { connect } from "react-redux";
+import { compose } from "recompose";
+import PropTypes from "prop-types";
 
 // Selectors
-import * as userSelectors from '../../reducers/user';
+import * as userSelectors from "../../reducers/user";
 
 // Components
-import clsx from 'clsx';
-import { withStyles } from '@material-ui/core/styles';
-import Link from '@material-ui/core/Link';
-import AppBar from '../components/AppBar';
-import Logout from '../components/Logout';
-import Typography from '../components/Typography';
-import Toolbar, { styles as toolbarStyles } from '../components/Toolbar';
+import clsx from "clsx";
+import { withStyles } from "@material-ui/core/styles";
+import Link from "@material-ui/core/Link";
+import AppBar from "../components/AppBar";
+import Logout from "../components/Logout";
+import Typography from "../components/Typography";
+import Toolbar, { styles as toolbarStyles } from "../components/Toolbar";
 
 // Constants
-import * as ROUTES from '../constants/routes';
-import * as ROLES from '../constants/roles';
+import * as ROUTES from "../constants/routes";
+import * as ROLES from "../constants/roles";
 
 // Assets
-import logo from '../../static/img/logo.png';
+import logo from "../../static/img/logo.png";
 
 const styles = theme => ({
   logoContainer: {
-    alignItems: 'center',
-    display: 'flex',
-    flexDirection: 'row',
-    height: 20,
+    alignItems: "center",
+    display: "flex",
+    flexDirection: "row",
+    height: 20
   },
   logo: {
-    height: 60,
+    height: 60
   },
   title: {
-    color: 'var(--white)',
+    color: "var(--white)",
     fontSize: 24,
     marginLeft: 10,
-    [theme.breakpoints.down('sm')]: {
-      display: 'none',
-    },
+    [theme.breakpoints.down("sm")]: {
+      display: "none"
+    }
   },
   placeholder: toolbarStyles(theme).root,
   toolbar: {
-    justifyContent: 'space-between',
+    justifyContent: "space-between"
   },
   left: {
-    [theme.breakpoints.up('sm')]: {
-      flex: 1,
-    },
+    [theme.breakpoints.up("sm")]: {
+      flex: 1
+    }
   },
   leftLinkActive: {
-    color: theme.palette.common.white,
+    color: theme.palette.common.white
   },
   right: {
     flex: 1,
-    display: 'flex',
-    justifyContent: 'flex-end',
+    display: "flex",
+    justifyContent: "flex-end"
   },
   rightLink: {
     fontSize: 16,
     color: theme.palette.common.white,
-    marginLeft: theme.spacing(3),
+    marginLeft: theme.spacing(3)
   },
   linkSecondary: {
-    color: theme.palette.secondary.main,
-  },
+    color: theme.palette.secondary.main
+  }
 });
 
 const settings = {
-  title: 'Real or Spiel?',
-  game: 'Play Game',
-  admin: 'Admin',
-  signin: 'Sign In',
-  signup: 'Sign Up',
+  title: "Real or Spiel?",
+  game: "Play Game",
+  admin: "Admin",
+  signin: "Sign In",
+  signup: "Sign Up"
 };
 
 const AppAppBar = ({ classes, user }) => {
-  console.log('user', user);
   return user ? (
     <AppAppBarAuth classes={classes} user={user} />
   ) : (
@@ -105,9 +104,9 @@ const AppAppBarAuth = ({ classes, user }) => {
             variant="h6"
             underline="none"
             className={classes.rightLink}
-            href={ROUTES.WELCOME}
+            href={ROUTES.ACCOUNT}
           >
-            {settings.game}
+            {`${user.firstName} ${user.lastName}`}
           </Link>
           {!!user.roles && !!user.roles === ROLES.ADMIN && (
             <Link
@@ -165,12 +164,12 @@ const AppAppBarNonAuth = ({ classes }) => {
 };
 
 AppAppBar.propTypes = {
-  classes: PropTypes.object.isRequired,
+  classes: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => {
   return {
-    user: userSelectors.getUser(state),
+    user: userSelectors.getUser(state)
   };
 };
 

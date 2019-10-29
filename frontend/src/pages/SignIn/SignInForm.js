@@ -65,7 +65,7 @@ const SignInForm = ({ database, history, saveUser }) => {
       .doSignInWithEmailAndPassword(email, password)
       .then(async ({ data }) => {
         if ("error" in data) {
-          setSubmitError(data.error.message);
+          setSubmitError(data.message);
           setSent(false);
           return;
         }
@@ -75,7 +75,7 @@ const SignInForm = ({ database, history, saveUser }) => {
         history.push(ROUTES.WELCOME_ROUTE);
       })
       .catch(error => {
-        setSubmitError(error.message);
+        setSubmitError(error);
         setSent(false);
       });
 

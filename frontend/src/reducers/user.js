@@ -6,13 +6,8 @@ import {
   USER_CONNECTED
 } from "../actions/user";
 
-// Constants
-import * as authConstants from "../modules/constants/auth";
-
 const INITIAL_STATE = {
-  user: JSON.parse(localStorage.getItem(authConstants.KEY))
-    ? JSON.parse(localStorage.getItem(authConstants.KEY)).user
-    : null,
+  user: null,
   data: null,
   isSubscribed: false,
   connectedUsersCount: 0
@@ -23,10 +18,7 @@ const reducer = (state = INITIAL_STATE, action) => {
     case USER_SIGNIN_SUCCESS:
       return {
         ...state,
-        user: {
-          ...state.user,
-          ...action.payload
-        }
+        user: action.payload
       };
     case USER_SUBSCRIBE:
       return {

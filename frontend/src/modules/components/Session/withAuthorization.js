@@ -37,8 +37,6 @@ const withAuthorization = condition => Component => {
           .then(result => {
             const { data } = result;
 
-            console.log("withAuthorization data", data);
-
             if (!condition(data)) {
               history.push(ROUTES.SIGN_IN_ROUTE);
             }

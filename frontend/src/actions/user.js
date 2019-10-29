@@ -10,7 +10,16 @@ export const RESPONSE_USERS = "UsersConnected";
 
 export const saveUser = user => {
   return dispatch => {
-    dispatch({ type: USER_SIGNIN_SUCCESS, payload: user });
+    dispatch({
+      type: USER_SIGNIN_SUCCESS,
+      payload: user
+        ? {
+            ...user,
+            firstName: user.first_name ? user.first_name : user.firstName,
+            lastName: user.last_name ? user.last_name : user.lastName
+          }
+        : null
+    });
   };
 };
 

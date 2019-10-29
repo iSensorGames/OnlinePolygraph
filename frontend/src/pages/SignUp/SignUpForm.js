@@ -85,12 +85,18 @@ const SignUp = ({ database, history, saveUser }) => {
       .then(async result => {
         const { data } = result;
 
+        if ("error" in data) {
+          setSubmitError(data.message);
+          setSent(false);
+          return;
+        }
+
         await saveUser(user);
         localStorage.setItem(authConstants.KEY, JSON.stringify({ ...data }));
         history.push(ROUTES.WELCOME_ROUTE);
       })
       .catch(error => {
-        setSubmitError(error.message);
+        setSubmitError(error);
         setSent(false);
       });
 
