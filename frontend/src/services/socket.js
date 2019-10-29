@@ -15,6 +15,7 @@ export const connectUser = (listener, user) => {
   });
 
   const connectListener = () => {
+    console.log("connectListener", user);
     socket.emit(RESPONSE_CONNECT_USER, { user });
   };
 

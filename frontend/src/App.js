@@ -8,9 +8,6 @@ import "./styles/palette.css";
 // Constants
 import * as ROUTES from "./modules/constants/routes";
 
-// SocketManager
-import { Manager } from "./modules/components/Socket";
-
 // Components
 import { withAuthentication } from "./modules/components/Session";
 import Home from "./pages/Home";
@@ -38,21 +35,15 @@ const App = () => {
           component={ForgotPassword}
         />
         <BrowserRouter basename={ROUTES.BASENAME_GAME}>
-          <Manager>
-            <Switch>
-              <Route exact path={ROUTES.GAME_ROOT_ROUTE} component={Game} />
-              <Route exact path={ROUTES.WELCOME_ROUTE} component={Welcome} />
-              <Route exact path={ROUTES.RULES_ROUTE} component={Rules} />
-              <Route
-                exact
-                path={ROUTES.GAME_SETUP_ROUTE}
-                component={GameSetup}
-              />
-              <Route exact path={ROUTES.TERMS_ROUTE} component={Terms} />
-              <Route exact path={ROUTES.PRIVACY_ROUTE} component={Privacy} />
-              <Route exact path={ROUTES.ADMIN_ROUTE} component={Admin} />
-            </Switch>
-          </Manager>
+          <Switch>
+            <Route exact path={ROUTES.GAME_ROOT_ROUTE} component={Game} />
+            <Route exact path={ROUTES.WELCOME_ROUTE} component={Welcome} />
+            <Route exact path={ROUTES.RULES_ROUTE} component={Rules} />
+            <Route exact path={ROUTES.GAME_SETUP_ROUTE} component={GameSetup} />
+            <Route exact path={ROUTES.TERMS_ROUTE} component={Terms} />
+            <Route exact path={ROUTES.PRIVACY_ROUTE} component={Privacy} />
+            <Route exact path={ROUTES.ADMIN_ROUTE} component={Admin} />
+          </Switch>
         </BrowserRouter>
       </Switch>
     </BrowserRouter>
