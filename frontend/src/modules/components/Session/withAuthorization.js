@@ -1,11 +1,19 @@
 import React from "react";
-
-import AuthUserContext from "./context";
+import { connect } from "react-redux";
 import { compose } from "recompose";
+
+// Selectors
+import * as userSelectors from "../../../reducers/user";
+
+// Componets
 import { withRouter } from "react-router-dom";
 import { withDatabase } from "../Database";
 import * as ROUTES from "../../constants/routes";
 
+/**
+ * @description Check user's authorization and token validity on every page's first load.
+ * @param {*} condition
+ */
 const withAuthorization = condition => Component => {
   class WithAuthorization extends React.Component {
     constructor(props) {
@@ -16,15 +24,15 @@ const withAuthorization = condition => Component => {
       };
     }
     componentDidMount() {
-      const { location } = this.state;
+      const { database, location, history } = this.props;
 
       // Only verify authorization on the initial page load
-      if (location !== this.props.location.pathname) {
+      if (this.state.location !== location.pathname) {
         this.setState({
-          location: this.props.location.pathname
+          location: location.pathname
         });
 
-        this.props.database
+        database
           .onAuthUserListener()
           .then(result => {
             const { data } = result;
@@ -32,27 +40,31 @@ const withAuthorization = condition => Component => {
             console.log("withAuthorization data", data);
 
             if (!condition(data)) {
-              this.props.history.push(ROUTES.SIGN_IN_ROUTE);
+              history.push(ROUTES.SIGN_IN_ROUTE);
             }
           })
           .catch(err => {
-            this.props.history.push(ROUTES.SIGN_IN_ROUTE);
+            history.push(ROUTES.SIGN_IN_ROUTE);
           });
       }
     }
 
     render() {
-      return (
-        <AuthUserContext.Consumer>
-          {({ authUser }) => {
-            return condition(authUser) ? <Component {...this.props} /> : null;
-          }}
-        </AuthUserContext.Consumer>
-      );
+      return condition(this.props.user) ? <Component {...this.props} /> : null;
     }
   }
 
+  const mapStateToProps = state => {
+    return {
+      user: userSelectors.getUser(state)
+    };
+  };
+
   return compose(
+    connect(
+      mapStateToProps,
+      null
+    ),
     withRouter,
     withDatabase
   )(WithAuthorization);

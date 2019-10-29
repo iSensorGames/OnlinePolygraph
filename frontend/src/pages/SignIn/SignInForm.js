@@ -1,45 +1,49 @@
-import withRoot from '../../modules/withRoot';
+import withRoot from "../../modules/withRoot";
 // --- Post bootstrap -----
-import React from 'react';
-import * as ROUTES from '../../modules/constants/routes';
+import React from "react";
+import { connect } from "react-redux";
+import { compose } from "recompose";
+import * as ROUTES from "../../modules/constants/routes";
+
+// Actions
+import * as userActions from "../../actions/user";
 
 // Constants
-import * as authConstants from '../../modules/constants/auth';
+import * as authConstants from "../../modules/constants/auth";
 
 // Components
-import { Field, Form } from 'react-final-form';
-import { makeStyles } from '@material-ui/core/styles';
-import Link from '@material-ui/core/Link';
-import Typography from '../../modules/components/Typography';
-import AppFooter from '../../modules/views/AppFooter';
-import AppAppBar from '../../modules/views/AppAppBar';
-import AppForm from '../../modules/views/AppForm';
-import { email, required } from '../../modules/form/validation';
-import RFTextField from '../../modules/form/RFTextField';
-import FormButton from '../../modules/form/FormButton';
-import FormFeedback from '../../modules/form/FormFeedback';
-import { AuthUserContext } from '../../modules/components/Session';
+import { Field, Form } from "react-final-form";
+import { makeStyles } from "@material-ui/core/styles";
+import Link from "@material-ui/core/Link";
+import Typography from "../../modules/components/Typography";
+import AppFooter from "../../modules/views/AppFooter";
+import AppAppBar from "../../modules/views/AppAppBar";
+import AppForm from "../../modules/views/AppForm";
+import { email, required } from "../../modules/form/validation";
+import RFTextField from "../../modules/form/RFTextField";
+import FormButton from "../../modules/form/FormButton";
+import FormFeedback from "../../modules/form/FormFeedback";
 
 const useStyles = makeStyles(theme => ({
   form: {
-    marginTop: theme.spacing(6),
+    marginTop: theme.spacing(6)
   },
   button: {
     marginTop: theme.spacing(3),
-    marginBottom: theme.spacing(2),
+    marginBottom: theme.spacing(2)
   },
   feedback: {
-    marginTop: theme.spacing(2),
-  },
+    marginTop: theme.spacing(2)
+  }
 }));
 
-const SignInForm = ({ database, history }) => {
+const SignInForm = ({ database, history, saveUser }) => {
   const classes = useStyles();
   const [sent, setSent] = React.useState(false);
   const [submitError, setSubmitError] = React.useState(null);
 
   const validate = values => {
-    const errors = required(['email', 'password'], values);
+    const errors = required(["email", "password"], values);
 
     if (!errors.email) {
       const emailError = email(values.email, values);
@@ -52,7 +56,7 @@ const SignInForm = ({ database, history }) => {
   };
 
   const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
-  const onSubmit = async (values, setAuthUser) => {
+  const onSubmit = async values => {
     const { email, password } = values;
     await sleep(300);
     setSent(true);
@@ -60,13 +64,13 @@ const SignInForm = ({ database, history }) => {
     await database
       .doSignInWithEmailAndPassword(email, password)
       .then(async ({ data }) => {
-        if ('error' in data) {
+        if ("error" in data) {
           setSubmitError(data.error.message);
           setSent(false);
           return;
         }
 
-        await setAuthUser(data.user);
+        await saveUser(data.user);
         localStorage.setItem(authConstants.KEY, JSON.stringify({ ...data }));
         history.push(ROUTES.WELCOME_ROUTE);
       })
@@ -87,68 +91,61 @@ const SignInForm = ({ database, history }) => {
             Sign In
           </Typography>
           <Typography variant="body2" align="center">
-            {'Not a member yet? '}
+            {"Not a member yet? "}
             <Link href={ROUTES.SIGN_UP} align="center" underline="always">
               Sign Up here
             </Link>
           </Typography>
         </React.Fragment>
-        <AuthUserContext.Consumer>
-          {({ setAuthUser }) => (
-            <Form
-              onSubmit={values => onSubmit(values, setAuthUser)}
-              subscription={{ submitting: true }}
-              validate={validate}
-            >
-              {({ handleSubmit, submitting }) => (
-                <form
-                  onSubmit={handleSubmit}
-                  className={classes.form}
-                  noValidate
-                >
-                  <Field
-                    autoComplete="email"
-                    autoFocus={!sent}
-                    component={RFTextField}
-                    disabled={submitting || sent}
-                    fullWidth
-                    label="Email"
-                    margin="normal"
-                    name="email"
-                    required
-                    size="large"
-                  />
-                  <Field
-                    fullWidth
-                    size="large"
-                    component={RFTextField}
-                    disabled={submitting || sent}
-                    required
-                    name="password"
-                    autoComplete="current-password"
-                    label="Password"
-                    type="password"
-                    margin="normal"
-                  />
-                  {submitError ? (
-                    <FormFeedback className={classes.feedback} error>
-                      {submitError}
-                    </FormFeedback>
-                  ) : null}
-                  <FormButton
-                    className={classes.button}
-                    disabled={submitting || sent}
-                    size="large"
-                    color="secondary"
-                    fullWidth
-                  >
-                    {submitting || sent ? 'In progress…' : 'Sign In'}
-                  </FormButton>
-                </form>
-              )}
-            </Form>
+        <Form
+          onSubmit={values => onSubmit(values)}
+          subscription={{ submitting: true }}
+          validate={validate}
+        >
+          {({ handleSubmit, submitting }) => (
+            <form onSubmit={handleSubmit} className={classes.form} noValidate>
+              <Field
+                autoComplete="email"
+                autoFocus={!sent}
+                component={RFTextField}
+                disabled={submitting || sent}
+                fullWidth
+                label="Email"
+                margin="normal"
+                name="email"
+                required
+                size="large"
+              />
+              <Field
+                fullWidth
+                size="large"
+                component={RFTextField}
+                disabled={submitting || sent}
+                required
+                name="password"
+                autoComplete="current-password"
+                label="Password"
+                type="password"
+                margin="normal"
+              />
+              {submitError ? (
+                <FormFeedback className={classes.feedback} error>
+                  {submitError}
+                </FormFeedback>
+              ) : null}
+              <FormButton
+                className={classes.button}
+                disabled={submitting || sent}
+                size="large"
+                color="secondary"
+                fullWidth
+              >
+                {submitting || sent ? "In progress…" : "Sign In"}
+              </FormButton>
+            </form>
           )}
-        </AuthUserContext.Consumer>
+        </Form>
+
         <Typography align="center">
           <Link underline="always" href={ROUTES.FORGOT_PASSWORD}>
             Forgot password?
@@ -160,4 +157,14 @@ const SignInForm = ({ database, history }) => {
   );
 };
 
-export default withRoot(SignInForm);
+const actionCreators = {
+  saveUser: userActions.saveUser
+};
+
+export default compose(
+  withRoot,
+  connect(
+    null,
+    actionCreators
+  )
+)(SignInForm);

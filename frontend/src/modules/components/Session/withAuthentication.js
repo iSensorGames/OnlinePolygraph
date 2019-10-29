@@ -1,64 +1,57 @@
 import React from "react";
+import { connect } from "react-redux";
+import { compose } from "recompose";
 
-import AuthUserContext from "./context";
 import { withDatabase } from "../Database";
+
+// Actions
+import * as userActions from "../../../actions/user";
 
 // Constants
 import * as authConstants from "../../../modules/constants/auth";
 
 const withAuthentication = Component => {
   class WithAuthentication extends React.Component {
-    constructor(props) {
-      super(props);
-
-      this.state = {
-        authUser: JSON.parse(localStorage.getItem(authConstants.KEY))
-          ? JSON.parse(localStorage.getItem(authConstants.KEY)).user
-          : null,
-        setAuthUser: authUser => this.setState({ authUser })
-      };
-    }
-
     componentDidMount() {
-      this.props.database
+      const { database, saveUser } = this.props;
+
+      database
         .onAuthUserListener()
         .then(result => {
           if (result) {
             const { data } = result;
 
             if (!data.success) {
-              this.setState({
-                authUser: null
-              });
+              saveUser(null);
             } else {
               if (data) {
-                this.setState({
-                  authUser: {
-                    ...data
-                  }
-                });
+                saveUser(data);
               }
             }
           }
         })
         .catch(err => {
           localStorage.removeItem(authConstants.KEY);
-          this.setState({
-            authUser: null
-          });
+          saveUser(null);
         });
     }
 
     render() {
-      return (
-        <AuthUserContext.Provider value={this.state}>
-          <Component {...this.props} />
-        </AuthUserContext.Provider>
-      );
+      return <Component {...this.props} />;
     }
   }
 
-  return withDatabase(WithAuthentication);
+  const actionCreators = {
+    saveUser: userActions.saveUser
+  };
+
+  return compose(
+    withDatabase,
+    connect(
+      null,
+      actionCreators
+    )
+  )(WithAuthentication);
 };
 
 export default withAuthentication;
