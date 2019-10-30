@@ -44,16 +44,26 @@ export const signIn = (email, password) => {
   return async (dispatch, getState, { api, browser }) => {
     const response = await api.signIn(email, password);
 
-    console.log("response signIn", response);
+    if ("error" in response) {
+      return response;
+    } else {
+      const { token } = response;
 
-    const { token } = await response.json();
+      browser.updateSession(token);
+      const session = browser.getSession();
 
-    browser.updateSession(token);
+      console.log("before dispatch");
 
-    await dispatch({
-      type: SESSION_AUTH_SIGNIN,
-      payload: response
-    });
+      dispatch({
+        type: SESSION_AUTH_SIGNIN,
+        payload: {
+          token,
+          user: session.user
+        }
+      });
+
+      console.log("after dispatch");
+    }
   };
 };
 
@@ -92,13 +102,13 @@ export const verifyToken = () => {
         error: true
       };
     } else {
-      const user = await api.verifyToken(token);
+      const session = await api.verifyToken(token);
 
-      console.log("verifyToken user", user);
+      console.log("verifyToken session", session);
 
       return dispatch({
         type: SESSION_AUTH_VERIFY,
-        payload: user
+        payload: session
       });
     }
   };

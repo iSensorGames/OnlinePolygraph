@@ -76,6 +76,7 @@ const settings = {
 };
 
 const AppAppBar = ({ classes, user }) => {
+  console.log("AppAppBar", user);
   return user ? (
     <AppAppBarAuth classes={classes} user={user} />
   ) : (

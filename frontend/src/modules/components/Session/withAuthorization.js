@@ -44,7 +44,6 @@ const withAuthorization = Component => {
 
   const mapStateToProps = state => {
     return {
-      user: sessionSelectors.getUser(state),
       previousLocation: sessionSelectors.getPreviousLocation(state)
     };
   };

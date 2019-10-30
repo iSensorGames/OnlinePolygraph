@@ -12,9 +12,9 @@ export const signIn = async (email, password) => {
 
   if (response.status === 401) throw new Error("Invalid credential");
 
-  const { token } = await response.json();
+  const { data } = response;
 
-  return token;
+  return data;
 };
 
 /**
@@ -32,7 +32,9 @@ export const signUp = async params => {
     last_name: params.lastName
   });
 
-  return response;
+  const { data } = response;
+
+  return data;
 };
 
 export const verifyToken = async token => {

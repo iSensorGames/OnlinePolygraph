@@ -23,9 +23,11 @@ const reducer = (state = INITIAL_STATE, action) => {
         ...state
       };
     case SESSION_AUTH_SIGNIN:
+      console.log("SESSION_AUTH_SIGNIN", SESSION_AUTH_SIGNIN);
+      console.log("action.payload", action.payload);
       return {
         ...state,
-        token: action.payload
+        session: action.payload
       };
     case SESSION_AUTH_SIGNUP:
       return {
@@ -57,7 +59,7 @@ export const getSession = state => {
 export const getUser = state => {
   const session = getSession(state);
 
-  if (!!!session) {
+  if (!session) {
     return null;
   }
 
@@ -65,13 +67,9 @@ export const getUser = state => {
 };
 
 export const getUserId = state => {
-  const session = getSession(state);
+  const user = getUser(state);
 
-  if (!!!session) {
-    return null;
-  }
-
-  return session.user.id;
+  return user.id;
 };
 
 export const getPreviousLocation = state => {
@@ -79,7 +77,7 @@ export const getPreviousLocation = state => {
 };
 
 export const getToken = state => {
-  return select(state).token;
+  return getSession(state).token;
 };
 
 export default reducer;

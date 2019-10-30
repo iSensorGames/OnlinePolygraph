@@ -61,24 +61,22 @@ const SignIn = ({ history, classes, signIn }) => {
     await sleep(300);
     setSent(true);
 
-    await signIn()
-      .then(async data => {
-        console.log("signIn", data);
-
+    await signIn(email, password)
+      .then(data => {
+        console.log("before error data", data);
         if ("error" in data) {
           setSubmitError(data.message);
           setSent(false);
-          return;
         }
 
+        console.log("history push time");
         history.push(ROUTES.WELCOME_ROUTE);
+        console.log("history after push");
       })
       .catch(error => {
         setSubmitError(error);
         setSent(false);
       });
-
-    return;
   };
 
   return (

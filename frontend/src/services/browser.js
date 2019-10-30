@@ -31,8 +31,13 @@ export function getSession(token = localStorage.getItem(keys.TOKEN)) {
 
     session = {
       token,
-      userId: profile.id,
-      expiryTime: profile.exp
+      user: {
+        id: profile.id,
+        firstName: profile.first_name,
+        lastName: profile.last_name,
+        email: profile.email,
+        roles: profile.roles
+      }
     };
   } catch (error) {
     session = null;
