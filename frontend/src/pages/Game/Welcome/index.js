@@ -17,7 +17,6 @@ import Typography from "../../modules/components/Typography";
 import BaseLayout from "../../layout/Base";
 
 // Constants
-import * as ROLES from "../../modules/constants/roles";
 import * as ROUTES from "../../modules/constants/routes";
 
 // Styles

@@ -1,3 +1,4 @@
 import withAuthorization from "./withAuthorization";
+import withAuthentication from "./withAuthentication";
 
-export { withAuthorization };
+export { withAuthorization, withAuthentication };
