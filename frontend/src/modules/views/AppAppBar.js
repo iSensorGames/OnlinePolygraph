@@ -83,83 +83,73 @@ const AppAppBar = ({ classes, user }) => {
   );
 };
 
+const AppToolbar = ({ children, classes }) => (
+  <AppBar position="fixed">
+    <Toolbar className={classes.toolbar}>
+      <div className={classes.left} />
+      <Link
+        underline="none"
+        href={ROUTES.HOME}
+        className={classes.logoContainer}
+      >
+        <img src={logo} alt="Real or Spiel logo" className={classes.logo} />
+        <Typography className={classes.title} variant="h6">
+          {settings.title}
+        </Typography>
+      </Link>
+      <div className={classes.right}>{children}</div>
+    </Toolbar>
+  </AppBar>
+);
+
 const AppAppBarAuth = ({ classes, user }) => {
   return (
-    <AppBar position="fixed">
-      <Toolbar className={classes.toolbar}>
-        <div className={classes.left} />
+    <AppToolbar classes={classes}>
+      <Link
+        color="inherit"
+        variant="h6"
+        underline="none"
+        className={classes.rightLink}
+        href={ROUTES.ACCOUNT}
+      >
+        {`${user.firstName} ${user.lastName}`}
+      </Link>
+      {!!user.roles && !!user.roles === ROLES.ADMIN && (
         <Link
+          variant="h6"
           underline="none"
-          href={ROUTES.HOME}
-          className={classes.logoContainer}
+          className={classes.rightLink}
+          href={ROUTES.ADMIN}
         >
-          <img src={logo} alt="Real or Spiel logo" className={classes.logo} />
-          <Typography className={classes.title} variant="h6">
-            {settings.title}
-          </Typography>
+          {settings.admin}
         </Link>
-        <div className={classes.right}>
-          <Link
-            color="inherit"
-            variant="h6"
-            underline="none"
-            className={classes.rightLink}
-            href={ROUTES.ACCOUNT}
-          >
-            {`${user.firstName} ${user.lastName}`}
-          </Link>
-          {!!user.roles && !!user.roles === ROLES.ADMIN && (
-            <Link
-              variant="h6"
-              underline="none"
-              className={classes.rightLink}
-              href={ROUTES.ADMIN}
-            >
-              {settings.admin}
-            </Link>
-          )}
-          <Logout />
-        </div>
-      </Toolbar>
-    </AppBar>
+      )}
+      <Logout />
+    </AppToolbar>
   );
 };
 
 const AppAppBarNonAuth = ({ classes }) => {
   return (
-    <AppBar position="fixed">
-      <Toolbar className={classes.toolbar}>
-        <div className={classes.left} />
-        <Link
-          variant="h6"
-          underline="none"
-          color="inherit"
-          className={classes.title}
-          href={ROUTES.HOME}
-        >
-          {settings.title}
-        </Link>
-        <div className={classes.right}>
-          <Link
-            color="inherit"
-            variant="h6"
-            underline="none"
-            className={classes.rightLink}
-            href={ROUTES.SIGN_IN}
-          >
-            {settings.signin}
-          </Link>
-          <Link
-            variant="h6"
-            underline="none"
-            className={clsx(classes.rightLink, classes.linkSecondary)}
-            href={ROUTES.SIGN_UP}
-          >
-            {settings.signup}
-          </Link>
-        </div>
-      </Toolbar>
-    </AppBar>
+    <AppToolbar classes={classes}>
+      <Link
+        color="inherit"
+        variant="h6"
+        underline="none"
+        className={classes.rightLink}
+        href={ROUTES.SIGN_IN}
+      >
+        {settings.signin}
+      </Link>
+      <Link
+        variant="h6"
+        underline="none"
+        className={clsx(classes.rightLink, classes.linkSecondary)}
+        href={ROUTES.SIGN_UP}
+      >
+        {settings.signup}
+      </Link>
+    </AppToolbar>
   );
 };
 

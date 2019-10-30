@@ -1,8 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
 import clsx from "clsx";
-import { withStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
+
+// Styles
+import { withStyles } from "@material-ui/core/styles";
 
 const styles = theme => ({
   root: {
@@ -47,7 +49,7 @@ const styles = theme => ({
   }
 });
 
-function Game(props) {
+function Base(props) {
   const { backgroundClassName, children, classes } = props;
 
   return (
@@ -61,10 +63,10 @@ function Game(props) {
   );
 }
 
-Game.propTypes = {
+Base.propTypes = {
   backgroundClassName: PropTypes.string.isRequired,
   children: PropTypes.node.isRequired,
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(Game);
+export default withStyles(styles)(Base);

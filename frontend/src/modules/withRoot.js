@@ -3,6 +3,12 @@ import { ThemeProvider } from "@material-ui/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import theme from "./theme";
 
+// Assets
+import "bootstrap/dist/css/bootstrap.min.css";
+import "../static/css/lib/index.css";
+import "../static/css/lib/template.css";
+import "../static/css/lib/palette.css";
+
 function withRoot(Component) {
   function WithRoot(props) {
     return (

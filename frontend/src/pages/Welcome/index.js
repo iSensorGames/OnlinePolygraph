@@ -1,35 +1,107 @@
 import withRoot from "../../modules/withRoot";
 // --- Post bootstrap -----
-import React, { Component } from "react";
+import React from "react";
 
-// Styles
+// Assets
 import "./welcome.css";
+import logo from "../../static/img/logo.png";
 
 // Components
+import clsx from "clsx";
 import { compose } from "recompose";
 import { withAuthorization } from "../../modules/components/Session";
-import { withSocket } from "../../modules/components/Socket";
-import AppAppBar from "../../modules/views/AppAppBar";
-import WelcomeCover from "../../modules/views/Cover/Welcome";
+import Button from "../../modules/components/Button";
+import Typography from "../../modules/components/Typography";
+
+// Layout
+import BaseLayout from "../../layout/Base";
 
 // Constants
 import * as ROLES from "../../modules/constants/roles";
+import * as ROUTES from "../../modules/constants/routes";
 
-class Welcome extends Component {
-  render() {
-    return (
-      <React.Fragment>
-        <AppAppBar />
-        <WelcomeCover />
-      </React.Fragment>
-    );
+// Styles
+import { withStyles } from "@material-ui/core/styles";
+const styles = theme => ({
+  background: {
+    backgroundColor: "#43CEEB", // Average color of the background image.
+    backgroundPosition: "center"
+  },
+  button: {
+    marginBottom: 20,
+    minWidth: 200
+  },
+  actionButton: {
+    backgroundColor: "#FFDE07",
+    marginBottom: 20,
+    minWidth: 200
+  },
+  logo: {
+    height: 200,
+    [theme.breakpoints.up("sm")]: {
+      height: "inherit"
+    }
+  },
+  h5: {
+    marginBottom: theme.spacing(4),
+    marginTop: theme.spacing(4),
+    [theme.breakpoints.up("sm")]: {
+      marginTop: theme.spacing(10)
+    }
+  },
+  slogan: {
+    fontWeight: "bold",
+    fontSize: 25
+  },
+  more: {
+    marginTop: theme.spacing(2)
   }
-}
+});
+
+const Welcome = ({ classes }) => {
+  return (
+    <BaseLayout backgroundClassName={classes.background}>
+      <img src={logo} className={classes.logo} alt="Real or Spiel?" />
+      <Typography
+        color="inherit"
+        align="center"
+        variant="h5"
+        className={clsx(classes.h5, classes.slogan)}
+      >
+        A multiplayer game for devious people. Enhance your detection and
+        persuading skills. Gain extra points. Be the winner.
+      </Typography>
+      <Button
+        color="secondary"
+        variant="contained"
+        size="large"
+        className={classes.button}
+        component="a"
+        href={ROUTES.RULES}
+      >
+        Rules
+      </Button>
+      <Button
+        color="primary"
+        variant="contained"
+        size="large"
+        className={classes.actionButton}
+        component="a"
+        href={ROUTES.GAME_SETUP}
+      >
+        Start
+      </Button>
+      <Typography variant="body2" color="inherit" className={classes.more}>
+        Discover the experience
+      </Typography>
+    </BaseLayout>
+  );
+};
 
 const condition = authUser => authUser && authUser.roles === ROLES.USER;
 
 export default compose(
   withAuthorization(condition),
-  withSocket,
+  withStyles(styles),
   withRoot
 )(Welcome);

@@ -1,6 +1,5 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import "./index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 
@@ -10,10 +9,6 @@ import Database, { DatabaseContext } from "./modules/components/Database";
 // Redux Setup
 import { Provider } from "react-redux";
 import store from "./store";
-
-// Styles
-import "bootstrap/dist/css/bootstrap.min.css";
-import "./template.css";
 
 ReactDOM.render(
   <Provider store={store}>
