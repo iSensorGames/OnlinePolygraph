@@ -5,15 +5,15 @@ import {
   RESPONSE_DISCONNECT,
   RESPONSE_CONNECT_USER,
   RESPONSE_SERVER_MESSAGE
-} from "../actions/user";
+} from "../actions/session";
 
-export const connectUser = (listener, user) => {
-  const socket = io.connect(`${process.env.PUBLIC_URL}`, {
-    secure: true,
-    rejectUnauthorized: false,
-    path: "/users/socket.io"
-  });
+const socket = io.connect(`${process.env.PUBLIC_URL}`, {
+  secure: true,
+  rejectUnauthorized: false,
+  path: "/users/socket.io"
+});
 
+export const openConnection = (listener, user) => {
   const connectListener = () => {
     console.log("connectListener", user);
     socket.emit(RESPONSE_CONNECT_USER, { user });

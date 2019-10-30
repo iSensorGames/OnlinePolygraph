@@ -98,10 +98,8 @@ const Welcome = ({ classes }) => {
   );
 };
 
-const condition = authUser => authUser && authUser.roles === ROLES.USER;
-
 export default compose(
-  withAuthorization(condition),
+  withAuthorization,
   withStyles(styles),
   withRoot
 )(Welcome);

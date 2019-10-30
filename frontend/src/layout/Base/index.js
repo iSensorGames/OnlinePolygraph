@@ -1,4 +1,6 @@
+import withRoot from "../../modules/withRoot";
 import React from "react";
+import { compose } from "recompose";
 import PropTypes from "prop-types";
 import clsx from "clsx";
 import Container from "@material-ui/core/Container";
@@ -69,4 +71,7 @@ Base.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(Base);
+export default compose(
+  withRoot,
+  withStyles(styles)
+)(Base);

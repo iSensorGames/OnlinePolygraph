@@ -2,42 +2,55 @@ import React from "react";
 import { connect } from "react-redux";
 
 // Selectors
-import * as userSelectors from "../../../reducers/user";
+import * as sessionSelectors from "../../../reducers/session";
 
 // Actions
-import * as userActions from "../../../actions/user";
+import * as sessionActions from "../../../actions/session";
 
 class Manager extends React.Component {
-  componentDidMount() {
-    const { connectUser, isConnected } = this.props;
+  initializeConnection() {
+    const { openConnection, token } = this.props;
 
-    console.log("withSocket isConnected", isConnected);
-
-    if (!isConnected) {
-      this.disconnectUser = connectUser();
-    }
+    this.reconnect =
+      typeof this.reconnect === "function"
+        ? this.reconnect({ token })
+        : openConnection({ token });
   }
-  componentWillUnmount() {
-    if (typeof this.disconnectUser === "function") {
-      this.disconnectUser();
+
+  terminateConnection() {
+    if (typeof this.reconnect !== "function") {
+      return;
     }
+
+    this.reconnect(false);
+  }
+  componentDidMount() {
+    this.initializeConnection();
+  }
+
+  componentWillUnmount() {
+    this.terminateConnection();
   }
 
   render() {
-    const { children } = this.props;
+    const { children, token } = this.props;
 
-    return <div>{children}</div>;
+    if (!token) {
+      return null;
+    }
+
+    return { children };
   }
 }
 
 const mapStateToProps = state => {
   return {
-    isConnected: userSelectors.isConnected(state)
+    token: sessionSelectors.getToken(state)
   };
 };
 
 const actionCreators = {
-  connectUser: userActions.connectUser
+  openConnection: sessionActions.openConnection
 };
 
 export default connect(

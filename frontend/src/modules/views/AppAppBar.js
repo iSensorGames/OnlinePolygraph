@@ -4,7 +4,7 @@ import { compose } from "recompose";
 import PropTypes from "prop-types";
 
 // Selectors
-import * as userSelectors from "../../reducers/user";
+import * as sessionSelectors from "../../reducers/session";
 
 // Components
 import clsx from "clsx";
@@ -159,7 +159,7 @@ AppAppBar.propTypes = {
 
 const mapStateToProps = state => {
   return {
-    user: userSelectors.getUser(state)
+    user: sessionSelectors.getUser(state)
   };
 };
 

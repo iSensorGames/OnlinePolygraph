@@ -3,18 +3,13 @@ import ReactDOM from "react-dom";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 
-// Components
-import Database, { DatabaseContext } from "./modules/components/Database";
-
 // Redux Setup
 import { Provider } from "react-redux";
 import store from "./store";
 
 ReactDOM.render(
   <Provider store={store}>
-    <DatabaseContext.Provider value={new Database()}>
-      <App />
-    </DatabaseContext.Provider>
+    <App />
   </Provider>,
   document.getElementById("root")
 );

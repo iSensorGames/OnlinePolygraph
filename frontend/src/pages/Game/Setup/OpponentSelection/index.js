@@ -2,7 +2,6 @@ import React from "react";
 import { compose } from "recompose";
 
 // Component
-import { withDatabase } from "../../../../modules/components/Database";
 import Typography from "../../../../modules/components/Typography";
 import clsx from "clsx";
 import List from "@material-ui/core/List";
@@ -103,7 +102,4 @@ const OpponentSelection = ({ classes }) => {
   );
 };
 
-export default compose(
-  withStyles(styles),
-  withDatabase
-)(OpponentSelection);
+export default compose(withStyles(styles))(OpponentSelection);

@@ -1,5 +1,3 @@
-import withRoot from "../../modules/withRoot";
-// --- Post bootstrap -----
 import React from "react";
 
 // Views
@@ -11,7 +9,7 @@ import ProductValues from "../../modules/views/ProductValues";
 import ProductHowItWorks from "../../modules/views/ProductHowItWorks";
 import ProductCTA from "../../modules/views/ProductCTA";
 
-function Index() {
+const Index = () => {
   return (
     <React.Fragment>
       <ProductHero />
@@ -23,6 +21,6 @@ function Index() {
       <AppFooter />
     </React.Fragment>
   );
-}
+};
 
-export default withRoot(Index);
+export default Index;

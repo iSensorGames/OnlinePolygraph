@@ -4,17 +4,16 @@ import { compose } from "recompose";
 import * as ROUTES from "../../constants/routes";
 
 // Actions
-import * as userActions from "../../../actions/user";
+import * as sessionActions from "../../../actions/session";
 
 // Components
 import clsx from "clsx";
 import { withRouter } from "react-router";
-import { withDatabase } from "../Database";
 
 // Styles
 import "./logout.css";
 
-const Logout = ({ database, history, saveUser }) => (
+const Logout = ({ history, signOut }) => (
   <div
     className={clsx(
       "Logout-btn",
@@ -24,17 +23,16 @@ const Logout = ({ database, history, saveUser }) => (
       "Logout-linkSecondary-11"
     )}
     onClick={() => {
-      database.doSignOut();
-      saveUser(null);
+      signOut();
       history.push(ROUTES.SIGN_IN);
     }}
   >
-    {"Logout"}
+    Logout
   </div>
 );
 
 const actionCreators = {
-  saveUser: userActions.saveUser
+  signOut: sessionActions.signOut
 };
 
 export default compose(
@@ -42,6 +40,5 @@ export default compose(
     null,
     actionCreators
   ),
-  withRouter,
-  withDatabase
+  withRouter
 )(Logout);

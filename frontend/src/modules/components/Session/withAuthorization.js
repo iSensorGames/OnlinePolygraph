@@ -3,18 +3,19 @@ import { connect } from "react-redux";
 import { compose } from "recompose";
 
 // Selectors
-import * as userSelectors from "../../../reducers/user";
+import * as sessionSelectors from "../../../reducers/session";
+
+// ACTIONS
+import * as sessionActions from "../../../actions/session";
 
 // Componets
 import { withRouter } from "react-router-dom";
-import { withDatabase } from "../Database";
 import * as ROUTES from "../../constants/routes";
 
 /**
  * @description Check user's authorization and token validity on every page's first load.
- * @param {*} condition
  */
-const withAuthorization = condition => Component => {
+const withAuthorization = Component => {
   class WithAuthorization extends React.Component {
     constructor(props) {
       super(props);
@@ -23,8 +24,9 @@ const withAuthorization = condition => Component => {
         location: ""
       };
     }
+
     componentDidMount() {
-      const { database, location, history } = this.props;
+      const { verifyToken, location, history } = this.props;
 
       // Only verify authorization on the initial page load
       if (this.state.location !== location.pathname) {
@@ -32,14 +34,11 @@ const withAuthorization = condition => Component => {
           location: location.pathname
         });
 
-        database
-          .onAuthUserListener()
+        verifyToken
           .then(result => {
             const { data } = result;
 
-            if (!condition(data)) {
-              history.push(ROUTES.SIGN_IN_ROUTE);
-            }
+            console.log("verifyToken data", data);
           })
           .catch(err => {
             history.push(ROUTES.SIGN_IN_ROUTE);
@@ -48,23 +47,26 @@ const withAuthorization = condition => Component => {
     }
 
     render() {
-      return condition(this.props.user) ? <Component {...this.props} /> : null;
+      return <Component {...this.props} />;
     }
   }
 
   const mapStateToProps = state => {
     return {
-      user: userSelectors.getUser(state)
+      user: sessionSelectors.getUser(state)
     };
+  };
+
+  const actionCreators = {
+    verifyToken: sessionActions.verifyToken
   };
 
   return compose(
     connect(
       mapStateToProps,
-      null
+      actionCreators
     ),
-    withRouter,
-    withDatabase
+    withRouter
   )(WithAuthorization);
 };
 

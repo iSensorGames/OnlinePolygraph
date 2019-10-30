@@ -1,4 +1,5 @@
-import * as api from './api';
-import * as socket from './socket';
+import * as api from "./api";
+import * as socket from "./socket";
+import * as browser from "./browser";
 
-export { api, socket };
+export { api, socket, browser };
