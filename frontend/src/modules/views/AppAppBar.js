@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { compose } from "recompose";
 import PropTypes from "prop-types";
@@ -75,13 +75,36 @@ const settings = {
   signup: "Sign Up"
 };
 
-const AppAppBar = ({ classes, user }) => {
-  return !!user ? (
-    <AppAppBarAuth classes={classes} user={user} />
-  ) : (
-    <AppAppBarNonAuth classes={classes} />
-  );
-};
+class AppAppBar extends React.Component {
+  state = {
+    user: null
+  };
+
+  componentDidUpdate() {
+    this.setState({
+      user: this.props.user
+    });
+  }
+
+  componentDidUpdate({ user }) {
+    if (user !== this.props.user) {
+      this.setState({
+        user: this.props.user
+      });
+    }
+  }
+
+  render() {
+    const { classes } = this.props;
+    const { user } = this.state;
+
+    return !!user ? (
+      <AppAppBarAuth classes={classes} user={user} />
+    ) : (
+      <AppAppBarNonAuth classes={classes} />
+    );
+  }
+}
 
 const AppToolbar = ({ children, classes }) => (
   <AppBar position="fixed">
@@ -103,7 +126,6 @@ const AppToolbar = ({ children, classes }) => (
 );
 
 const AppAppBarAuth = ({ classes, user }) => {
-  console.log("AppAppBarAuth user", user);
   return (
     <AppToolbar classes={classes}>
       <Link

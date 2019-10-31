@@ -1,3 +1,4 @@
+import { combineReducers } from "redux";
 import {
   SESSION_SERVER_MESSAGE,
   SESSION_ONLINE,
@@ -5,18 +6,41 @@ import {
   SESSION_AUTH_SIGNIN_SUCCESS,
   SESSION_AUTH_SIGNIN_FAILURE,
   SESSION_AUTH_SIGNUP,
-  SESSION_AUTH_VERIFY,
   SESSION_LOCATION
 } from "../actions/session";
 
-const INITIAL_STATE = {
+const INITIAL_SOCKET_STATE = {
+  usersOnline: [],
+  serverMessage: null
+};
+
+const INITIAL_SIGNIN_STATE = {
   isFetching: false,
   errorMessage: null,
   session: null,
-  location: ""
+  location: null
 };
 
-const reducer = (state = INITIAL_STATE, action) => {
+const socketResponse = (state = INITIAL_SOCKET_STATE, action) => {
+  switch (action.type) {
+    case SESSION_SERVER_MESSAGE: {
+      return {
+        ...state,
+        serverMessage: action.payload
+      };
+    }
+    case SESSION_ONLINE: {
+      return {
+        ...state,
+        usersOnline: action.payload
+      };
+    }
+    default:
+      return state;
+  }
+};
+
+const signIn = (state = INITIAL_SIGNIN_STATE, action) => {
   switch (action.type) {
     case SESSION_AUTH_SIGNIN_REQUEST: {
       return {
@@ -53,25 +77,32 @@ const reducer = (state = INITIAL_STATE, action) => {
   }
 };
 
-function select(state) {
-  return state.session;
-}
+export default combineReducers({
+  socketResponse,
+  signIn
+});
+
+const select = state => state.session;
+const getSocketResponse = state => select(state).socketResponse;
+const getSignIn = state => select(state).signIn;
 
 export const getIsFetching = state => {
-  return select(state).isFetching;
+  return getSignIn(state).isFetching;
 };
 
 export const getErrorMessage = state => {
-  return select(state).errorMessage;
+  return getSignIn(state).errorMessage;
 };
 
 export const getSession = state => {
-  const session = select(state).session;
+  const session = getSignIn(state).session;
   return session;
 };
 
 export const getUser = state => {
   const session = getSession(state);
+
+  console.log("getUser session", session);
 
   if (!session) {
     return null;
@@ -83,17 +114,26 @@ export const getUser = state => {
 export const getUserId = state => {
   const user = getUser(state);
 
+  console.log("getUserId user", user);
+
+  if (!user) {
+    return null;
+  }
+
   return user.id;
 };
 
 export const getPreviousLocation = state => {
-  const location = select(state).location;
+  const location = getSignIn(state).location;
   return location;
 };
 
 export const getToken = state => {
-  const token = getSession(state).token;
-  return token;
-};
+  const session = getSession(state);
 
-export default reducer;
+  if (!session) {
+    return null;
+  }
+
+  return session.token;
+};

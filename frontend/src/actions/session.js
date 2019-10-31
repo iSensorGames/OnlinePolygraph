@@ -11,7 +11,6 @@ export const SESSION_AUTH_SIGNIN_FAILURE =
   "session/SESSION_AUTH_SIGNIN_FAILURE";
 export const SESSION_AUTH_SIGNUP = "session/SESSION_AUTH_SIGNUP";
 export const SESSION_AUTH_SIGNOUT = "session/SESSION_AUTH_SIGNOUT";
-export const SESSION_AUTH_VERIFY = "session/SESSION_AUTH_VERIFY";
 export const SESSION_LOCATION = "session/SESSION_LOCATION";
 
 // Socket Response
@@ -26,23 +25,28 @@ const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 export const openConnection = () => {
   return async (dispatch, getState, { socket }) => {
-    // const state = getState();
-    // const userId = sessionSelectors.getUserId(state);
-    // const listener = (type, data) => {
-    //   switch (type) {
-    //     case RESPONSE_USERS:
-    //       return dispatch({
-    //         type: SESSION_ONLINE,
-    //         payload: data
-    //       });
-    //     case RESPONSE_SERVER_MESSAGE:
-    //       return dispatch({
-    //         type: SESSION_SERVER_MESSAGE,
-    //         payload: data
-    //       });
-    //   }
-    // };
-    // return socket.openConnection(listener, userId);
+    const state = getState();
+    const userId = sessionSelectors.getUserId(state);
+
+    if (!userId) {
+      return null;
+    }
+
+    const listener = (type, data) => {
+      switch (type) {
+        case RESPONSE_USERS:
+          return dispatch({
+            type: SESSION_ONLINE,
+            payload: data
+          });
+        case RESPONSE_SERVER_MESSAGE:
+          return dispatch({
+            type: SESSION_SERVER_MESSAGE,
+            payload: data
+          });
+      }
+    };
+    return socket.openConnection(listener, userId);
   };
 };
 
@@ -82,8 +86,6 @@ export const signUp = user => {
   return async (dispatch, getState, { api, browser }) => {
     const response = await api.signUp(user);
 
-    console.log("response signUp", response);
-
     const { token } = await response.json();
     browser.updateSession(token);
 
@@ -106,22 +108,27 @@ export const signOut = () => {
 
 export const verifyToken = () => {
   return async (dispatch, getState, { api, browser }) => {
-    const token = browser.getSession();
+    dispatch({
+      type: SESSION_AUTH_SIGNIN_REQUEST
+    });
 
-    if (!token) {
-      return {
-        error: true
-      };
-    } else {
-      const session = await api.verifyToken(token);
+    const token = browser.getToken();
+    return api.verifyToken(token).then(
+      () => {
+        const session = browser.getSession();
 
-      console.log("verifyToken session", session);
-
-      return dispatch({
-        type: SESSION_AUTH_VERIFY,
-        payload: session
-      });
-    }
+        dispatch({
+          type: SESSION_AUTH_SIGNIN_SUCCESS,
+          payload: session
+        });
+      },
+      error => {
+        dispatch({
+          type: SESSION_AUTH_SIGNIN_FAILURE,
+          payload: error.message
+        });
+      }
+    );
   };
 };
 

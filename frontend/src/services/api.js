@@ -11,8 +11,8 @@ export const signIn = async (email, password) => {
   const response = await post("/signin", { email, password });
   const { data } = response;
 
-  if ("error" in data) throw new Error(data.message);
   if (response.status === 401) throw new Error("Invalid credential");
+  if ("error" in data) throw new Error(data.message);
 
   return data;
 };
@@ -37,10 +37,21 @@ export const signUp = async params => {
   return data;
 };
 
+/**
+ * @description Verify Token's validity
+ * @param {*} token
+ */
 export const verifyToken = async token => {
+  if (!token) throw new Error("Token is null");
+
   const response = await post("/verify", {
     headers: { Authorization: `Bearer ${token}` }
   });
+  const { data } = response;
 
-  return response;
+  if (response.status !== 200)
+    throw new Error("Something went wrong verifying the token");
+  if (!data.success) throw new Error(data.message);
+
+  return data;
 };

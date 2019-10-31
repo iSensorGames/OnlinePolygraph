@@ -13,10 +13,9 @@ const socket = io.connect(`${process.env.PUBLIC_URL}`, {
   path: "/users/socket.io"
 });
 
-export const openConnection = (listener, user) => {
+export const openConnection = (listener, userId) => {
   const connectListener = () => {
-    console.log("connectListener", user);
-    socket.emit(RESPONSE_CONNECT_USER, { user });
+    socket.emit(RESPONSE_CONNECT_USER, { userId });
   };
 
   const serverMessage = res => {

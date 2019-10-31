@@ -5,9 +5,9 @@ import "./welcome.css";
 import logo from "../../../static/img/logo.png";
 
 // Components
+import { withAuthorization } from "../../../modules/components/Session";
 import clsx from "clsx";
 import { compose } from "recompose";
-import { withAuthorization } from "../../../modules/components/Session";
 import Button from "../../../modules/components/Button";
 import Typography from "../../../modules/components/Typography";
 

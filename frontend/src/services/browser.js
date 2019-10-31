@@ -5,8 +5,12 @@ const keys = {
   SETTINGS: "settings"
 };
 
+export function getToken() {
+  return localStorage.getItem(keys.TOKEN);
+}
+
 export function getProfile(token) {
-  return decode(token ? token : localStorage.getItem(keys.TOKEN));
+  return decode(token ? token : getToken());
 }
 
 export function updateSession(token) {
@@ -23,7 +27,7 @@ export function updateSession(token) {
   }
 }
 
-export function getSession(token = localStorage.getItem(keys.TOKEN)) {
+export function getSession(token = getToken()) {
   let session = {};
 
   try {

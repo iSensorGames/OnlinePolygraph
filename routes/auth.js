@@ -10,10 +10,11 @@ const emailIsValid = email => {
 
 module.exports = ({ app, db }) => {
   app.post("/api/verify", middleware.checkToken, (req, res) => {
-    return res.json({
-      success: true,
-      ...req.payload
-    });
+    return res
+      .json({
+        success: true
+      })
+      .status(200);
   });
   app.post("/api/signup", (req, res) => {
     const { first_name, last_name, email, password, roles } = req.body;

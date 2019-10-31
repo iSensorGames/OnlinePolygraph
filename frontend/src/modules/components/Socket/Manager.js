@@ -9,47 +9,21 @@ import * as sessionActions from "../../../actions/session";
 
 class Manager extends React.Component {
   initializeConnection() {
-    const { openConnection, token } = this.props;
+    const { openConnection } = this.props;
 
-    console.log("Manager initializeConnection");
-
-    this.reconnect =
-      typeof this.reconnect === "function"
-        ? this.reconnect({ token })
-        : openConnection({ token });
+    openConnection();
   }
 
-  terminateConnection() {
-    if (typeof this.reconnect !== "function") {
-      return;
-    }
-
-    this.reconnect(false);
-  }
   componentDidMount() {
     this.initializeConnection();
   }
 
-  componentWillUnmount() {
-    this.terminateConnection();
-  }
-
   render() {
-    const { children, token } = this.props;
+    const { children } = this.props;
 
-    if (!token) {
-      return null;
-    }
-
-    return { children };
+    return children;
   }
 }
-
-// const mapStateToProps = state => {
-//   return {
-//     token: sessionSelectors.getToken(state)
-//   };
-// };
 
 const actionCreators = {
   openConnection: sessionActions.openConnection

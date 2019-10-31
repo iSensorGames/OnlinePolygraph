@@ -10,10 +10,10 @@ import * as sessionActions from "../../../actions/session";
  */
 const withAuthentication = Component => {
   class WithAuthentication extends React.Component {
-    async componentDidMount() {
+    componentDidMount() {
       const { verifyToken } = this.props;
 
-      await verifyToken();
+      verifyToken();
     }
 
     render() {

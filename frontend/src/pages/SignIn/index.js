@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { compose } from "recompose";
 import { withRouter } from "react-router";
@@ -41,7 +41,14 @@ const styles = theme => ({
   }
 });
 
-const SignIn = ({ history, classes, isFetching, errorMessage, signIn }) => {
+const SignIn = ({
+  history,
+  classes,
+  user,
+  isFetching,
+  errorMessage,
+  signIn
+}) => {
   const validate = values => {
     const errors = required(["email", "password"], values);
 
@@ -58,9 +65,16 @@ const SignIn = ({ history, classes, isFetching, errorMessage, signIn }) => {
   const onSubmit = async values => {
     const { email, password } = values;
     await signIn(email, password);
-    console.log("ROUTES.WELCOME_ROUTE", ROUTES.WELCOME_ROUTE);
-    // history.push(ROUTES.WELCOME_ROUTE);
   };
+
+  // Redirect if user exists
+  if (!!user) {
+    history.push(ROUTES.WELCOME);
+  }
+
+  if (isFetching) {
+    return null;
+  }
 
   return (
     <BaseLayout>
@@ -138,6 +152,7 @@ const SignIn = ({ history, classes, isFetching, errorMessage, signIn }) => {
 
 const mapStateToProps = state => {
   return {
+    user: sessionSelectors.getUser(state),
     isFetching: sessionSelectors.getIsFetching(state),
     errorMessage: sessionSelectors.getErrorMessage(state)
   };

@@ -17,39 +17,41 @@ import * as ROUTES from "../../constants/routes";
  */
 const withAuthorization = Component => {
   class WithAuthorization extends React.Component {
-    async componentDidMount() {
+    componentDidMount() {
       const {
         verifyToken,
         updateLocation,
         previousLocation,
-        location,
-        history
+        location
       } = this.props;
 
-      console.log("WithAuthorization previousLocation", previousLocation);
-      console.log("WithAuthorization location", location);
+      console.log("WithAuthorization");
 
       // Only verify authorization only on initial page load
       // Redirect if token is expired
       if (previousLocation !== location.pathname) {
-        await updateLocation(location.pathname);
-        const response = await verifyToken();
-        if ("error" in response) {
-          history.push(ROUTES.SIGN_IN);
-        }
+        updateLocation(location.pathname);
+        verifyToken();
       }
     }
 
     render() {
+      const { errorMessage, history } = this.props;
+      if (errorMessage) {
+        history.push(ROUTES.SIGN_IN);
+        return null;
+      }
+
       return <Component {...this.props} />;
     }
   }
 
-  // const mapStateToProps = state => {
-  //   return {
-  //     previousLocation: sessionSelectors.getPreviousLocation(state)
-  //   };
-  // };
+  const mapStateToProps = state => {
+    return {
+      previousLocation: sessionSelectors.getPreviousLocation(state),
+      errorMessage: sessionSelectors.getErrorMessage(state)
+    };
+  };
 
   const actionCreators = {
     verifyToken: sessionActions.verifyToken,
@@ -59,7 +61,7 @@ const withAuthorization = Component => {
   return compose(
     withRouter,
     connect(
-      null,
+      mapStateToProps,
       actionCreators
     )
   )(WithAuthorization);
