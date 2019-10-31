@@ -1,5 +1,3 @@
-import withRoot from "../../modules/withRoot";
-// --- Post bootstrap -----
 import React from "react";
 
 // Assets
@@ -7,16 +5,16 @@ import "./rules.css";
 
 // Components
 import { compose } from "recompose";
-import { withAuthorization } from "../../modules/components/Session";
-import Button from "../../modules/components/Button";
-import Typography from "../../modules/components/Typography";
-import BaseLayout from "../../layout/Base";
+import { withAuthorization } from "../../../modules/components/Session";
+import Button from "../../../modules/components/Button";
+import Typography from "../../../modules/components/Typography";
+import BaseLayout from "../../../layout/Base";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 
 // Constants
-import * as ROLES from "../../modules/constants/roles";
+import * as ROLES from "../../../modules/constants/roles";
 
 // Styles
 import { withStyles } from "@material-ui/core/styles";
@@ -167,6 +165,5 @@ const Rules = ({ classes }) => {
 
 export default compose(
   withAuthorization,
-  withStyles(styles),
-  withRoot
+  withStyles(styles)
 )(Rules);

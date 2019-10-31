@@ -1,50 +1,55 @@
 import {
   SESSION_SERVER_MESSAGE,
   SESSION_ONLINE,
-  SESSION_AUTH_SIGNIN,
+  SESSION_AUTH_SIGNIN_REQUEST,
+  SESSION_AUTH_SIGNIN_SUCCESS,
+  SESSION_AUTH_SIGNIN_FAILURE,
   SESSION_AUTH_SIGNUP,
   SESSION_AUTH_VERIFY,
   SESSION_LOCATION
 } from "../actions/session";
 
 const INITIAL_STATE = {
+  isFetching: false,
+  errorMessage: null,
   session: null,
   location: ""
 };
 
 const reducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case SESSION_SERVER_MESSAGE:
-      return {
-        ...state
-      };
-    case SESSION_ONLINE:
-      return {
-        ...state
-      };
-    case SESSION_AUTH_SIGNIN:
-      console.log("SESSION_AUTH_SIGNIN", SESSION_AUTH_SIGNIN);
-      console.log("action.payload", action.payload);
+    case SESSION_AUTH_SIGNIN_REQUEST: {
       return {
         ...state,
-        session: action.payload
+        isFetching: true,
+        errorMessage: null
       };
-    case SESSION_AUTH_SIGNUP:
-      return {
-        ...state
-      };
-    case SESSION_AUTH_VERIFY:
+    }
+    case SESSION_AUTH_SIGNIN_FAILURE: {
       return {
         ...state,
-        session: action.payload
+        session: null,
+        isFetching: false,
+        errorMessage: action.payload
       };
-    case SESSION_LOCATION:
+    }
+    case SESSION_AUTH_SIGNIN_SUCCESS: {
+      return {
+        ...state,
+        session: action.payload,
+        isFetching: false,
+        errorMessage: null
+      };
+    }
+    case SESSION_LOCATION: {
       return {
         ...state,
         location: action.payload
       };
-    default:
+    }
+    default: {
       return state;
+    }
   }
 };
 
@@ -52,8 +57,17 @@ function select(state) {
   return state.session;
 }
 
+export const getIsFetching = state => {
+  return select(state).isFetching;
+};
+
+export const getErrorMessage = state => {
+  return select(state).errorMessage;
+};
+
 export const getSession = state => {
-  return select(state).session;
+  const session = select(state).session;
+  return session;
 };
 
 export const getUser = state => {
@@ -73,11 +87,13 @@ export const getUserId = state => {
 };
 
 export const getPreviousLocation = state => {
-  return select(state).location;
+  const location = select(state).location;
+  return location;
 };
 
 export const getToken = state => {
-  return getSession(state).token;
+  const token = getSession(state).token;
+  return token;
 };
 
 export default reducer;

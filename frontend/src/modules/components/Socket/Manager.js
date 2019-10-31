@@ -11,6 +11,8 @@ class Manager extends React.Component {
   initializeConnection() {
     const { openConnection, token } = this.props;
 
+    console.log("Manager initializeConnection");
+
     this.reconnect =
       typeof this.reconnect === "function"
         ? this.reconnect({ token })
@@ -43,17 +45,17 @@ class Manager extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    token: sessionSelectors.getToken(state)
-  };
-};
+// const mapStateToProps = state => {
+//   return {
+//     token: sessionSelectors.getToken(state)
+//   };
+// };
 
 const actionCreators = {
   openConnection: sessionActions.openConnection
 };
 
 export default connect(
-  mapStateToProps,
+  null,
   actionCreators
 )(Manager);

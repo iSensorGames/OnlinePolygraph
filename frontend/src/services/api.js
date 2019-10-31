@@ -9,10 +9,10 @@ export const post = async (endpointName, body, headers) => {
 
 export const signIn = async (email, password) => {
   const response = await post("/signin", { email, password });
-
-  if (response.status === 401) throw new Error("Invalid credential");
-
   const { data } = response;
+
+  if ("error" in data) throw new Error(data.message);
+  if (response.status === 401) throw new Error("Invalid credential");
 
   return data;
 };

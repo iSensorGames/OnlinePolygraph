@@ -1,23 +1,21 @@
-import withRoot from "../../modules/withRoot";
-// --- Post bootstrap -----
 import React from "react";
 
 // Assets
 import "./welcome.css";
-import logo from "../../static/img/logo.png";
+import logo from "../../../static/img/logo.png";
 
 // Components
 import clsx from "clsx";
 import { compose } from "recompose";
-import { withAuthorization } from "../../modules/components/Session";
-import Button from "../../modules/components/Button";
-import Typography from "../../modules/components/Typography";
+import { withAuthorization } from "../../../modules/components/Session";
+import Button from "../../../modules/components/Button";
+import Typography from "../../../modules/components/Typography";
 
 // Layout
-import BaseLayout from "../../layout/Base";
+import BaseLayout from "../../../layout/Base";
 
 // Constants
-import * as ROUTES from "../../modules/constants/routes";
+import * as ROUTES from "../../../modules/constants/routes";
 
 // Styles
 import { withStyles } from "@material-ui/core/styles";
@@ -99,6 +97,5 @@ const Welcome = ({ classes }) => {
 
 export default compose(
   withAuthorization,
-  withStyles(styles),
-  withRoot
+  withStyles(styles)
 )(Welcome);

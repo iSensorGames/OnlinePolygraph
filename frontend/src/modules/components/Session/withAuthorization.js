@@ -26,13 +26,16 @@ const withAuthorization = Component => {
         history
       } = this.props;
 
+      console.log("WithAuthorization previousLocation", previousLocation);
+      console.log("WithAuthorization location", location);
+
       // Only verify authorization only on initial page load
       // Redirect if token is expired
       if (previousLocation !== location.pathname) {
-        await updateLocation(location);
+        await updateLocation(location.pathname);
         const response = await verifyToken();
         if ("error" in response) {
-          history.push(ROUTES.SIGN_IN_ROUTE);
+          history.push(ROUTES.SIGN_IN);
         }
       }
     }
@@ -42,11 +45,11 @@ const withAuthorization = Component => {
     }
   }
 
-  const mapStateToProps = state => {
-    return {
-      previousLocation: sessionSelectors.getPreviousLocation(state)
-    };
-  };
+  // const mapStateToProps = state => {
+  //   return {
+  //     previousLocation: sessionSelectors.getPreviousLocation(state)
+  //   };
+  // };
 
   const actionCreators = {
     verifyToken: sessionActions.verifyToken,
@@ -56,7 +59,7 @@ const withAuthorization = Component => {
   return compose(
     withRouter,
     connect(
-      mapStateToProps,
+      null,
       actionCreators
     )
   )(WithAuthorization);

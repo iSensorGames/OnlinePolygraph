@@ -76,8 +76,7 @@ const settings = {
 };
 
 const AppAppBar = ({ classes, user }) => {
-  console.log("AppAppBar", user);
-  return user ? (
+  return !!user ? (
     <AppAppBarAuth classes={classes} user={user} />
   ) : (
     <AppAppBarNonAuth classes={classes} />
@@ -104,6 +103,7 @@ const AppToolbar = ({ children, classes }) => (
 );
 
 const AppAppBarAuth = ({ classes, user }) => {
+  console.log("AppAppBarAuth user", user);
   return (
     <AppToolbar classes={classes}>
       <Link
@@ -115,16 +115,6 @@ const AppAppBarAuth = ({ classes, user }) => {
       >
         {`${user.firstName} ${user.lastName}`}
       </Link>
-      {!!user.roles && !!user.roles === ROLES.ADMIN && (
-        <Link
-          variant="h6"
-          underline="none"
-          className={classes.rightLink}
-          href={ROUTES.ADMIN}
-        >
-          {settings.admin}
-        </Link>
-      )}
       <Logout />
     </AppToolbar>
   );

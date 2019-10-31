@@ -3,6 +3,9 @@ import { connect } from "react-redux";
 import { compose } from "recompose";
 import { withRouter } from "react-router";
 
+// Selectors
+import * as sessionSelectors from "../../reducers/session";
+
 // Actions
 import * as sessionActions from "../../actions/session";
 
@@ -38,10 +41,7 @@ const styles = theme => ({
   }
 });
 
-const SignIn = ({ history, classes, signIn }) => {
-  const [sent, setSent] = React.useState(false);
-  const [submitError, setSubmitError] = React.useState(null);
-
+const SignIn = ({ history, classes, isFetching, errorMessage, signIn }) => {
   const validate = values => {
     const errors = required(["email", "password"], values);
 
@@ -55,28 +55,11 @@ const SignIn = ({ history, classes, signIn }) => {
     return errors;
   };
 
-  const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
   const onSubmit = async values => {
     const { email, password } = values;
-    await sleep(300);
-    setSent(true);
-
-    await signIn(email, password)
-      .then(data => {
-        console.log("before error data", data);
-        if ("error" in data) {
-          setSubmitError(data.message);
-          setSent(false);
-        }
-
-        console.log("history push time");
-        history.push(ROUTES.WELCOME_ROUTE);
-        console.log("history after push");
-      })
-      .catch(error => {
-        setSubmitError(error);
-        setSent(false);
-      });
+    await signIn(email, password);
+    console.log("ROUTES.WELCOME_ROUTE", ROUTES.WELCOME_ROUTE);
+    // history.push(ROUTES.WELCOME_ROUTE);
   };
 
   return (
@@ -102,9 +85,9 @@ const SignIn = ({ history, classes, signIn }) => {
             <form onSubmit={handleSubmit} className={classes.form} noValidate>
               <Field
                 autoComplete="email"
-                autoFocus={!sent}
+                autoFocus={!isFetching}
                 component={RFTextField}
-                disabled={submitting || sent}
+                disabled={submitting || isFetching}
                 fullWidth
                 label="Email"
                 margin="normal"
@@ -116,7 +99,7 @@ const SignIn = ({ history, classes, signIn }) => {
                 fullWidth
                 size="large"
                 component={RFTextField}
-                disabled={submitting || sent}
+                disabled={submitting || isFetching}
                 required
                 name="password"
                 autoComplete="current-password"
@@ -124,19 +107,19 @@ const SignIn = ({ history, classes, signIn }) => {
                 type="password"
                 margin="normal"
               />
-              {submitError ? (
+              {errorMessage ? (
                 <FormFeedback className={classes.feedback} error>
-                  {submitError}
+                  {errorMessage}
                 </FormFeedback>
               ) : null}
               <FormButton
                 className={classes.button}
-                disabled={submitting || sent}
+                disabled={submitting || isFetching}
                 size="large"
                 color="secondary"
                 fullWidth
               >
-                {submitting || sent ? "In progress…" : "Sign In"}
+                {submitting || isFetching ? "In progress…" : "Sign In"}
               </FormButton>
             </form>
           )}
@@ -153,6 +136,13 @@ const SignIn = ({ history, classes, signIn }) => {
   );
 };
 
+const mapStateToProps = state => {
+  return {
+    isFetching: sessionSelectors.getIsFetching(state),
+    errorMessage: sessionSelectors.getErrorMessage(state)
+  };
+};
+
 const actionCreators = {
   signIn: sessionActions.signIn
 };
@@ -161,7 +151,7 @@ export default compose(
   withRouter,
   withStyles(styles),
   connect(
-    null,
+    mapStateToProps,
     actionCreators
   )
 )(SignIn);

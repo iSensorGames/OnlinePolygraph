@@ -73,28 +73,22 @@ const SignUp = ({ history, classes, signUp }) => {
     await sleep(300);
     setSent(true);
 
-    await signUp({
+    const response = await signUp({
       email,
       password,
       firstName,
       lastName,
       roles
-    })
-      .then(async result => {
-        const { data } = result;
+    });
 
-        if ("error" in data) {
-          setSubmitError(data.message);
-          setSent(false);
-          return;
-        }
-        history.push(ROUTES.WELCOME_ROUTE);
-      })
-      .catch(error => {
-        setSubmitError(error);
-        setSent(false);
-      });
+    const { data } = response;
 
+    if ("error" in data) {
+      setSubmitError(data.message);
+      setSent(false);
+    } else {
+      history.push(ROUTES.WELCOME);
+    }
     return;
   };
 

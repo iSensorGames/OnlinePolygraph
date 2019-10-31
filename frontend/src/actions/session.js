@@ -3,7 +3,12 @@ import * as sessionSelectors from "../reducers/session";
 
 export const SESSION_SERVER_MESSAGE = "session/SESSION_SERVER_MESSAGE";
 export const SESSION_ONLINE = "session/SESSION_ONLINE";
-export const SESSION_AUTH_SIGNIN = "session/SESSION_AUTH_SIGNIN";
+export const SESSION_AUTH_SIGNIN_REQUEST =
+  "session/SESSION_AUTH_SIGNIN_REQUEST";
+export const SESSION_AUTH_SIGNIN_SUCCESS =
+  "session/SESSION_AUTH_SIGNIN_SUCCESS";
+export const SESSION_AUTH_SIGNIN_FAILURE =
+  "session/SESSION_AUTH_SIGNIN_FAILURE";
 export const SESSION_AUTH_SIGNUP = "session/SESSION_AUTH_SIGNUP";
 export const SESSION_AUTH_SIGNOUT = "session/SESSION_AUTH_SIGNOUT";
 export const SESSION_AUTH_VERIFY = "session/SESSION_AUTH_VERIFY";
@@ -17,53 +22,59 @@ export const RESPONSE_CONNECT_USER = "connect_user";
 export const RESPONSE_USERS = "users";
 export const RESPONSE_SERVER_MESSAGE = "server_message";
 
+const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
+
 export const openConnection = () => {
   return async (dispatch, getState, { socket }) => {
-    const state = getState();
-    const userId = sessionSelectors.getUserId(state);
-    const listener = (type, data) => {
-      switch (type) {
-        case RESPONSE_USERS:
-          return dispatch({
-            type: SESSION_ONLINE,
-            payload: data
-          });
-        case RESPONSE_SERVER_MESSAGE:
-          return dispatch({
-            type: SESSION_SERVER_MESSAGE,
-            payload: data
-          });
-      }
-    };
-
-    return socket.openConnection(listener, userId);
+    // const state = getState();
+    // const userId = sessionSelectors.getUserId(state);
+    // const listener = (type, data) => {
+    //   switch (type) {
+    //     case RESPONSE_USERS:
+    //       return dispatch({
+    //         type: SESSION_ONLINE,
+    //         payload: data
+    //       });
+    //     case RESPONSE_SERVER_MESSAGE:
+    //       return dispatch({
+    //         type: SESSION_SERVER_MESSAGE,
+    //         payload: data
+    //       });
+    //   }
+    // };
+    // return socket.openConnection(listener, userId);
   };
 };
 
 export const signIn = (email, password) => {
   return async (dispatch, getState, { api, browser }) => {
-    const response = await api.signIn(email, password);
-
-    if ("error" in response) {
-      return response;
-    } else {
-      const { token } = response;
-
-      browser.updateSession(token);
-      const session = browser.getSession();
-
-      console.log("before dispatch");
-
+    return delay(300).then(() => {
       dispatch({
-        type: SESSION_AUTH_SIGNIN,
-        payload: {
-          token,
-          user: session.user
-        }
+        type: SESSION_AUTH_SIGNIN_REQUEST
       });
 
-      console.log("after dispatch");
-    }
+      return api.signIn(email, password).then(
+        response => {
+          const { token } = response;
+
+          browser.updateSession(token);
+          const session = browser.getSession();
+
+          dispatch({
+            type: SESSION_AUTH_SIGNIN_SUCCESS,
+            payload: {
+              ...session
+            }
+          });
+        },
+        error => {
+          dispatch({
+            type: SESSION_AUTH_SIGNIN_FAILURE,
+            payload: error.message || "Something went wrong"
+          });
+        }
+      );
+    });
   };
 };
 
@@ -77,7 +88,7 @@ export const signUp = user => {
     browser.updateSession(token);
 
     await dispatch({
-      type: SESSION_AUTH_SIGNIN,
+      type: SESSION_AUTH_SIGNUP,
       payload: response
     });
   };
