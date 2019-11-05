@@ -1,6 +1,9 @@
 import React from "react";
 import { Switch, Route } from "react-router";
 
+// Components
+import { withAuthorization } from "../../modules/components/Session";
+
 // Socket
 import { Manager } from "../../modules/components/Socket";
 
@@ -30,4 +33,4 @@ class Game extends React.Component {
   }
 }
 
-export default Game;
+export default withAuthorization(Game);

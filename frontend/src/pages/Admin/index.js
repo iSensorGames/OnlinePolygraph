@@ -1,10 +1,7 @@
-import withRoot from "../../modules/withRoot";
-// --- Post bootstrap -----
 import React from "react";
 
 // Components
 import { compose } from "recompose";
-import { withAuthorization } from "../../modules/components/Session";
 import AppAppBar from "../../modules/views/AppAppBar";
 import AppFooter from "../../modules/views/AppFooter";
 
@@ -62,7 +59,4 @@ const UserList = ({ users }) => (
   </ul>
 );
 
-export default compose(
-  withAuthorization,
-  withRoot
-)(AdminPage);
+export default AdminPage;

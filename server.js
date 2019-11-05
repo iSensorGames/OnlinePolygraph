@@ -91,7 +91,7 @@ io.on("connection", socket => {
   console.log("Client connected...");
 
   const emitOnlineUsers = () => {
-    socket.broadcast.emit("users", getOnlineUsers());
+    socket.broadcast.emit("online_users", getOnlineUsers());
   };
 
   socket.on("join_room", room => {
@@ -104,9 +104,11 @@ io.on("connection", socket => {
       message: `Welcome to the ${website}`
     });
 
+    socket.emit("online_users", getOnlineUsers());
+
     socket.broadcast.emit("server_message", {
       name: website,
-      message: `${user.name} joined the Game`
+      message: `${user.firstName} joined the Game`
     });
 
     socket.user = user;

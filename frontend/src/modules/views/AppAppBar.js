@@ -17,7 +17,6 @@ import Toolbar, { styles as toolbarStyles } from "../components/Toolbar";
 
 // Constants
 import * as ROUTES from "../constants/routes";
-import * as ROLES from "../constants/roles";
 
 // Assets
 import logo from "../../static/img/logo.png";
@@ -76,27 +75,8 @@ const settings = {
 };
 
 class AppAppBar extends React.Component {
-  state = {
-    user: null
-  };
-
-  componentDidUpdate() {
-    this.setState({
-      user: this.props.user
-    });
-  }
-
-  componentDidUpdate({ user }) {
-    if (user !== this.props.user) {
-      this.setState({
-        user: this.props.user
-      });
-    }
-  }
-
   render() {
-    const { classes } = this.props;
-    const { user } = this.state;
+    const { classes, user } = this.props;
 
     return !!user ? (
       <AppAppBarAuth classes={classes} user={user} />

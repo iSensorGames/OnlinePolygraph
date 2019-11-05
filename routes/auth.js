@@ -12,7 +12,8 @@ module.exports = ({ app, db }) => {
   app.post("/api/verify", middleware.checkToken, (req, res) => {
     return res
       .json({
-        success: true
+        success: true,
+        data: req.payload
       })
       .status(200);
   });

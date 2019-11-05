@@ -2,13 +2,21 @@
 import * as sessionSelectors from "../reducers/session";
 
 export const SESSION_SERVER_MESSAGE = "session/SESSION_SERVER_MESSAGE";
-export const SESSION_ONLINE = "session/SESSION_ONLINE";
+export const SESSION_ONLINE_USERS = "session/SESSION_ONLINE_USERS";
 export const SESSION_AUTH_SIGNIN_REQUEST =
   "session/SESSION_AUTH_SIGNIN_REQUEST";
 export const SESSION_AUTH_SIGNIN_SUCCESS =
   "session/SESSION_AUTH_SIGNIN_SUCCESS";
 export const SESSION_AUTH_SIGNIN_FAILURE =
   "session/SESSION_AUTH_SIGNIN_FAILURE";
+
+export const SESSION_AUTH_VERIFY_REQUEST =
+  "session/SESSION_AUTH_VERIFY_REQUEST";
+export const SESSION_AUTH_VERIFY_SUCCESS =
+  "session/SESSION_AUTH_VERIFY_SUCCESS";
+export const SESSION_AUTH_VERIFY_FAILURE =
+  "session/SESSION_AUTH_VERIFY_FAILURE";
+
 export const SESSION_AUTH_SIGNUP = "session/SESSION_AUTH_SIGNUP";
 export const SESSION_AUTH_SIGNOUT = "session/SESSION_AUTH_SIGNOUT";
 export const SESSION_LOCATION = "session/SESSION_LOCATION";
@@ -18,7 +26,7 @@ export const RESPONSE_CONNECT = "connect";
 export const RESPONSE_DISCONNECT = "disconnect";
 export const RESPONSE_JOIN_ROOM = "join_room";
 export const RESPONSE_CONNECT_USER = "connect_user";
-export const RESPONSE_USERS = "users";
+export const RESPONSE_ONLINE_USERS = "online_users";
 export const RESPONSE_SERVER_MESSAGE = "server_message";
 
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
@@ -26,17 +34,17 @@ const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 export const openConnection = () => {
   return async (dispatch, getState, { socket }) => {
     const state = getState();
-    const userId = sessionSelectors.getUserId(state);
+    const user = sessionSelectors.getUser(state);
 
-    if (!userId) {
+    if (!!!user) {
       return null;
     }
 
     const listener = (type, data) => {
       switch (type) {
-        case RESPONSE_USERS:
+        case RESPONSE_ONLINE_USERS:
           return dispatch({
-            type: SESSION_ONLINE,
+            type: SESSION_ONLINE_USERS,
             payload: data
           });
         case RESPONSE_SERVER_MESSAGE:
@@ -46,7 +54,8 @@ export const openConnection = () => {
           });
       }
     };
-    return socket.openConnection(listener, userId);
+
+    return socket.openConnection(listener, user);
   };
 };
 
@@ -106,27 +115,33 @@ export const signOut = () => {
   };
 };
 
+/**
+ * @description Verify token validity
+ *              Used for seamless and maintaned login status
+ * @since 2019-10-31
+ */
 export const verifyToken = () => {
   return async (dispatch, getState, { api, browser }) => {
     dispatch({
-      type: SESSION_AUTH_SIGNIN_REQUEST
+      type: SESSION_AUTH_VERIFY_REQUEST
     });
 
     const token = browser.getToken();
     return api.verifyToken(token).then(
-      () => {
-        const session = browser.getSession();
+      response => {
+        const { data } = response;
 
         dispatch({
-          type: SESSION_AUTH_SIGNIN_SUCCESS,
-          payload: session
+          type: SESSION_AUTH_VERIFY_SUCCESS,
+          payload: data
         });
       },
       error => {
         dispatch({
-          type: SESSION_AUTH_SIGNIN_FAILURE,
+          type: SESSION_AUTH_VERIFY_FAILURE,
           payload: error.message
         });
+        throw new Error(error.message);
       }
     );
   };

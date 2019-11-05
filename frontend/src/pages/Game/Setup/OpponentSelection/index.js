@@ -1,5 +1,9 @@
 import React from "react";
+import { connect } from "react-redux";
 import { compose } from "recompose";
+
+// Selectors
+import * as sessionSelectors from "../../../../reducers/session";
 
 // Component
 import Typography from "../../../../modules/components/Typography";
@@ -42,38 +46,19 @@ const styles = theme => ({
     color: "#86bb71"
   }
 });
-// Mock Data
-const users = [
-  {
-    id: 1,
-    userName: "John Doe",
-    isOnline: true
-  },
-  {
-    id: 2,
-    userName: "Ben Smith",
-    isOnline: false
-  },
-  {
-    id: 3,
-    userName: "Carol Park",
-    isOnline: false
-  },
-  {
-    id: 4,
-    userName: "Alice Ventura",
-    isOnline: true
-  }
-];
 
-const User = ({ classes, userName, isOnline }) => (
-  <ListItem className={classes.listItem} divider>
+const User = ({ classes, firstName, lastName, email, isOnline }) => (
+  <ListItem className={classes.listItem} button divider>
     <ListItemAvatar>
       <Avatar>
         <ImageIcon />
       </Avatar>
     </ListItemAvatar>
-    <ListItemText className={classes.listItemMiddle} primary={userName} />
+    <ListItemText
+      className={classes.listItemMiddle}
+      primary={`${firstName} ${lastName}`}
+      secondary={`${email}`}
+    />
     <ListItemText
       className={clsx(classes.listItemRight, classes.isOnline)}
       primary={isOnline ? "Online" : ""}
@@ -81,20 +66,22 @@ const User = ({ classes, userName, isOnline }) => (
   </ListItem>
 );
 
-const OpponentSelection = ({ classes }) => {
+const OpponentSelection = ({ onlineUsers, classes }) => {
   return (
     <BaseLayout backgroundClassName={classes.background}>
       <Typography align="center" color="inherit" variant="h5">
         Choose opponent
       </Typography>
       <List className={classes.root}>
-        {users &&
-          users.map(({ id, userName, isOnline }) => (
+        {onlineUsers &&
+          onlineUsers.map(({ id, firstName, lastName, email }) => (
             <User
               key={id}
               classes={classes}
-              userName={userName}
-              isOnline={isOnline}
+              firstName={firstName}
+              lastName={lastName}
+              email={email}
+              isOnline={true}
             />
           ))}
       </List>
@@ -102,4 +89,18 @@ const OpponentSelection = ({ classes }) => {
   );
 };
 
-export default compose(withStyles(styles))(OpponentSelection);
+const mapStateToProps = state => {
+  return {
+    onlineUsers: sessionSelectors.getOnlineUsers(state)
+  };
+};
+
+const actionCreators = {};
+
+export default compose(
+  withStyles(styles),
+  connect(
+    mapStateToProps,
+    actionCreators
+  )
+)(OpponentSelection);

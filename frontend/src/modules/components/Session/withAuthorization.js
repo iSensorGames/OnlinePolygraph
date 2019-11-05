@@ -10,7 +10,7 @@ import * as sessionSelectors from "../../../reducers/session";
 import * as sessionActions from "../../../actions/session";
 
 // Constants
-import * as ROUTES from "../../constants/routes";
+import * as ROUTES from "../../../modules/constants/routes";
 
 /**
  * @description Check user authorization
@@ -19,26 +19,29 @@ const withAuthorization = Component => {
   class WithAuthorization extends React.Component {
     componentDidMount() {
       const {
-        verifyToken,
         updateLocation,
         previousLocation,
-        location
+        location,
+        verifyToken,
+        history
       } = this.props;
-
-      console.log("WithAuthorization");
 
       // Only verify authorization only on initial page load
       // Redirect if token is expired
       if (previousLocation !== location.pathname) {
         updateLocation(location.pathname);
-        verifyToken();
+
+        verifyToken().catch(error => {
+          console.log("withAuthorization verifyToken", error.message);
+          history.push(ROUTES.SIGN_IN);
+        });
       }
     }
 
     render() {
-      const { errorMessage, history } = this.props;
-      if (errorMessage) {
-        history.push(ROUTES.SIGN_IN);
+      const { session } = this.props;
+
+      if (!!!session) {
         return null;
       }
 
@@ -49,13 +52,13 @@ const withAuthorization = Component => {
   const mapStateToProps = state => {
     return {
       previousLocation: sessionSelectors.getPreviousLocation(state),
-      errorMessage: sessionSelectors.getErrorMessage(state)
+      session: sessionSelectors.getSession(state)
     };
   };
 
   const actionCreators = {
-    verifyToken: sessionActions.verifyToken,
-    updateLocation: sessionActions.updateLocation
+    updateLocation: sessionActions.updateLocation,
+    verifyToken: sessionActions.verifyToken
   };
 
   return compose(

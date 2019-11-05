@@ -1,9 +1,13 @@
 import React from "react";
 import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
 import { compose } from "recompose";
 
 // ACTIONS
 import * as sessionActions from "../../../actions/session";
+
+// Constants
+import * as ROUTES from "../../constants/routes";
 
 /**
  * @description Check user Authentication
@@ -11,9 +15,11 @@ import * as sessionActions from "../../../actions/session";
 const withAuthentication = Component => {
   class WithAuthentication extends React.Component {
     componentDidMount() {
-      const { verifyToken } = this.props;
+      const { verifyToken, history } = this.props;
 
-      verifyToken();
+      verifyToken().catch(() => {
+        history.push(ROUTES.SIGN_IN);
+      });
     }
 
     render() {
@@ -29,7 +35,8 @@ const withAuthentication = Component => {
     connect(
       null,
       actionCreators
-    )
+    ),
+    withRouter
   )(WithAuthentication);
 };
 

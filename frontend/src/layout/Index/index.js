@@ -2,6 +2,9 @@ import withRoot from "../../modules/withRoot";
 import React from "react";
 import { compose } from "recompose";
 
+// Component
+import { withAuthentication } from "../../modules/components/Session";
+
 // Views
 import AppAppBar from "../../modules/views/AppAppBar";
 
@@ -24,6 +27,7 @@ const Index = ({ children, classes }) => {
 };
 
 export default compose(
+  withAuthentication,
   withRoot,
   withStyles(styles)
 )(Index);

@@ -5,7 +5,6 @@ import "./welcome.css";
 import logo from "../../../static/img/logo.png";
 
 // Components
-import { withAuthorization } from "../../../modules/components/Session";
 import clsx from "clsx";
 import { compose } from "recompose";
 import Button from "../../../modules/components/Button";
@@ -95,7 +94,4 @@ const Welcome = ({ classes }) => {
   );
 };
 
-export default compose(
-  withAuthorization,
-  withStyles(styles)
-)(Welcome);
+export default compose(withStyles(styles))(Welcome);

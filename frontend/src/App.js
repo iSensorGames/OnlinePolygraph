@@ -5,9 +5,6 @@ import { Switch, Route } from "react-router";
 // Constants
 import * as ROUTES from "./modules/constants/routes";
 
-// Components
-import { withAuthentication } from "./modules/components/Session";
-
 // Pages
 import Home from "./pages/Home";
 import SignIn from "./pages/SignIn";
@@ -40,4 +37,4 @@ const App = () => {
   );
 };
 
-export default withAuthentication(App);
+export default App;

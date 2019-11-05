@@ -20,7 +20,9 @@ const styles = theme => ({
     }
   },
   container: {
-    marginTop: theme.spacing(3),
+    marginTop: 70,
+    paddingBottom: 24,
+    paddingTop: 24,
     display: "flex",
     flexDirection: "column",
     alignItems: "center"

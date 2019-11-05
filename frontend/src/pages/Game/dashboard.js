@@ -5,7 +5,6 @@ import Icon from "react-eva-icons";
 import clsx from "clsx";
 import { compose } from "recompose";
 import { withStyles } from "@material-ui/core/styles";
-import { withAuthorization } from "../../modules/components/Session";
 import Sidebar from "./Sidebar";
 
 // Constants
@@ -1771,7 +1770,4 @@ const Game = ({ classes }) => {
   );
 };
 
-export default compose(
-  withAuthorization,
-  withStyles(styles)
-)(Game);
+export default compose(withStyles(styles))(Game);
