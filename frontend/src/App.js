@@ -1,6 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router } from "react-router-dom";
-import { Switch, Route } from "react-router";
+import { Switch, Route } from "react-router-dom";
 
 // Constants
 import * as ROUTES from "./modules/constants/routes";
@@ -15,25 +14,26 @@ import Admin from "./pages/Admin";
 
 // Layout
 import IndexLayout from "./layout/Index";
+import HomeLayout from "./layout/Home";
 
 const App = () => {
   return (
-    <Router basename={ROUTES.BASENAME}>
+    <Switch>
+      <HomeLayout>
+        <Route exact path={ROUTES.HOME_ROUTE} component={Home} />
+      </HomeLayout>
       <IndexLayout>
-        <Switch>
-          <Route exact path={ROUTES.HOME_ROUTE} component={Home} />
-          <Route exact path={ROUTES.SIGN_IN_ROUTE} component={SignIn} />
-          <Route exact path={ROUTES.SIGN_UP_ROUTE} component={SignUp} />
-          <Route exact path={ROUTES.ADMIN_ROUTE} component={Admin} />
-          <Route
-            exact
-            path={ROUTES.FORGOT_PASSWORD_ROUTE}
-            component={ForgotPassword}
-          />
-          <Route component={Game} />
-        </Switch>
+        <Route exact path={ROUTES.SIGN_IN_ROUTE} component={SignIn} />
+        <Route exact path={ROUTES.SIGN_UP_ROUTE} component={SignUp} />
+        <Route exact path={ROUTES.ADMIN_ROUTE} component={Admin} />
+        <Route
+          exact
+          path={ROUTES.FORGOT_PASSWORD_ROUTE}
+          component={ForgotPassword}
+        />
+        <Route component={Game} />
       </IndexLayout>
-    </Router>
+    </Switch>
   );
 };
 

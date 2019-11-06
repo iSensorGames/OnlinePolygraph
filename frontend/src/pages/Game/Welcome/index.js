@@ -80,7 +80,7 @@ const Welcome = ({ classes }) => {
         size="large"
         className={classes.actionButton}
         component="a"
-        href={ROUTES.GAME_SETUP}
+        href={ROUTES.CHAT}
       >
         Start
       </Button>

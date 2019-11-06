@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { compose } from "recompose";
-import { withRouter } from "react-router";
+import { withRouter } from "react-router-dom";
 
 // Actions
 import * as sessionActions from "../../actions/session";
@@ -18,7 +18,6 @@ import Grid from "@material-ui/core/Grid";
 import Link from "@material-ui/core/Link";
 import { Field, Form } from "react-final-form";
 import Typography from "../../modules/components/Typography";
-import AppFooter from "../../modules/views/AppFooter";
 import AppForm from "../../modules/views/AppForm";
 import { email, required } from "../../modules/form/validation";
 import RFTextField from "../../modules/form/RFTextField";

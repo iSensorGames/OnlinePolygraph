@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import { BrowserRouter as Router } from "react-router-dom";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 
@@ -7,9 +8,14 @@ import * as serviceWorker from "./serviceWorker";
 import { Provider } from "react-redux";
 import store from "./store";
 
+// Constants
+import * as ROUTES from "./modules/constants/routes";
+
 ReactDOM.render(
   <Provider store={store}>
-    <App />
+    <Router basename={ROUTES.BASENAME}>
+      <App />
+    </Router>
   </Provider>,
   document.getElementById("root")
 );

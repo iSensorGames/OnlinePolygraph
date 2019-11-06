@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { compose } from "recompose";
-import { withRouter } from "react-router";
+import { withRouter } from "react-router-dom";
 
 // Selectors
 import * as sessionSelectors from "../../reducers/session";
@@ -19,7 +19,6 @@ import BaseLayout from "../../layout/Base";
 import { Field, Form } from "react-final-form";
 import Link from "@material-ui/core/Link";
 import Typography from "../../modules/components/Typography";
-import AppFooter from "../../modules/views/AppFooter";
 import AppForm from "../../modules/views/AppForm";
 import { email, required } from "../../modules/form/validation";
 import RFTextField from "../../modules/form/RFTextField";

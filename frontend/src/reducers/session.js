@@ -61,6 +61,7 @@ const socketResponse = (state = INITIAL_SOCKET_STATE, action) => {
       };
     }
     case SESSION_SOCKET_CONNECT_SUCCESS: {
+      console.log("SESSION_SOCKET_CONNECT_SUCCESS");
       return {
         ...state,
         isConnecting: false,
@@ -69,10 +70,10 @@ const socketResponse = (state = INITIAL_SOCKET_STATE, action) => {
     }
     case SESSION_SOCKET_DISCONNECT:
     case SESSION_SOCKET_CONNECT_FAILURE:
+      console.log("DISCONNECTED");
       return {
         ...state,
         isConnecting: false,
-        isConnected: false,
         errorMessage: action.payload
       };
     default:
@@ -201,5 +202,9 @@ export const getIsConnecting = state => {
 };
 
 export const getIsConnected = state => {
-  return getSocketResponse(state).isConnected;
+  const socketResponse = getSocketResponse(state);
+
+  console.log("socketResponse", socketResponse);
+
+  return socketResponse.isConnected;
 };
