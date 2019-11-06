@@ -10,7 +10,8 @@ import { withStyles } from "@material-ui/core/styles";
 const styles = theme => ({
   root: {
     color: theme.palette.common.white,
-    overflowY: "auto"
+    overflowY: "auto",
+    height: "100%"
   },
   container: {
     alignItems: "center",
@@ -18,7 +19,8 @@ const styles = theme => ({
     paddingBottom: 24,
     paddingTop: 24,
     display: "flex",
-    flexDirection: "column"
+    flexDirection: "column",
+    position: "relative"
   },
   backdrop: {
     position: "absolute",

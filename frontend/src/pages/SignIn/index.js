@@ -68,7 +68,7 @@ const SignIn = ({
 
   // Redirect if user exists
   if (!!user) {
-    history.push(ROUTES.WELCOME);
+    history.push(ROUTES.SCOREBOARD);
   }
 
   if (isFetching) {

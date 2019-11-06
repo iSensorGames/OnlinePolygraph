@@ -28,11 +28,11 @@ const styles = theme => ({
   }
 });
 
-function ProductHero(props) {
+const ProductHero = props => {
   const { classes } = props;
 
   return (
-    <ProductHeroLayout backgroundClassName={classes.background}>
+    <ProductHeroLayout>
       {/* Increase the network loading priority of the background image. */}
       <img style={{ display: "none" }} alt="increase priority" />
       <Typography color="inherit" align="center" variant="h2" marked="center">
@@ -53,7 +53,7 @@ function ProductHero(props) {
         size="large"
         className={classes.button}
         component="a"
-        href={ROUTES.WELCOME}
+        href={ROUTES.SCOREBOARD}
       >
         Play Game
       </Button>
@@ -62,7 +62,7 @@ function ProductHero(props) {
       </Typography>
     </ProductHeroLayout>
   );
-}
+};
 
 ProductHero.propTypes = {
   classes: PropTypes.object.isRequired

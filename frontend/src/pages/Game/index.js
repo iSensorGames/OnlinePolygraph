@@ -11,7 +11,7 @@ import { Manager } from "../../modules/components/Socket";
 import * as ROUTES from "../../modules/constants/routes";
 
 // Pages
-import Welcome from "./Welcome";
+import Scoreboard from "./Scoreboard";
 import Chat from "./Chat";
 import Rules from "./Rules";
 import Terms from "./Terms";
@@ -22,7 +22,7 @@ class Game extends React.Component {
     return (
       <Manager>
         <Switch>
-          <Route exact path={ROUTES.WELCOME_ROUTE} component={Welcome} />
+          <Route exact path={ROUTES.SCOREBOARD_ROUTE} component={Scoreboard} />
           <Route exact path={ROUTES.CHAT_ROUTE} component={Chat} />
           <Route exact path={ROUTES.RULES_ROUTE} component={Rules} />
           <Route exact path={ROUTES.TERMS_ROUTE} component={Terms} />

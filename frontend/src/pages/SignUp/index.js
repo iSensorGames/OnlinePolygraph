@@ -86,7 +86,7 @@ const SignUp = ({ history, classes, signUp }) => {
       setSubmitError(data.message);
       setSent(false);
     } else {
-      history.push(ROUTES.WELCOME);
+      history.push(ROUTES.SCOREBOARD);
     }
     return;
   };

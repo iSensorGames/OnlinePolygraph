@@ -32,12 +32,12 @@ export const SESSION_AUTH_SIGNOUT = "session/SESSION_AUTH_SIGNOUT";
 export const SESSION_LOCATION = "session/SESSION_LOCATION";
 
 // Socket Response
-export const RESPONSE_CONNECT = "connect";
-export const RESPONSE_DISCONNECT = "disconnect";
-export const RESPONSE_JOIN_ROOM = "join_room";
-export const RESPONSE_CONNECT_USER = "connect_user";
-export const RESPONSE_ONLINE_USERS = "online_users";
-export const RESPONSE_SERVER_MESSAGE = "server_message";
+export const SOCKET_CONNECT = "connect";
+export const SOCKET_DISCONNECT = "disconnect";
+export const SOCKET_JOIN_ROOM = "join_room";
+export const SOCKET_CONNECT_USER = "connect_user";
+export const SOCKET_ONLINE_USERS = "online_users";
+export const SOCKET_SERVER_MESSAGE = "server_message";
 
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -56,17 +56,17 @@ export const openConnection = () => {
 
     const listener = (type, data) => {
       switch (type) {
-        case RESPONSE_ONLINE_USERS:
+        case SOCKET_ONLINE_USERS:
           return dispatch({
             type: SESSION_SOCKET_ONLINE_USERS,
             payload: data
           });
-        case RESPONSE_SERVER_MESSAGE:
+        case SOCKET_SERVER_MESSAGE:
           return dispatch({
             type: SESSION_SOCKET_SERVER_MESSAGE,
             payload: data
           });
-        case RESPONSE_DISCONNECT:
+        case SOCKET_DISCONNECT:
           return dispatch({
             type: SESSION_SOCKET_DISCONNECT
           });

@@ -13,11 +13,7 @@ const styles = theme => ({
     position: "relative",
     display: "flex",
     alignItems: "center",
-    [theme.breakpoints.up("sm")]: {
-      height: "80vh",
-      minHeight: 500,
-      maxHeight: 1300
-    }
+    height: "100%"
   },
   container: {
     marginTop: theme.spacing(3),
@@ -60,15 +56,6 @@ function ProductHeroLayout(props) {
       <Container className={classes.container}>
         <img src={productHeroWonder} alt="wonder" width="147" height="80" />
         {children}
-        <div className={classes.backdrop} />
-        <div className={clsx(classes.background, backgroundClassName)} />
-        <img
-          className={classes.arrowDown}
-          src={productHeroArrowDown}
-          height="16"
-          width="12"
-          alt="arrow down"
-        />
       </Container>
     </section>
   );

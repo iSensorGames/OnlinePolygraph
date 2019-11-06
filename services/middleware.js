@@ -19,7 +19,10 @@ const checkToken = (req, res, next) => {
     let payload = {};
     try {
       payload = jwt.verify(token, config.secret);
-      req.payload = payload;
+      req.payload = {
+        ...payload,
+        token
+      };
       next();
     } catch (e) {
       if (e instanceof jwt.JsonWebTokenError) {

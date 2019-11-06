@@ -30,6 +30,8 @@ img {
   width: 60%;
 }
 .headind_srch {
+  align-items: center;
+  display: flex;
   padding: 10px 29px 10px 20px;
   overflow: hidden;
   border-bottom: 1px solid #c4c4c4;
@@ -130,6 +132,7 @@ img {
 }
 .mesgs {
   padding: 0px;
+  width: 60%;
 }
 
 .sent_msg p {

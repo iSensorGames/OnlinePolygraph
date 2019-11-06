@@ -99,10 +99,12 @@ const signIn = (state = INITIAL_SIGNIN_STATE, action) => {
         errorMessage: action.payload
       };
     case SESSION_AUTH_VERIFY_SUCCESS:
+      console.log("AUTH_VERIFY_SUCCESS");
       return {
         ...state,
         session: {
           ...state.session,
+          token: action.payload.token,
           user: {
             firstName: action.payload.first_name,
             lastName: action.payload.last_name,

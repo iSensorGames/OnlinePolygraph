@@ -55,3 +55,18 @@ export const verifyToken = async token => {
 
   return data;
 };
+
+export const createConversation = async token => {
+  if (!token) throw new Error("Token is null");
+
+  const response = await post("/addConversation", {
+    headers: { Authorization: `Bearer ${token}` }
+  });
+  const { data } = response;
+
+  if (response.status !== 200)
+    throw new Error("Something went wrong verifying the token");
+  if (!data.success) throw new Error();
+
+  return data;
+};

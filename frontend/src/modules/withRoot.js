@@ -6,7 +6,6 @@ import theme from "./theme";
 // Assets
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../static/css/lib/index.css";
-import "../static/css/lib/template.css";
 import "../static/css/lib/palette.css";
 
 function withRoot(Component) {

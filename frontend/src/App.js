@@ -14,15 +14,12 @@ import Admin from "./pages/Admin";
 
 // Layout
 import IndexLayout from "./layout/Index";
-import HomeLayout from "./layout/Home";
 
 const App = () => {
   return (
-    <Switch>
-      <HomeLayout>
+    <IndexLayout>
+      <Switch>
         <Route exact path={ROUTES.HOME_ROUTE} component={Home} />
-      </HomeLayout>
-      <IndexLayout>
         <Route exact path={ROUTES.SIGN_IN_ROUTE} component={SignIn} />
         <Route exact path={ROUTES.SIGN_UP_ROUTE} component={SignUp} />
         <Route exact path={ROUTES.ADMIN_ROUTE} component={Admin} />
@@ -32,8 +29,8 @@ const App = () => {
           component={ForgotPassword}
         />
         <Route component={Game} />
-      </IndexLayout>
-    </Switch>
+      </Switch>
+    </IndexLayout>
   );
 };
 
