@@ -11,7 +11,9 @@ import { withStyles } from "@material-ui/core/styles";
 const styles = () => ({
   container: {
     display: "flex",
-    flexDirection: "column"
+    flexDirection: "column",
+    width: "100%",
+    height: "100%"
   },
   tabContainer: {
     alignItems: "center",

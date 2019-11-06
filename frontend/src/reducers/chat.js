@@ -4,6 +4,8 @@ import {
   CHAT_CREATEROOM_SUCCESS,
   CHAT_CREATEROOM_FAILURE,
   CHAT_SETUP_TAB,
+  CHAT_SET_TOPIC,
+  CHAT_SET_ROOMNAME,
   CHAT_AVAILABLEROOM
 } from "../actions/chat";
 
@@ -14,7 +16,8 @@ const INITIAL_ROOM_STATE = {
   serverMessage: null,
   errorMessage: null,
   chatSetupTab: "intro",
-  topic: null
+  topic: null,
+  roomName: null
 };
 
 const room = (state = INITIAL_ROOM_STATE, action) => {
@@ -41,6 +44,16 @@ const room = (state = INITIAL_ROOM_STATE, action) => {
         ...state,
         chatSetupTab: action.payload
       };
+    case CHAT_SET_TOPIC:
+      return {
+        ...state,
+        topic: action.payload
+      };
+    case CHAT_SET_ROOMNAME:
+      return {
+        ...state,
+        roomName: action.payload
+      };
     default:
       return state;
   }
@@ -55,7 +68,6 @@ const getRoom = state => select(state).room;
 
 export const getRoomId = state => {
   const room = getRoom(state);
-  console.log("room state", room);
   return room.roomId;
 };
 
@@ -73,4 +85,12 @@ export const getErrorMessage = state => {
 
 export const getChatSetupTab = state => {
   return getRoom(state).chatSetupTab;
+};
+
+export const getTopic = state => {
+  return getRoom(state).topic;
+};
+
+export const getRoomName = state => {
+  return getRoom(state).roomName;
 };

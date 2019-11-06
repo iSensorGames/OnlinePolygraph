@@ -4,6 +4,8 @@ export const CHAT_CREATEROOM_REQUEST = "chat/CHAT_CREATEROOM_REQUEST";
 export const CHAT_CREATEROOM_SUCCESS = "chat/CHAT_CREATEROOM_SUCCESS";
 export const CHAT_CREATEROOM_FAILURE = "chat/CHAT_CREATEROOM_FAILURE";
 export const CHAT_SETUP_TAB = "chat/CHAT_SETUP_TAB";
+export const CHAT_SET_TOPIC = "chat/CHAT_SET_TOPIC";
+export const CHAT_SET_ROOMNAME = "chat/CHAT_SET_ROOMNAME";
 export const CHAT_AVAILABLEROOM = "chat/CHAT_AVAILABLEROOM";
 
 export const SOCKET_CREATE_ROOM = "create_room";
@@ -76,5 +78,32 @@ export const createRoom = () => {
     //       payload: error.message
     //     });
     //   });
+  };
+};
+
+export const setChatSetupTab = tab => {
+  return dispatch => {
+    dispatch({
+      type: CHAT_SETUP_TAB,
+      payload: tab
+    });
+  };
+};
+
+export const setTopic = topic => {
+  return dispatch => {
+    dispatch({
+      type: CHAT_SET_TOPIC,
+      payload: topic
+    });
+  };
+};
+
+export const setRoomName = roomName => {
+  return dispatch => {
+    dispatch({
+      type: CHAT_SET_ROOMNAME,
+      payload: roomName
+    });
   };
 };
