@@ -9,9 +9,13 @@ import * as sessionActions from "../../../actions/session";
 
 class Manager extends React.Component {
   initializeConnection() {
-    const { openConnection } = this.props;
+    const { openConnection, isConnected } = this.props;
 
-    openConnection();
+    console.log("Manager isConnected", isConnected);
+
+    if (!isConnected) {
+      openConnection();
+    }
   }
 
   componentDidMount() {
@@ -25,11 +29,17 @@ class Manager extends React.Component {
   }
 }
 
+const mapStateToProps = state => {
+  return {
+    isConnected: sessionSelectors.getIsConnected(state)
+  };
+};
+
 const actionCreators = {
   openConnection: sessionActions.openConnection
 };
 
 export default connect(
-  null,
+  mapStateToProps,
   actionCreators
 )(Manager);

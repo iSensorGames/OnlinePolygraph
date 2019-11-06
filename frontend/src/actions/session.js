@@ -1,8 +1,18 @@
 // Selectors
 import * as sessionSelectors from "../reducers/session";
 
-export const SESSION_SERVER_MESSAGE = "session/SESSION_SERVER_MESSAGE";
-export const SESSION_ONLINE_USERS = "session/SESSION_ONLINE_USERS";
+export const SESSION_SOCKET_SERVER_MESSAGE =
+  "session/SESSION_SOCKET_SERVER_MESSAGE";
+export const SESSION_SOCKET_ONLINE_USERS =
+  "session/SESSION_SOCKET_ONLINE_USERS";
+export const SESSION_SOCKET_CONNECT_REQUEST =
+  "session/SESSION_SOCKET_CONNECT_REQUEST";
+export const SESSION_SOCKET_CONNECT_SUCCESS =
+  "session/SESSION_SOCKET_CONNECT_SUCCESS";
+export const SESSION_SOCKET_CONNECT_FAILURE =
+  "session/SESSION_SOCKET_CONNECT_FAILURE";
+export const SESSION_SOCKET_DISCONNECT = "session/SESSION_SOCKET_DISCONNECT";
+
 export const SESSION_AUTH_SIGNIN_REQUEST =
   "session/SESSION_AUTH_SIGNIN_REQUEST";
 export const SESSION_AUTH_SIGNIN_SUCCESS =
@@ -33,6 +43,10 @@ const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 export const openConnection = () => {
   return async (dispatch, getState, { socket }) => {
+    dispatch({
+      type: SESSION_SOCKET_CONNECT_REQUEST
+    });
+
     const state = getState();
     const user = sessionSelectors.getUser(state);
 
@@ -44,18 +58,35 @@ export const openConnection = () => {
       switch (type) {
         case RESPONSE_ONLINE_USERS:
           return dispatch({
-            type: SESSION_ONLINE_USERS,
+            type: SESSION_SOCKET_ONLINE_USERS,
             payload: data
           });
         case RESPONSE_SERVER_MESSAGE:
           return dispatch({
-            type: SESSION_SERVER_MESSAGE,
+            type: SESSION_SOCKET_SERVER_MESSAGE,
             payload: data
+          });
+        case RESPONSE_DISCONNECT:
+          return dispatch({
+            type: SESSION_SOCKET_DISCONNECT
           });
       }
     };
 
-    return socket.openConnection(listener, user);
+    socket
+      .openConnection(listener, user)
+      .then(() => {
+        console.log("socket.openConnection SUCCESS");
+        dispatch({
+          type: SESSION_SOCKET_CONNECT_SUCCESS
+        });
+      })
+      .catch(err => {
+        console.log("socket.openConnection FAILURE", err);
+        dispatch({
+          type: SESSION_SOCKET_CONNECT_FAILURE
+        });
+      });
   };
 };
 
@@ -94,10 +125,9 @@ export const signIn = (email, password) => {
 export const signUp = user => {
   return async (dispatch, getState, { api, browser }) => {
     const response = await api.signUp(user);
-
     const { token } = await response.json();
-    browser.updateSession(token);
 
+    await browser.updateSession(token);
     await dispatch({
       type: SESSION_AUTH_SIGNUP,
       payload: response
@@ -106,11 +136,13 @@ export const signUp = user => {
 };
 
 export const signOut = () => {
-  return async (dispatch, getState, { browser }) => {
-    browser.updateSession();
-
-    await dispatch({
-      type: SESSION_AUTH_SIGNOUT
+  return (dispatch, getState, { browser }) => {
+    return new Promise((resolve, reject) => {
+      browser.updateSession();
+      dispatch({
+        type: SESSION_AUTH_SIGNOUT
+      });
+      resolve();
     });
   };
 };

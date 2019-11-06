@@ -13,7 +13,7 @@ export function getProfile(token) {
   return decode(token ? token : getToken());
 }
 
-export function updateSession(token) {
+export async function updateSession(token) {
   let session = {};
 
   if (token) {
@@ -21,9 +21,9 @@ export function updateSession(token) {
   }
 
   if (!!session) {
-    localStorage.setItem(keys.TOKEN, token);
+    await localStorage.setItem(keys.TOKEN, token);
   } else {
-    localStorage.removeItem(keys.TOKEN);
+    await localStorage.removeItem(keys.TOKEN);
   }
 }
 

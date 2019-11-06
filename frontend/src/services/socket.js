@@ -8,33 +8,38 @@ import {
   RESPONSE_SERVER_MESSAGE
 } from "../actions/session";
 
-const socket = io.connect(`${process.env.PUBLIC_URL}`, {
-  secure: true,
-  rejectUnauthorized: false,
-  path: "/users/socket.io"
-});
+let socket = null;
 
 export const openConnection = (listener, user) => {
-  socket.emit(RESPONSE_CONNECT_USER, user);
+  return new Promise((resolve, reject) => {
+    try {
+      socket = io.connect(`${process.env.PUBLIC_URL}`, {
+        secure: true,
+        rejectUnauthorized: false,
+        path: "/users/socket.io"
+      });
 
-  const onlineUsersListener = res => {
-    listener(RESPONSE_ONLINE_USERS, { onlineUsers: res, user });
-  };
+      socket.emit(RESPONSE_CONNECT_USER, user);
 
-  const serverMessage = res => {
-    listener(RESPONSE_SERVER_MESSAGE, res);
-  };
+      const onlineUsersListener = res => {
+        listener(RESPONSE_ONLINE_USERS, { onlineUsers: res, user });
+      };
 
-  const disconnectListener = res => {
-    console.log("Disconnected from WS");
-    console.log("res", res);
-  };
+      const serverMessage = res => {
+        listener(RESPONSE_SERVER_MESSAGE, res);
+      };
 
-  socket.on(RESPONSE_DISCONNECT, disconnectListener);
-  socket.on(RESPONSE_ONLINE_USERS, onlineUsersListener);
-  socket.on(RESPONSE_SERVER_MESSAGE, serverMessage);
+      const disconnectListener = res => {
+        listener(RESPONSE_DISCONNECT, res);
+      };
 
-  return () => {
-    socket.emit(RESPONSE_DISCONNECT);
-  };
+      socket.on(RESPONSE_DISCONNECT, disconnectListener);
+      socket.on(RESPONSE_ONLINE_USERS, onlineUsersListener);
+      socket.on(RESPONSE_SERVER_MESSAGE, serverMessage);
+
+      resolve();
+    } catch (err) {
+      reject(err);
+    }
+  });
 };

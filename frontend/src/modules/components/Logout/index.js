@@ -8,7 +8,7 @@ import * as sessionActions from "../../../actions/session";
 
 // Components
 import clsx from "clsx";
-import { withRouter } from "react-router";
+import { withRouter } from "react-router-dom";
 
 // Styles
 import "./logout.css";
@@ -23,8 +23,9 @@ const Logout = ({ history, signOut }) => (
       "Logout-linkSecondary-11"
     )}
     onClick={() => {
-      signOut();
-      history.push(ROUTES.SIGN_IN);
+      signOut().then(() => {
+        history.push(ROUTES.SIGN_IN);
+      });
     }}
   >
     Logout

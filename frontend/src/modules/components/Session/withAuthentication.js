@@ -9,16 +9,20 @@ import * as sessionActions from "../../../actions/session";
 // Constants
 import * as ROUTES from "../../constants/routes";
 
+const publicRoutes = [ROUTES.HOME, ROUTES.SIGN_IN, ROUTES.SIGN_UP];
+
 /**
  * @description Check user Authentication
  */
 const withAuthentication = Component => {
   class WithAuthentication extends React.Component {
     componentDidMount() {
-      const { verifyToken, history } = this.props;
+      const { verifyToken, location, history } = this.props;
 
       verifyToken().catch(() => {
-        history.push(ROUTES.SIGN_IN);
+        if (!publicRoutes.includes(location.pathname)) {
+          history.push(ROUTES.SIGN_IN);
+        }
       });
     }
 

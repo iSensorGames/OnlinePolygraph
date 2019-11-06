@@ -25,7 +25,7 @@ function AppForm(props) {
   return (
     <div className={classes.root}>
       <Container maxWidth="sm">
-        <Box mt={7} mb={12}>
+        <Box>
           <Paper className={classes.paper}>{children}</Paper>
         </Box>
       </Container>

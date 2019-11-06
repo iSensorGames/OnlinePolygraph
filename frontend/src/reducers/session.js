@@ -1,17 +1,24 @@
 import { combineReducers } from "redux";
 import {
-  SESSION_SERVER_MESSAGE,
-  SESSION_ONLINE_USERS,
+  SESSION_SOCKET_SERVER_MESSAGE,
+  SESSION_SOCKET_ONLINE_USERS,
+  SESSION_SOCKET_CONNECT_REQUEST,
+  SESSION_SOCKET_CONNECT_SUCCESS,
+  SESSION_SOCKET_CONNECT_FAILURE,
+  SESSION_SOCKET_DISCONNECT,
   SESSION_AUTH_SIGNIN_REQUEST,
   SESSION_AUTH_SIGNIN_SUCCESS,
   SESSION_AUTH_SIGNIN_FAILURE,
   SESSION_AUTH_VERIFY_REQUEST,
   SESSION_AUTH_VERIFY_SUCCESS,
   SESSION_AUTH_VERIFY_FAILURE,
+  SESSION_AUTH_SIGNOUT,
   SESSION_LOCATION
 } from "../actions/session";
 
 const INITIAL_SOCKET_STATE = {
+  isConnecting: false,
+  isConnected: false,
   onlineUsers: [],
   serverMessage: null
 };
@@ -25,21 +32,49 @@ const INITIAL_SIGNIN_STATE = {
 
 const socketResponse = (state = INITIAL_SOCKET_STATE, action) => {
   switch (action.type) {
-    case SESSION_SERVER_MESSAGE: {
+    case SESSION_SOCKET_SERVER_MESSAGE: {
       return {
         ...state,
         serverMessage: action.payload
       };
     }
-    case SESSION_ONLINE_USERS: {
+    case SESSION_SOCKET_ONLINE_USERS: {
       const { onlineUsers, user } = action.payload;
+
+      if (onlineUsers.length !== state.onlineUsers.length) {
+        return {
+          ...state,
+          onlineUsers: onlineUsers
+            ? onlineUsers.filter(onlineUser => onlineUser.id !== user.id)
+            : []
+        };
+      } else {
+        return {
+          ...state
+        };
+      }
+    }
+    case SESSION_SOCKET_CONNECT_REQUEST: {
       return {
         ...state,
-        onlineUsers: onlineUsers
-          ? onlineUsers.filter(onlineUser => onlineUser.id !== user.id)
-          : []
+        isConnecting: true
       };
     }
+    case SESSION_SOCKET_CONNECT_SUCCESS: {
+      return {
+        ...state,
+        isConnecting: false,
+        isConnected: true
+      };
+    }
+    case SESSION_SOCKET_DISCONNECT:
+    case SESSION_SOCKET_CONNECT_FAILURE:
+      return {
+        ...state,
+        isConnecting: false,
+        isConnected: false,
+        errorMessage: action.payload
+      };
     default:
       return state;
   }
@@ -51,7 +86,6 @@ const signIn = (state = INITIAL_SIGNIN_STATE, action) => {
     case SESSION_AUTH_SIGNIN_REQUEST:
       return {
         ...state,
-        isAuthenticated: false,
         isFetching: true,
         errorMessage: null
       };
@@ -61,7 +95,6 @@ const signIn = (state = INITIAL_SIGNIN_STATE, action) => {
         ...state,
         session: null,
         isFetching: false,
-        isAuthenticated: false,
         errorMessage: action.payload
       };
     case SESSION_AUTH_VERIFY_SUCCESS:
@@ -75,7 +108,6 @@ const signIn = (state = INITIAL_SIGNIN_STATE, action) => {
             ...action.payload
           }
         },
-        isAuthenticated: true,
         isFetching: false,
         errorMessage: null
       };
@@ -83,9 +115,13 @@ const signIn = (state = INITIAL_SIGNIN_STATE, action) => {
       return {
         ...state,
         session: action.payload,
-        isAuthenticated: true,
         isFetching: false,
         errorMessage: null
+      };
+    case SESSION_AUTH_SIGNOUT:
+      return {
+        ...state,
+        session: null
       };
     case SESSION_LOCATION: {
       return {
@@ -158,4 +194,12 @@ export const getToken = state => {
 
 export const getOnlineUsers = state => {
   return getSocketResponse(state).onlineUsers;
+};
+
+export const getIsConnecting = state => {
+  return getSocketResponse(state).isConnecting;
+};
+
+export const getIsConnected = state => {
+  return getSocketResponse(state).isConnected;
 };

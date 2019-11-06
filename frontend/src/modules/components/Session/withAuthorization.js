@@ -28,11 +28,10 @@ const withAuthorization = Component => {
 
       // Only verify authorization only on initial page load
       // Redirect if token is expired
-      if (previousLocation !== location.pathname) {
+      if (location.pathname !== "/" && previousLocation !== location.pathname) {
         updateLocation(location.pathname);
 
         verifyToken().catch(error => {
-          console.log("withAuthorization verifyToken", error.message);
           history.push(ROUTES.SIGN_IN);
         });
       }

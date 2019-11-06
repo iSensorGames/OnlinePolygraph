@@ -145,7 +145,6 @@ const SignIn = ({
           </Link>
         </Typography>
       </AppForm>
-      <AppFooter />
     </BaseLayout>
   );
 };

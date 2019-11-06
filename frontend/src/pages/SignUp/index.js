@@ -173,7 +173,6 @@ const SignUp = ({ history, classes, signUp }) => {
           )}
         </Form>
       </AppForm>
-      <AppFooter />
     </BaseLayout>
   );
 };

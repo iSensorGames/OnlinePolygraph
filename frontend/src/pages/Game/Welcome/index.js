@@ -19,10 +19,6 @@ import * as ROUTES from "../../../modules/constants/routes";
 // Styles
 import { withStyles } from "@material-ui/core/styles";
 const styles = theme => ({
-  background: {
-    backgroundColor: "#43CEEB", // Average color of the background image.
-    backgroundPosition: "center"
-  },
   button: {
     marginBottom: 20,
     minWidth: 200
@@ -32,10 +28,11 @@ const styles = theme => ({
     marginBottom: 20,
     minWidth: 200
   },
-  logo: {
+  img: {
     height: 200,
     [theme.breakpoints.up("sm")]: {
-      height: "inherit"
+      height: "inherit",
+      maxHeight: 400
     }
   },
   h5: {
@@ -56,7 +53,7 @@ const styles = theme => ({
 
 const Welcome = ({ classes }) => {
   return (
-    <BaseLayout backgroundClassName={classes.background}>
+    <BaseLayout>
       <img src={logo} className={classes.logo} alt="Real or Spiel?" />
       <Typography
         color="inherit"
