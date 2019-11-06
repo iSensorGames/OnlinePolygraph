@@ -8,7 +8,7 @@ img {
 .inbox_people {
   background: #f8f8f8 none repeat scroll 0 0;
   height: 100%;
-  width: 40%;
+  width: 30%;
   border-right: 1px solid #c4c4c4;
 }
 .inbox_msg {
@@ -60,7 +60,7 @@ img {
   margin: 0 0 0 -27px;
 }
 
-.chat_ib h5 {
+.chat_ib {
   font-size: 15px;
   color: #464646;
   margin: 0 0 8px 0;
@@ -132,7 +132,7 @@ img {
 }
 .mesgs {
   padding: 0px;
-  width: 60%;
+  width: 100%;
 }
 
 .sent_msg p {
@@ -191,6 +191,7 @@ input:focus {
 }
 .messaging {
   height: 100%;
+  width: 100%;
 }
 .msg_history {
   height: calc(100% - 98px);

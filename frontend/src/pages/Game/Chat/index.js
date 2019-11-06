@@ -15,7 +15,7 @@ import { compose } from "recompose";
 import { withStyles } from "@material-ui/core/styles";
 
 // View
-import RoomCreate from "./RoomCreate";
+import ChatSetup from "./ChatSetup";
 
 // Icons
 import SendIcon from "@material-ui/icons/Send";
@@ -119,6 +119,7 @@ const ChatMessageContainer = () => {
 };
 
 const Chat = ({ roomId }) => {
+  console.log("Chat roomId", roomId);
   return (
     <ChatLayout>
       <div class="messaging">
@@ -172,7 +173,7 @@ const Chat = ({ roomId }) => {
               )}
             </div>
           </div>
-          {roomId ? <ChatMessageContainer /> : <RoomCreate />}
+          {roomId ? <ChatMessageContainer /> : <ChatSetup />}
         </div>
       </div>
     </ChatLayout>

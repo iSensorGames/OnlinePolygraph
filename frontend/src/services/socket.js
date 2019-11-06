@@ -46,10 +46,10 @@ export const openConnection = (listener, user) => {
   });
 };
 
-export const createRoom = listener => {
+export const createRoom = (listener, roomId) => {
   return new Promise((resolve, reject) => {
     try {
-      socket.emit(SOCKET_CREATE_ROOM);
+      socket.emit(SOCKET_CREATE_ROOM, roomId);
 
       const availableRooms = res => {
         listener(SOCKET_ROOM_AVAILABLE, res);

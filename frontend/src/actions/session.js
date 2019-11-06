@@ -76,13 +76,11 @@ export const openConnection = () => {
     socket
       .openConnection(listener, user)
       .then(() => {
-        console.log("socket.openConnection SUCCESS");
         dispatch({
           type: SESSION_SOCKET_CONNECT_SUCCESS
         });
       })
       .catch(err => {
-        console.log("socket.openConnection FAILURE", err);
         dispatch({
           type: SESSION_SOCKET_CONNECT_FAILURE
         });

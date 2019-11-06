@@ -87,6 +87,10 @@ const getOnlineUsers = () => {
   return users.filter(u => u != undefined);
 };
 
+const getAvailableRooms = () => {
+  return io.sockets.adapter.rooms;
+};
+
 io.on("connection", socket => {
   console.log("Client connected...");
 
@@ -126,6 +130,12 @@ io.on("connection", socket => {
     }
 
     emitOnlineUsers();
+  });
+
+  socket.on("create_room", roomId => {
+    socket.join(roomId);
+
+    socket.broadcast.emit("available_room", getAvailableRooms());
   });
 
   socket.on("message", ({ message, room }) => {

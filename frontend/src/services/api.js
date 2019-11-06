@@ -1,9 +1,8 @@
 import axios from "axios";
 
-export const post = async (endpointName, body, headers) => {
+export const post = async (endpointName, options) => {
   return axios.post(`${process.env.PUBLIC_URL}/api${endpointName}`, {
-    ...body,
-    ...headers
+    ...options
   });
 };
 
@@ -56,10 +55,11 @@ export const verifyToken = async token => {
   return data;
 };
 
-export const createConversation = async token => {
+export const createConversation = async (token, userId) => {
   if (!token) throw new Error("Token is null");
 
   const response = await post("/addConversation", {
+    userId,
     headers: { Authorization: `Bearer ${token}` }
   });
   const { data } = response;

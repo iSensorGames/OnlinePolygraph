@@ -99,7 +99,6 @@ const signIn = (state = INITIAL_SIGNIN_STATE, action) => {
         errorMessage: action.payload
       };
     case SESSION_AUTH_VERIFY_SUCCESS:
-      console.log("AUTH_VERIFY_SUCCESS");
       return {
         ...state,
         session: {
@@ -205,8 +204,5 @@ export const getIsConnecting = state => {
 
 export const getIsConnected = state => {
   const socketResponse = getSocketResponse(state);
-
-  console.log("socketResponse", socketResponse);
-
   return socketResponse.isConnected;
 };

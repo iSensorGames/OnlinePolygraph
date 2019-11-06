@@ -9,7 +9,7 @@ import Button from "@material-ui/core/Button";
 import * as chatActions from "../../../../actions/chat";
 
 // Layout
-import ChatLayout from "../../../../layout/Chat";
+import ChatSetupLayout from "../../../../layout/ChatSetup";
 
 // Styles
 import { withStyles } from "@material-ui/core/styles";
@@ -17,17 +17,20 @@ const styles = () => ({
   container: {
     alignItems: "center",
     display: "flex",
+    flex: 1,
     justifyContent: "center",
-    width: "60%"
+    position: "relative"
   }
 });
 
-const RoomCreate = ({ classes, createRoom }) => {
+const ChatSetup = ({ classes, createRoom }) => {
   return (
     <div className={classes.container}>
-      <Button color="primary" onClick={() => createRoom()}>
-        Room Create
-      </Button>
+      <ChatSetupLayout>
+        <Button color="primary" onClick={() => createRoom()}>
+          Room Create
+        </Button>
+      </ChatSetupLayout>
     </div>
   );
 };
@@ -42,4 +45,4 @@ export default compose(
     null,
     actionCreators
   )
-)(RoomCreate);
+)(ChatSetup);
