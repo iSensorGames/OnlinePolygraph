@@ -7,6 +7,7 @@ const bodyParser = require("body-parser");
 const morgan = require("morgan");
 const fs = require("fs");
 const dotenv = require("dotenv");
+const utils = require("./utils");
 
 /**************************
  * SETUP GLOBAL VARIABLES *
@@ -88,19 +89,32 @@ const getOnlineUsers = () => {
 };
 
 const getAvailableRooms = () => {
-  return io.sockets.adapter.rooms;
+  return new Promise((resolve, reject) => {
+    const rooms = Object.keys(io.sockets.adapter.rooms);
+
+    if (rooms.length > 0) {
+      const roomsFormatted = rooms.map(value => {
+        return "'" + value + "'";
+      });
+
+      const query = `SELECT id, creator_id, topic, name, created_at FROM conversations WHERE id IN (${roomsFormatted})`;
+      db.query(query, (err, results) => {
+        if (err) {
+          console.log(err);
+          reject(err);
+        }
+        resolve(results);
+      });
+    } else {
+      resolve([]);
+    }
+  });
 };
 
 io.on("connection", socket => {
-  console.log("Client connected...");
-
   const emitOnlineUsers = () => {
     socket.broadcast.emit("online_users", getOnlineUsers());
   };
-
-  socket.on("join_room", room => {
-    socket.join(room);
-  });
 
   socket.on("connect_user", user => {
     socket.emit("server_message", {
@@ -109,6 +123,9 @@ io.on("connection", socket => {
     });
 
     socket.emit("online_users", getOnlineUsers());
+    getAvailableRooms().then(result => {
+      socket.emit("available_rooms", result);
+    });
 
     socket.broadcast.emit("server_message", {
       name: website,
@@ -135,7 +152,17 @@ io.on("connection", socket => {
   socket.on("create_room", roomId => {
     socket.join(roomId);
 
-    socket.broadcast.emit("available_room", getAvailableRooms());
+    getAvailableRooms().then(result => {
+      socket.emit("available_rooms", result);
+      socket.broadcast.emit("available_rooms", result);
+    });
+  });
+
+  socket.on("join_room", roomId => {
+    socket.join(roomId);
+
+    const currentUser = socket.user;
+    socket.broadcast.to(roomId).emit("join_room_opponent", currentUser);
   });
 
   socket.on("message", ({ message, room }) => {

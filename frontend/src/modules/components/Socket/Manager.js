@@ -2,16 +2,14 @@ import React from "react";
 import { connect } from "react-redux";
 
 // Selectors
-import * as sessionSelectors from "../../../reducers/session";
+import * as socketSelectors from "../../../reducers/socket";
 
 // Actions
-import * as sessionActions from "../../../actions/session";
+import * as socketActions from "../../../actions/socket";
 
 class Manager extends React.Component {
   initializeConnection() {
     const { openConnection, isConnected } = this.props;
-
-    console.log("Manager isConnected", isConnected);
 
     if (!isConnected) {
       openConnection();
@@ -31,12 +29,12 @@ class Manager extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    isConnected: sessionSelectors.getIsConnected(state)
+    isConnected: socketSelectors.getIsConnected(state)
   };
 };
 
 const actionCreators = {
-  openConnection: sessionActions.openConnection
+  openConnection: socketActions.openConnection
 };
 
 export default connect(

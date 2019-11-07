@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 // Views
 import Intro from "./Intro";
 import TopicSelect from "./TopicSelect";
+import RoomJoin from "./RoomJoin";
 import GroundTruth from "./GroundTruth";
 import Ready from "./Ready";
 
@@ -29,25 +30,33 @@ const styles = () => ({
   }
 });
 
-const Tab = ({ chatSetupTab }) => {
-  switch (chatSetupTab) {
-    case "intro":
-      return <Intro />;
-    case "topic":
-      return <TopicSelect />;
-    case "ready":
-      return <Ready />;
-    default:
-      return null;
-  }
-};
-
 const ChatSetup = ({ classes, chatSetupTab }) => {
+  const Tab = () => {
+    switch (chatSetupTab) {
+      case "intro":
+        return <Intro />;
+      case "topic":
+        return <TopicSelect />;
+      case "ready":
+        return <Ready />;
+      case "room-join":
+        return <RoomJoin />;
+      case "ground-truth":
+        return <GroundTruth />;
+      default:
+        return null;
+    }
+  };
+
   return (
     <div className={classes.container}>
-      <ChatSetupLayout>
-        <Tab chatSetupTab={chatSetupTab} />
-      </ChatSetupLayout>
+      {["intro", "topic", "ready"].includes(chatSetupTab) ? (
+        <ChatSetupLayout>
+          <Tab />
+        </ChatSetupLayout>
+      ) : (
+        <Tab />
+      )}
     </div>
   );
 };

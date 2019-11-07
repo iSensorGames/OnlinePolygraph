@@ -1,14 +1,16 @@
-import { combinedReduceres, combineReducers } from "redux";
+import { combineReducers } from "redux";
 import {
   CHAT_CREATEROOM_REQUEST,
   CHAT_CREATEROOM_SUCCESS,
   CHAT_CREATEROOM_FAILURE,
+  CHAT_SET_ROOMID,
   CHAT_SETUP_TAB,
   CHAT_SET_TOPIC,
   CHAT_SET_ROOMNAME,
   CHAT_SET_GAMESETUPCOMPLETE,
   CHAT_SET_GROUNDTRUTH,
-  CHAT_AVAILABLEROOM
+  CHAT_AVAILABLEROOMS,
+  CHAT_OPPONENT_JOIN
 } from "../actions/chat";
 
 const INITIAL_ROOM_STATE = {
@@ -21,7 +23,9 @@ const INITIAL_ROOM_STATE = {
   topic: null,
   roomName: "Game 1",
   isGameSetupComplete: false,
-  groundTruth: null
+  groundTruth: null,
+  rooms: [],
+  opponent: null
 };
 
 const room = (state = INITIAL_ROOM_STATE, action) => {
@@ -31,10 +35,10 @@ const room = (state = INITIAL_ROOM_STATE, action) => {
         ...state,
         isCreating: true
       };
+    case CHAT_SET_ROOMID:
     case CHAT_CREATEROOM_SUCCESS:
       return {
         ...state,
-        isCreating: false,
         roomId: action.payload
       };
     case CHAT_CREATEROOM_FAILURE:
@@ -67,6 +71,16 @@ const room = (state = INITIAL_ROOM_STATE, action) => {
       return {
         ...state,
         groundTruth: action.payload
+      };
+    case CHAT_AVAILABLEROOMS:
+      return {
+        ...state,
+        rooms: action.payload
+      };
+    case CHAT_OPPONENT_JOIN:
+      return {
+        ...state,
+        opponent: action.payload
       };
     default:
       return state;
@@ -115,4 +129,12 @@ export const getIsGameSetupComplete = state => {
 
 export const getGroundTruth = state => {
   return getRoom(state).groundTruth;
+};
+
+export const getAvailableRooms = state => {
+  return getRoom(state).rooms;
+};
+
+export const getOpponent = state => {
+  return getRoom(state).opponent;
 };

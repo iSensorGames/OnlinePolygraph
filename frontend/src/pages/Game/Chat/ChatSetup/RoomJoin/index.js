@@ -46,19 +46,18 @@ const styles = theme => ({
   }
 });
 
-const Ready = ({
+const RoomJoin = ({
   classes,
   topic,
   roomName,
   roomId,
-  opponent,
   setIsGameSetupComplete
 }) => {
   return (
     <div className={classes.container}>
       <List className={classes.root}>
         <ListSubheader component="div" id="nested-list-subheader">
-          READY
+          Room Join
         </ListSubheader>
         <ListItem>
           <ListItemAvatar>
@@ -92,11 +91,7 @@ const Ready = ({
           </ListItemAvatar>
           <ListItemText
             primary={`Opponent`}
-            secondary={
-              opponent
-                ? `${opponent.firstName} is connected`
-                : `Waiting for your opponent to connect...`
-            }
+            secondary={`Waiting for your opponent to connect...`}
           />
         </ListItem>
       </List>
@@ -123,13 +118,12 @@ const mapStateToProps = state => {
   return {
     topic: chatSelectors.getTopic(state),
     roomName: chatSelectors.getRoomName(state),
-    roomId: chatSelectors.getRoomId(state),
-    opponent: chatSelectors.getOpponent(state)
+    roomId: chatSelectors.getRoomId(state)
   };
 };
 
 const actionCreators = {
-  createRoom: chatActions.createRoom,
+  joinRoom: chatActions.joinRoom,
   setIsGameSetupComplete: chatActions.setIsGameSetupComplete
 };
 
@@ -139,4 +133,4 @@ export default compose(
     mapStateToProps,
     actionCreators
   )
-)(Ready);
+)(RoomJoin);

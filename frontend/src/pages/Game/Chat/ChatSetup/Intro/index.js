@@ -28,14 +28,12 @@ const styles = theme => ({
     flex: 1,
     justifyContent: "flex-start",
     marginTop: 80,
-    paddingTop: 20
+    width: "100%",
+    overflowY: "auto"
   },
   inputMsgWrite: {
-    alignItems: "center",
     display: "flex",
-    flexDirection: "row",
-    position: "relative",
-    background: "white"
+    flexDirection: "column"
   },
   writeMsg: {
     paddingLeft: 20,
@@ -46,11 +44,17 @@ const styles = theme => ({
     minWidth: 600,
     "&:focus": {
       outline: "none"
+    },
+    [theme.breakpoints.down("sm")]: {
+      minWidth: "inherit",
+      marginRight: 10,
+      marginLeft: 10
     }
   },
   button: {
     minWidth: 300,
-    marginTop: 40
+    minHeight: 55,
+    margin: "20px auto 80px"
   },
   description: {
     marginTop: 40,
@@ -84,6 +88,17 @@ const styles = theme => ({
     position: "absolute",
     top: -180,
     opacity: 0.7
+  },
+  inputContainer: {
+    alignItems: "center",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    marginTop: 50
+  },
+  divider: {
+    borderTop: "1px solid",
+    marginTop: 40
   }
 });
 
@@ -109,8 +124,8 @@ const Intro = ({ classes, setRoomName, setChatSetupTab }) => {
                   alt="suitcase"
                   className={classes.image}
                 />
-                <Typography variant="h5" align="center">
-                  Give a name to the game
+                <Typography variant="h6" align="center">
+                  Give a name.
                 </Typography>
               </div>
             </Grid>
@@ -122,8 +137,8 @@ const Intro = ({ classes, setRoomName, setChatSetupTab }) => {
                   alt="graph"
                   className={classes.image}
                 />
-                <Typography variant="h5" align="center">
-                  Select a conversation topic.
+                <Typography variant="h6" align="center">
+                  Select a topic.
                 </Typography>
               </div>
             </Grid>
@@ -135,40 +150,41 @@ const Intro = ({ classes, setRoomName, setChatSetupTab }) => {
                   alt="clock"
                   className={classes.image}
                 />
-                <Typography variant="h5" align="center">
-                  Start playing the game. A total of 12 rounds of 5 minutes
-                  each.
+                <Typography variant="h6" align="center">
+                  Start playing.
                 </Typography>
               </div>
             </Grid>
           </Grid>
         </div>
       </Container>
-      <Typography
-        variant="h4"
-        marked="center"
-        className={classes.title}
-        component="h2"
-      >
-        Give a name for your game.
-      </Typography>
-      <div className={classes.inputMsgWrite}>
-        <input
-          type="text"
-          onChange={e => setRoomName(e.target.value)}
-          className={classes.writeMsg}
-          placeholder="e.g.: Game 1"
-        />
-      </div>
-      <Button
-        color="secondary"
-        variant="contained"
-        size="large"
-        className={classes.button}
-        onClick={() => setChatSetupTab("topic")}
-      >
-        Got it
-      </Button>
+      <Container className={classes.divider}>
+        <Typography
+          variant="h4"
+          marked="center"
+          className={classes.title}
+          component="h2"
+        >
+          Give a name for your game.
+        </Typography>
+        <div className={classes.inputContainer}>
+          <input
+            type="text"
+            onChange={e => setRoomName(e.target.value)}
+            className={classes.writeMsg}
+            placeholder="e.g.: Game 1"
+          />
+          <Button
+            color="secondary"
+            variant="contained"
+            size="large"
+            className={classes.button}
+            onClick={() => setChatSetupTab("topic")}
+          >
+            Got it
+          </Button>
+        </div>
+      </Container>
     </div>
   );
 };

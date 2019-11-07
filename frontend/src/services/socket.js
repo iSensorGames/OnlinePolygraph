@@ -1,14 +1,14 @@
 import io from "socket.io-client";
 
 import {
-  SOCKET_CONNECT,
-  SOCKET_DISCONNECT,
-  SOCKET_CONNECT_USER,
-  SOCKET_ONLINE_USERS,
-  SOCKET_SERVER_MESSAGE
-} from "../actions/session";
-
-import { SOCKET_CREATE_ROOM, SOCKET_ROOM_AVAILABLE } from "../actions/chat";
+  RESPONSE_DISCONNECT,
+  RESPONSE_CONNECT_USER,
+  RESPONSE_ONLINE_USERS,
+  RESPONSE_SERVER_MESSAGE,
+  RESPONSE_CREATE_ROOM,
+  RESPONSE_AVAILABLE_ROOMS,
+  RESPONSE_JOIN_ROOM
+} from "../actions/socket";
 
 let socket = null;
 
@@ -18,26 +18,33 @@ export const openConnection = (listener, user) => {
       socket = io.connect(`${process.env.PUBLIC_URL}`, {
         secure: true,
         rejectUnauthorized: false,
-        path: "/users/socket.io"
+        path: "/users/socket.io",
+        forceNew: true,
+        reconnection: false
       });
 
-      socket.emit(SOCKET_CONNECT_USER, user);
+      socket.emit(RESPONSE_CONNECT_USER, user);
 
       const onlineUsersListener = res => {
-        listener(SOCKET_ONLINE_USERS, { onlineUsers: res, user });
+        listener(RESPONSE_ONLINE_USERS, { onlineUsers: res, user });
+      };
+
+      const availableRoomListener = res => {
+        listener(RESPONSE_AVAILABLE_ROOMS, res);
       };
 
       const serverMessage = res => {
-        listener(SOCKET_SERVER_MESSAGE, res);
+        listener(RESPONSE_SERVER_MESSAGE, res);
       };
 
       const disconnectListener = res => {
-        listener(SOCKET_DISCONNECT, res);
+        listener(RESPONSE_DISCONNECT, res);
       };
 
-      socket.on(SOCKET_DISCONNECT, disconnectListener);
-      socket.on(SOCKET_ONLINE_USERS, onlineUsersListener);
-      socket.on(SOCKET_SERVER_MESSAGE, serverMessage);
+      socket.on(RESPONSE_ONLINE_USERS, onlineUsersListener);
+      socket.on(RESPONSE_AVAILABLE_ROOMS, availableRoomListener);
+      socket.on(RESPONSE_SERVER_MESSAGE, serverMessage);
+      socket.on(RESPONSE_DISCONNECT, disconnectListener);
 
       resolve();
     } catch (error) {
@@ -46,16 +53,22 @@ export const openConnection = (listener, user) => {
   });
 };
 
-export const createRoom = (listener, roomId) => {
+export const createRoom = roomId => {
   return new Promise((resolve, reject) => {
     try {
-      socket.emit(SOCKET_CREATE_ROOM, roomId);
+      socket.emit(RESPONSE_CREATE_ROOM, roomId);
 
-      const availableRooms = res => {
-        listener(SOCKET_ROOM_AVAILABLE, res);
-      };
+      resolve();
+    } catch (error) {
+      reject(error.message);
+    }
+  });
+};
 
-      socket.on(SOCKET_ROOM_AVAILABLE, availableRooms);
+export const joinRoom = roomId => {
+  return new Promise((resolve, reject) => {
+    try {
+      socket.emit(RESPONSE_JOIN_ROOM, roomId);
 
       resolve();
     } catch (error) {

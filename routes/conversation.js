@@ -1,28 +1,23 @@
-const crypto = require("crypto");
+const utils = require("../utils");
 
 const middleware = require("../services/middleware");
 
 module.exports = ({ app, db }) => {
   app.post("/api/addConversation", middleware.checkToken, (req, res) => {
-    const { userId } = req.body;
+    const { userId, name, topic } = req.body;
 
-    console.log("userId: ", userId);
     db.query(
-      `INSERT INTO conversations (creator_id, created_at) VALUES (${userId}, NOW())`,
+      `INSERT INTO conversations (creator_id, name, topic, created_at) VALUES (${userId}, '${name}', '${topic}', NOW())`,
       (err, results) => {
         if (err) {
           return res.status(403).json(err);
         }
 
         const { insertId } = results;
-        const generatedHash = crypto
-          .createHash("md5")
-          .update(insertId.toString(), "utf-8")
-          .digest("HEX");
 
         return res.json({
           success: true,
-          insertId: generatedHash
+          insertId
         });
       }
     );
