@@ -19,7 +19,7 @@ const INITIAL_ROOM_STATE = {
   errorMessage: null,
   chatSetupTab: "intro",
   topic: null,
-  roomName: null,
+  roomName: "Game 1",
   isGameSetupComplete: false,
   groundTruth: null
 };

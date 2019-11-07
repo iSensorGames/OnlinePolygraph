@@ -63,18 +63,10 @@ const ChatSetupLayout = ({ children, classes, chatSetupTab }) => {
         <div
           className={clsx(
             classes.tab,
-            chatSetupTab === "ground" ? classes.tabActive : ""
-          )}
-        >
-          3. Ground Truth
-        </div>
-        <div
-          className={clsx(
-            classes.tab,
             chatSetupTab === "ready" ? classes.tabActive : ""
           )}
         >
-          4. Ready
+          3. Ready
         </div>
       </div>
       {children}

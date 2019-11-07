@@ -35,8 +35,6 @@ const Tab = ({ chatSetupTab }) => {
       return <Intro />;
     case "topic":
       return <TopicSelect />;
-    case "ground":
-      return <GroundTruth />;
     case "ready":
       return <Ready />;
     default:

@@ -98,7 +98,7 @@ const TopicSelect = ({ classes, setTopic, setChatSetupTab, createRoom }) => {
   const handleTopicSelect = async topic => {
     await setTopic(topic);
     createRoom(topic).then(() => {
-      setChatSetupTab("ground");
+      setChatSetupTab("ready");
     });
   };
 
