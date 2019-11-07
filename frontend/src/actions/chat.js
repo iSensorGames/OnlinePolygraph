@@ -7,6 +7,7 @@ export const CHAT_SETUP_TAB = "chat/CHAT_SETUP_TAB";
 export const CHAT_SET_TOPIC = "chat/CHAT_SET_TOPIC";
 export const CHAT_SET_ROOMNAME = "chat/CHAT_SET_ROOMNAME";
 export const CHAT_SET_GAMESETUPCOMPLETE = "chat/CHAT_SET_GAMESETUPCOMPLETE";
+export const CHAT_SET_GROUNDTRUTH = "chat/CHAT_SET_GROUNDTRUTH";
 export const CHAT_AVAILABLEROOM = "chat/CHAT_AVAILABLEROOM";
 
 export const SOCKET_CREATE_ROOM = "create_room";
@@ -100,6 +101,14 @@ export const setIsGameSetupComplete = () => {
   return dispatch => {
     dispatch({
       type: CHAT_SET_GAMESETUPCOMPLETE
+    });
+  };
+};
+
+export const setGroundTruth = () => {
+  return dispatch => {
+    dispatch({
+      type: CHAT_SET_GROUNDTRUTH
     });
   };
 };

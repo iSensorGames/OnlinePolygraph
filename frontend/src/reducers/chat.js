@@ -7,6 +7,7 @@ import {
   CHAT_SET_TOPIC,
   CHAT_SET_ROOMNAME,
   CHAT_SET_GAMESETUPCOMPLETE,
+  CHAT_SET_GROUNDTRUTH,
   CHAT_AVAILABLEROOM
 } from "../actions/chat";
 
@@ -19,7 +20,8 @@ const INITIAL_ROOM_STATE = {
   chatSetupTab: "intro",
   topic: null,
   roomName: null,
-  getIsGameSetupComplete: false
+  isGameSetupComplete: false,
+  groundTruth: null
 };
 
 const room = (state = INITIAL_ROOM_STATE, action) => {
@@ -60,6 +62,11 @@ const room = (state = INITIAL_ROOM_STATE, action) => {
       return {
         ...state,
         isGameSetupComplete: true
+      };
+    case CHAT_SET_GROUNDTRUTH:
+      return {
+        ...state,
+        groundTruth: action.payload
       };
     default:
       return state;
@@ -104,4 +111,8 @@ export const getRoomName = state => {
 
 export const getIsGameSetupComplete = state => {
   return getRoom(state).isGameSetupComplete;
+};
+
+export const getGroundTruth = state => {
+  return getRoom(state).groundTruth;
 };

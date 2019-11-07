@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 // Views
 import Intro from "./Intro";
 import TopicSelect from "./TopicSelect";
+import GroundTruth from "./GroundTruth";
 import Ready from "./Ready";
 
 // Actions
@@ -34,6 +35,8 @@ const Tab = ({ chatSetupTab }) => {
       return <Intro />;
     case "topic":
       return <TopicSelect />;
+    case "ground":
+      return <GroundTruth />;
     case "ready":
       return <Ready />;
     default:
