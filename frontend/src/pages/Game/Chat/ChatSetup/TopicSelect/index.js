@@ -94,9 +94,12 @@ const styles = theme => ({
   }
 });
 
-const TopicSelect = ({ classes, setChatSetupTab }) => {
-  const handleTopicSelect = () => {
-    setChatSetupTab("ready");
+const TopicSelect = ({ classes, setTopic, setChatSetupTab, createRoom }) => {
+  const handleTopicSelect = async topic => {
+    await setTopic(topic);
+    createRoom(topic).then(() => {
+      setChatSetupTab("ready");
+    });
   };
 
   const images = [
@@ -163,7 +166,7 @@ const TopicSelect = ({ classes, setChatSetupTab }) => {
           <ButtonBase
             key={image.title}
             className={classes.imageWrapper}
-            onClick={() => setChatSetupTab("ready")}
+            onClick={() => handleTopicSelect(image.title)}
             style={{
               width: image.width
             }}
@@ -195,7 +198,8 @@ const TopicSelect = ({ classes, setChatSetupTab }) => {
 
 const actionCreators = {
   setChatSetupTab: chatActions.setChatSetupTab,
-  setTopic: chatActions.setTopic
+  setTopic: chatActions.setTopic,
+  createRoom: chatActions.createRoom
 };
 
 export default compose(

@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 // Views
 import Intro from "./Intro";
 import TopicSelect from "./TopicSelect";
+import Ready from "./Ready";
 
 // Actions
 import * as chatActions from "../../../../actions/chat";
@@ -33,6 +34,8 @@ const Tab = ({ chatSetupTab }) => {
       return <Intro />;
     case "topic":
       return <TopicSelect />;
+    case "ready":
+      return <Ready />;
     default:
       return null;
   }

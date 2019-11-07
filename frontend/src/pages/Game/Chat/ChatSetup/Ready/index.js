@@ -4,6 +4,15 @@ import { connect } from "react-redux";
 
 // Component
 import Button from "../../../../../modules/components/Button";
+import List from "@material-ui/core/List";
+import ListSubheader from "@material-ui/core/ListSubheader";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemText from "@material-ui/core/ListItemText";
+import ListItemAvatar from "@material-ui/core/ListItemAvatar";
+import Avatar from "@material-ui/core/Avatar";
+import ImageIcon from "@material-ui/icons/Image";
+import WorkIcon from "@material-ui/icons/Work";
+import BeachAccessIcon from "@material-ui/icons/BeachAccess";
 
 // Actions
 import * as chatActions from "../../../../../actions/chat";
@@ -13,25 +22,93 @@ import * as chatSelectors from "../../../../../reducers/chat";
 
 // Styles
 import { withStyles } from "@material-ui/core/styles";
-const styles = () => ({
+import { Typography } from "@material-ui/core";
+const styles = theme => ({
+  root: {
+    width: "100%",
+    maxWidth: 360,
+    backgroundColor: theme.palette.background.paper,
+    color: "black",
+    marginBottom: 20
+  },
   container: {
     alignItems: "center",
     display: "flex",
     flexDirection: "column",
     flex: 1,
     justifyContent: "center"
+  },
+  textMessage: {
+    marginBottom: 20
+  },
+  button: {
+    minWidth: 200
   }
 });
 
-const Ready = ({ classes, topic, roomName }) => {
+const Ready = ({
+  classes,
+  topic,
+  roomName,
+  roomId,
+  setIsGameSetupComplete
+}) => {
   return (
     <div className={classes.container}>
-      <div>READY</div>
-      <div>Topic: {topic}</div>
-      <div>Room Name: {roomName}</div>
-      <div>Waiting for your opponent...</div>
-      <Button color="primary" onClick={() => createRoom()}>
-        Okay
+      <List className={classes.root}>
+        <ListSubheader component="div" id="nested-list-subheader">
+          READY
+        </ListSubheader>
+        <ListItem>
+          <ListItemAvatar>
+            <Avatar>
+              <ImageIcon />
+            </Avatar>
+          </ListItemAvatar>
+          <ListItemText primary={`Topic:`} secondary={`${topic}`} />
+        </ListItem>
+        <ListItem>
+          <ListItemAvatar>
+            <Avatar>
+              <WorkIcon />
+            </Avatar>
+          </ListItemAvatar>
+          <ListItemText primary={`Room ID`} secondary={`${roomId}`} />
+        </ListItem>
+        <ListItem>
+          <ListItemAvatar>
+            <Avatar>
+              <BeachAccessIcon />
+            </Avatar>
+          </ListItemAvatar>
+          <ListItemText primary={`Room Name:`} secondary={`${roomName}`} />
+        </ListItem>
+        <ListItem>
+          <ListItemAvatar>
+            <Avatar>
+              <BeachAccessIcon />
+            </Avatar>
+          </ListItemAvatar>
+          <ListItemText
+            primary={`Opponent`}
+            secondary={`Waiting for your opponent to connect...`}
+          />
+        </ListItem>
+      </List>
+      <Typography
+        variant="h4"
+        color="primaryText"
+        className={classes.textMessage}
+      ></Typography>
+      <Button
+        color="primary"
+        variant="contained"
+        size="large"
+        className={classes.button}
+        onClick={() => setIsGameSetupComplete()}
+        disabled
+      >
+        Play Game
       </Button>
     </div>
   );
@@ -40,12 +117,14 @@ const Ready = ({ classes, topic, roomName }) => {
 const mapStateToProps = state => {
   return {
     topic: chatSelectors.getTopic(state),
-    roomName: chatSelectors.getRoomName(state)
+    roomName: chatSelectors.getRoomName(state),
+    roomId: chatSelectors.getRoomId(state)
   };
 };
 
 const actionCreators = {
-  createRoom: chatActions.createRoom
+  createRoom: chatActions.createRoom,
+  setIsGameSetupComplete: chatActions.setIsGameSetupComplete
 };
 
 export default compose(

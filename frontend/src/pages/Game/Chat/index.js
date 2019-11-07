@@ -118,8 +118,7 @@ const ChatMessageContainer = () => {
   );
 };
 
-const Chat = ({ roomId }) => {
-  console.log("Chat roomId", roomId);
+const Chat = ({ isGameSetupComplete }) => {
   return (
     <ChatLayout>
       <div class="messaging">
@@ -173,7 +172,7 @@ const Chat = ({ roomId }) => {
               )}
             </div>
           </div>
-          {roomId ? <ChatMessageContainer /> : <ChatSetup />}
+          {isGameSetupComplete ? <ChatMessageContainer /> : <ChatSetup />}
         </div>
       </div>
     </ChatLayout>
@@ -182,7 +181,7 @@ const Chat = ({ roomId }) => {
 
 const mapStateToProps = state => {
   return {
-    roomId: chatSelectors.getRoomId(state)
+    isGameSetupComplete: chatSelectors.getIsGameSetupComplete(state)
   };
 };
 
