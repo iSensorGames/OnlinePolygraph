@@ -1,44 +1,53 @@
-import React, { useEffect } from 'react';
-import { compose } from 'recompose';
-import { connect } from 'react-redux';
-import * as utils from '../../utils';
+import React, { useEffect } from "react";
+import { compose } from "recompose";
+import { connect } from "react-redux";
+import * as utils from "../../utils";
 
 // Selectors
-import * as chatSelectors from '../../reducers/chat';
+import * as chatSelectors from "../../reducers/chat";
 
 // Constants
-import * as ROLES from '../../modules/constants/roles';
+import * as ROLES from "../../modules/constants/roles";
 
 // Styles
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles } from "@material-ui/core/styles";
 const styles = () => ({
   container: {
-    alignItems: 'center',
-    display: 'flex',
-    flexDirection: 'row',
+    display: "flex",
+    flexDirection: "column",
+    position: "relative",
+    width: "100%"
+  },
+  topMenuContainer: {
+    alignItems: "center",
+    backgroundColor: "#123791",
+    display: "flex",
+    flexDirection: "row",
     left: 0,
-    position: 'fixed',
+    justifyContent: "space-around",
+    position: "absolute",
     right: 0,
     top: 0,
-    width: '100%',
+    width: "100%"
   },
   gameItemContainer: {
-    alignItems: 'center',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
+    alignItems: "center",
+    display: "flex",
+    flex: 1,
+    flexDirection: "column",
+    height: 80,
+    justifyContent: "center"
   },
   title: {
-    fontWeight: 'bold',
+    fontWeight: "bold"
   },
   value: {
-    marginTop: 10,
-  },
+    marginTop: 10
+  }
 });
 
 let timeRemaining = 300000;
 const RoleWrapperLayout = ({ children, classes, game }) => {
-  console.log('RoleWrapperLayout game', game);
   useEffect(() => {
     let interval = setInterval(() => {
       timeRemaining -= 1000;
@@ -52,8 +61,8 @@ const RoleWrapperLayout = ({ children, classes, game }) => {
   const { gameRound, outerRole, innerRole } = game;
 
   return (
-    <React.Fragment>
-      <div className={classes.container}>
+    <div className={classes.container}>
+      <div className={classes.topMenuContainer}>
         <div className={classes.gameItemContainer}>
           <div className={classes.title}>Outer Role</div>
           <div className={classes.value}>
@@ -78,13 +87,13 @@ const RoleWrapperLayout = ({ children, classes, game }) => {
         </div>
       </div>
       {children}
-    </React.Fragment>
+    </div>
   );
 };
 
 const mapStateToProps = state => {
   return {
-    game: chatSelectors.getGame(state),
+    game: chatSelectors.getGame(state)
   };
 };
 

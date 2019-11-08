@@ -1,4 +1,4 @@
-import { combineReducers } from 'redux';
+import { combineReducers } from "redux";
 import {
   CHAT_CREATEROOM_REQUEST,
   CHAT_CREATEROOM_SUCCESS,
@@ -11,32 +11,32 @@ import {
   CHAT_SET_GAME_UPDATE,
   CHAT_AVAILABLEROOMS,
   CHAT_OPPONENT_JOIN,
-  CHAT_PLAYER_LEAVE,
-} from '../actions/chat';
+  CHAT_PLAYER_LEAVE
+} from "../actions/chat";
 
 const INITIAL_ROOM_STATE = {
   room: {
     id: null,
     creatorId: null,
     topic: null,
-    name: 'Game 1',
+    name: "Game 1",
     opponent: null,
     groundTruth: null,
-    createdAt: null,
+    createdAt: null
   },
   game: {
     isStarted: false,
-    tab: null,
+    tab: "ground-truth",
     gameRound: null,
     outerRole: null,
-    innerRole: null,
+    innerRole: null
   },
   isCreating: false,
   serverMessage: null,
   errorMessage: null,
-  chatSetupTab: 'intro',
+  chatSetupTab: "intro",
   isGameSetupComplete: false,
-  rooms: [],
+  rooms: []
 };
 
 const roomReducer = (state = INITIAL_ROOM_STATE, action) => {
@@ -44,75 +44,48 @@ const roomReducer = (state = INITIAL_ROOM_STATE, action) => {
     case CHAT_CREATEROOM_REQUEST:
       return {
         ...state,
-        isCreating: true,
+        isCreating: true
       };
     case CHAT_CREATEROOM_SUCCESS:
       return {
         ...state,
         room: {
           ...state.room,
-          ...action.payload,
-        },
+          ...action.payload
+        }
       };
     case CHAT_CREATEROOM_FAILURE:
       return {
         ...state,
         isCreating: false,
-        errorMessage: action.payload,
+        errorMessage: action.payload
       };
     case CHAT_SETUP_TAB:
       return {
         ...state,
-        chatSetupTab: action.payload,
+        chatSetupTab: action.payload
       };
     case CHAT_SET_ROOM: {
       return {
         ...state,
         room: {
           ...state.room,
-          ...action.payload,
-        },
+          ...action.payload
+        }
       };
     }
     case CHAT_SET_GAME_REQUEST: {
       return {
         ...state,
         isCreating: true,
-        errorMessage: null,
+        errorMessage: null
       };
     }
     case CHAT_SET_GAME_FAILURE: {
       return {
         ...state,
         isCreating: false,
-        errorMessage: action.payload,
-      };
-    }
-    case CHAT_SET_GAME_UPDATE: {
-      const {
-        isStarted,
-        gameRound,
-        creatorInnerRole,
-        opponentInnerRole,
-        creatorOuterRole,
-        opponentOuterRole,
-        user,
-      } = action.payload;
-
-      console.log('CHAT_SET_GAME_UPDATE state', state);
-      console.log('CHAT_SET_GAME_UPDATE user', user);
-      const isAuthor = state.room.creatorId === user.id;
-      console.log('isAuthor', isAuthor);
-
-      return {
-        ...state,
-        game: {
-          ...state.game,
-          isStarted,
-          gameRound,
-          outerRole: isAuthor ? creatorOuterRole : opponentOuterRole,
-          innerRole: isAuthor ? creatorInnerRole : opponentInnerRole,
-        },
+        errorMessage: action.payload
       };
     }
     case CHAT_SET_GAME_SUCCESS: {
@@ -122,14 +95,14 @@ const roomReducer = (state = INITIAL_ROOM_STATE, action) => {
         errorMessage: null,
         game: {
           ...state.game,
-          ...action.payload,
-        },
+          ...action.payload
+        }
       };
     }
     case CHAT_AVAILABLEROOMS: {
       return {
         ...state,
-        rooms: action.payload,
+        rooms: action.payload
       };
     }
     case CHAT_OPPONENT_JOIN: {
@@ -137,13 +110,13 @@ const roomReducer = (state = INITIAL_ROOM_STATE, action) => {
         ...state,
         room: {
           ...state.room,
-          opponent: action.payload,
-        },
+          opponent: action.payload
+        }
       };
     }
     case CHAT_PLAYER_LEAVE: {
       return {
-        ...state,
+        ...state
       };
     }
     default: {
@@ -153,7 +126,7 @@ const roomReducer = (state = INITIAL_ROOM_STATE, action) => {
 };
 
 export default combineReducers({
-  roomReducer,
+  roomReducer
 });
 
 const select = state => state.chat;

@@ -1,52 +1,52 @@
-import React from 'react';
-import { compose } from 'recompose';
-import { connect } from 'react-redux';
+import React from "react";
+import { compose } from "recompose";
+import { connect } from "react-redux";
 
 // Component
-import Button from '../../../../../modules/components/Button';
-import List from '@material-ui/core/List';
-import ListSubheader from '@material-ui/core/ListSubheader';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import Avatar from '@material-ui/core/Avatar';
-import ImageIcon from '@material-ui/icons/Image';
-import WorkIcon from '@material-ui/icons/Work';
-import BeachAccessIcon from '@material-ui/icons/BeachAccess';
+import Button from "../../../../../modules/components/Button";
+import List from "@material-ui/core/List";
+import ListSubheader from "@material-ui/core/ListSubheader";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemText from "@material-ui/core/ListItemText";
+import ListItemAvatar from "@material-ui/core/ListItemAvatar";
+import Avatar from "@material-ui/core/Avatar";
+import ImageIcon from "@material-ui/icons/Image";
+import WorkIcon from "@material-ui/icons/Work";
+import BeachAccessIcon from "@material-ui/icons/BeachAccess";
 
 // Actions
-import * as chatActions from '../../../../../actions/chat';
+import * as chatActions from "../../../../../actions/chat";
 
 // Selectors
-import * as chatSelectors from '../../../../../reducers/chat';
+import * as chatSelectors from "../../../../../reducers/chat";
 
 // Styles
-import { withStyles } from '@material-ui/core/styles';
-import { Typography } from '@material-ui/core';
+import { withStyles } from "@material-ui/core/styles";
+import { Typography } from "@material-ui/core";
 const styles = theme => ({
   root: {
-    width: '100%',
+    width: "100%",
     maxWidth: 360,
     backgroundColor: theme.palette.background.paper,
-    color: 'black',
-    marginBottom: 20,
+    color: "black",
+    marginBottom: 20
   },
   container: {
-    alignItems: 'center',
-    display: 'flex',
-    flexDirection: 'column',
+    alignItems: "center",
+    display: "flex",
+    flexDirection: "column",
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: "center"
   },
   textMessage: {
-    marginBottom: 20,
+    marginBottom: 20
   },
   button: {
-    minWidth: 200,
-  },
+    minWidth: 200
+  }
 });
 
-const Ready = ({ classes, room, setGame }) => {
+const Ready = ({ classes, room, startGame }) => {
   const { id, topic, name, opponent } = room;
   return (
     <div className={classes.container}>
@@ -104,7 +104,7 @@ const Ready = ({ classes, room, setGame }) => {
         variant="contained"
         size="large"
         className={classes.button}
-        onClick={() => setGame({ tab: 'ground-truth' })}
+        onClick={() => startGame()}
         disabled={!!!opponent}
       >
         Start Game
@@ -115,12 +115,12 @@ const Ready = ({ classes, room, setGame }) => {
 
 const mapStateToProps = state => {
   return {
-    room: chatSelectors.getRoom(state),
+    room: chatSelectors.getRoom(state)
   };
 };
 
 const actionCreators = {
-  setGame: chatActions.setGame,
+  startGame: chatActions.startGame
 };
 
 export default compose(

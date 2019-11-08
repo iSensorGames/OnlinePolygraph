@@ -1,67 +1,71 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { compose } from 'recompose';
+import React from "react";
+import { connect } from "react-redux";
+import { compose } from "recompose";
 
 // Utility function
-import * as utils from '../../../../../utils';
+import * as utils from "../../../../../utils";
 
 // Constants
-import * as ROLES from '../../../../../modules/constants/roles';
+import * as ROLES from "../../../../../modules/constants/roles";
 
 // Components
-import Button from '../../../../../modules/components/Button';
-import Typography from '../../../../../modules/components/Typography';
+import Button from "../../../../../modules/components/Button";
+import Typography from "../../../../../modules/components/Typography";
 
 // Styles
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles } from "@material-ui/core/styles";
 
 // Data
-import questionItems from './data';
+import questionItems from "./data";
 
 // Actions
-import * as chatActions from '../../../../../actions/chat';
+import * as chatActions from "../../../../../actions/chat";
 
 // Selecter
-import * as chatSelectors from '../../../../../reducers/chat';
+import * as chatSelectors from "../../../../../reducers/chat";
 
 const styles = () => ({
   container: {
-    alignItems: 'center',
-    display: 'flex',
-    flexDirection: 'column',
+    alignItems: "center",
+    display: "flex",
+    flexDirection: "column",
     flex: 1,
-    justifyContent: 'center',
-  },
-  inputMsgWrite: {
-    alignItems: 'center',
-    display: 'flex',
-    flexDirection: 'row',
-    position: 'relative',
+    justifyContent: "center",
     paddingRight: 20,
     paddingLeft: 20,
-    background: 'white',
+    alignItems: "center",
+    textAlign: "center"
+  },
+  inputMsgWrite: {
+    alignItems: "center",
+    display: "flex",
+    flexDirection: "row",
+    position: "relative",
+    paddingRight: 20,
+    paddingLeft: 20,
+    background: "white"
   },
   writeMsg: {
-    '&:focus': {
-      outline: 'none',
-    },
+    "&:focus": {
+      outline: "none"
+    }
   },
   button: {
-    minWidth: 200,
+    minWidth: 200
   },
   innerRoleExplanation: {
     marginTop: 20,
-    marginBottom: 40,
+    marginBottom: 40
   },
   outerRoleExplanation: {},
   buttonsContainer: {
     marginTop: 40,
     maxWidth: 500,
-    textAlign: 'center',
-  },
+    textAlign: "center"
+  }
 });
 
-const GroundTruth = ({ classes, game, room, setChatSetupTab, setRoom }) => {
+const GroundTruth = ({ classes, game, room, setGame }) => {
   const { outerRole, innerRole } = game;
   const { topic } = room;
 
@@ -81,7 +85,7 @@ const GroundTruth = ({ classes, game, room, setChatSetupTab, setRoom }) => {
   };
 
   const handleGroundTruthSelect = answer => {
-    setRoom({ groundTruth: answer, tab: 'messenger' });
+    setGame({ groundTruth: answer, tab: "messenger" });
   };
 
   return (
@@ -110,7 +114,7 @@ const GroundTruth = ({ classes, game, room, setChatSetupTab, setRoom }) => {
               variant="contained"
               size="large"
               className={classes.button}
-              onClick={() => handleGroundTruthSelect('yes')}
+              onClick={() => handleGroundTruthSelect("yes")}
             >
               Yes
             </Button>
@@ -119,7 +123,7 @@ const GroundTruth = ({ classes, game, room, setChatSetupTab, setRoom }) => {
               variant="contained"
               size="large"
               className={classes.button}
-              onClick={() => handleGroundTruthSelect('no')}
+              onClick={() => handleGroundTruthSelect("no")}
             >
               No
             </Button>
@@ -133,13 +137,12 @@ const GroundTruth = ({ classes, game, room, setChatSetupTab, setRoom }) => {
 const mapStateToProps = state => {
   return {
     room: chatSelectors.getRoom(state),
-    game: chatSelectors.getGame(state),
+    game: chatSelectors.getGame(state)
   };
 };
 
 const actionCreators = {
-  setChatSetupTab: chatActions.setChatSetupTab,
-  setRoom: chatActions.setRoom,
+  setGame: chatActions.setGame
 };
 
 export default compose(

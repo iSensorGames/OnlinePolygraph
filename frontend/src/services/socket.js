@@ -1,4 +1,4 @@
-import io from 'socket.io-client';
+import io from "socket.io-client";
 
 import {
   RESPONSE_DISCONNECT,
@@ -13,7 +13,8 @@ import {
   RESPONSE_LEAVE_ROOM_PLAYER,
   RESPONSE_GAME_START,
   RESPONSE_GAME_UPDATE,
-} from '../actions/socket';
+  RESPONSE_GAME_SET
+} from "../actions/socket";
 
 let socket = null;
 
@@ -23,9 +24,9 @@ export const openConnection = (listener, user) => {
       socket = io.connect(`${process.env.PUBLIC_URL}`, {
         secure: true,
         rejectUnauthorized: false,
-        path: '/users/socket.io',
+        path: "/users/socket.io",
         forceNew: true,
-        reconnection: false,
+        reconnection: false
       });
 
       socket.emit(RESPONSE_CONNECT_USER, user);
@@ -112,6 +113,17 @@ export const startGame = roomId => {
   return new Promise((resolve, reject) => {
     try {
       socket.emit(RESPONSE_GAME_START, roomId);
+      resolve();
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+export const setGame = (roomId, params) => {
+  return new Promise((resolve, reject) => {
+    try {
+      socket.emit(RESPONSE_GAME_SET, { roomId, params });
       resolve();
     } catch (error) {
       reject(error);

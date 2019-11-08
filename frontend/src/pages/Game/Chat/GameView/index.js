@@ -1,26 +1,26 @@
-import React from 'react';
-import { connect } from 'react-redux';
+import React from "react";
+import { connect } from "react-redux";
 
 // Selectors
-import * as chatSelectors from '../../../../reducers/chat';
+import * as chatSelectors from "../../../../reducers/chat";
 
 // Layout
-import RoleWrapper from '../../../../layout/RoleWrapper';
+import RoleWrapperLayout from "../../../../layout/RoleWrapper";
 
 // Views
-import GroundTruth from './GroundTruth';
-import MessageContainer from './MessageContainer';
+import GroundTruth from "./GroundTruth";
+import MessageContainer from "./MessageContainer";
 
 const GameView = ({ game }) => {
   const { tab } = game;
 
-  console.log('GameView tab', tab);
+  console.log("GameView tab", tab);
 
   const ContentRenderer = () => {
     switch (tab) {
-      case 'ground-truth':
+      case "ground-truth":
         return <GroundTruth />;
-      case 'messenger':
+      case "messenger":
         return <MessageContainer />;
       default:
         return null;
@@ -28,15 +28,15 @@ const GameView = ({ game }) => {
   };
 
   return (
-    <RoleWrapper>
+    <RoleWrapperLayout>
       <ContentRenderer />
-    </RoleWrapper>
+    </RoleWrapperLayout>
   );
 };
 
 const mapStateToProps = state => {
   return {
-    game: chatSelectors.getGame(state),
+    game: chatSelectors.getGame(state)
   };
 };
 
