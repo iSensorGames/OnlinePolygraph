@@ -5,6 +5,9 @@ import { compose } from 'recompose';
 // Utility function
 import * as utils from '../../../../../utils';
 
+// Constants
+import * as ROLES from '../../../../../modules/constants/roles';
+
 // Components
 import Button from '../../../../../modules/components/Button';
 import Typography from '../../../../../modules/components/Typography';
@@ -46,17 +49,20 @@ const styles = () => ({
   button: {
     minWidth: 200,
   },
-  buttonsContainer: {
+  innerRoleExplanation: {
+    marginTop: 20,
     marginBottom: 40,
+  },
+  outerRoleExplanation: {},
+  buttonsContainer: {
+    marginTop: 40,
     maxWidth: 500,
     textAlign: 'center',
   },
 });
 
 const GroundTruth = ({ classes, game, room, setChatSetupTab, setRoom }) => {
-  const {
-    roles: { outerRole },
-  } = game;
+  const { outerRole, innerRole } = game;
   const { topic } = room;
 
   const QuestionRenderer = () => {
@@ -79,34 +85,39 @@ const GroundTruth = ({ classes, game, room, setChatSetupTab, setRoom }) => {
     setChatSetupTab('ready');
   };
 
-  return outerRole === 'Detector' ? (
-    <div className={classes.container}></div>
-  ) : (
+  return (
     <div className={classes.container}>
-      <Typography className={classes.roleExplanation} variant="h4">
-        Your role is ""
+      <Typography className={classes.outerRoleExplanation} variant="h4">
+        {`Your outer role is ${outerRole}`}
       </Typography>
-      <QuestionRenderer />
-      <div className={classes.buttonsContainer}>
-        <Button
-          color="primary"
-          variant="contained"
-          size="large"
-          className={classes.button}
-          onClick={() => handleGroundTruthSelect('yes')}
-        >
-          Yes
-        </Button>
-        <Button
-          color="secondary"
-          variant="contained"
-          size="large"
-          className={classes.button}
-          onClick={() => handleGroundTruthSelect('no')}
-        >
-          No
-        </Button>
-      </div>
+      <Typography className={classes.innerRoleExplanation} variant="h4">
+        {`Your inner role is ${innerRole}`}
+      </Typography>
+      {outerRole === ROLES.OUTER_ROLE.DETECTOR && (
+        <React.Fragment>
+          <QuestionRenderer />
+          <div className={classes.buttonsContainer}>
+            <Button
+              color="primary"
+              variant="contained"
+              size="large"
+              className={classes.button}
+              onClick={() => handleGroundTruthSelect('yes')}
+            >
+              Yes
+            </Button>
+            <Button
+              color="secondary"
+              variant="contained"
+              size="large"
+              className={classes.button}
+              onClick={() => handleGroundTruthSelect('no')}
+            >
+              No
+            </Button>
+          </div>
+        </React.Fragment>
+      )}
     </div>
   );
 };

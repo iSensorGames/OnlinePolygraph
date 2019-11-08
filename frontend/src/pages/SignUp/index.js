@@ -67,13 +67,13 @@ const SignUp = ({
   };
 
   const onSubmit = async values => {
-    const { email, password, firstName, lastName, isAdmin } = values;
+    const { email, password, firstName, lastName } = values;
     await signUp({
       email,
       password,
       firstName,
       lastName,
-      roles: isAdmin ? ROLES.ADMIN : ROLES.USER,
+      roles: 2,
     });
   };
 

@@ -1,5 +1,4 @@
 import { combineReducers } from 'redux';
-import * as utils from '../utils';
 import {
   CHAT_CREATEROOM_REQUEST,
   CHAT_CREATEROOM_SUCCESS,
@@ -9,6 +8,7 @@ import {
   CHAT_SET_GAME_REQUEST,
   CHAT_SET_GAME_SUCCESS,
   CHAT_SET_GAME_FAILURE,
+  CHAT_SET_GAME_UPDATE,
   CHAT_AVAILABLEROOMS,
   CHAT_OPPONENT_JOIN,
   CHAT_PLAYER_LEAVE,
@@ -26,11 +26,9 @@ const INITIAL_ROOM_STATE = {
   },
   game: {
     isStarted: false,
-    round: 0,
-    roles: {
-      outerRole: null,
-      innerRole: null,
-    },
+    gameRound: null,
+    outerRole: null,
+    innerRole: null,
   },
   isCreating: false,
   serverMessage: null,
@@ -52,7 +50,7 @@ const roomReducer = (state = INITIAL_ROOM_STATE, action) => {
         ...state,
         room: {
           ...state.room,
-          id: action.payload,
+          ...action.payload,
         },
       };
     case CHAT_CREATEROOM_FAILURE:
@@ -66,7 +64,7 @@ const roomReducer = (state = INITIAL_ROOM_STATE, action) => {
         ...state,
         chatSetupTab: action.payload,
       };
-    case CHAT_SET_ROOM:
+    case CHAT_SET_ROOM: {
       return {
         ...state,
         room: {
@@ -74,6 +72,7 @@ const roomReducer = (state = INITIAL_ROOM_STATE, action) => {
           ...action.payload,
         },
       };
+    }
     case CHAT_SET_GAME_REQUEST: {
       return {
         ...state,
@@ -88,7 +87,35 @@ const roomReducer = (state = INITIAL_ROOM_STATE, action) => {
         errorMessage: action.payload,
       };
     }
-    case CHAT_SET_GAME_SUCCESS:
+    case CHAT_SET_GAME_UPDATE: {
+      const {
+        isStarted,
+        gameRound,
+        creatorInnerRole,
+        opponentInnerRole,
+        creatorOuterRole,
+        opponentOuterRole,
+        user,
+      } = action.payload;
+
+      console.log('CHAT_SET_GAME_UPDATE state', state);
+      console.log('CHAT_SET_GAME_UPDATE user', user);
+      const isAuthor = state.room.creatorId === user.id;
+      console.log('isAuthor', isAuthor);
+
+      return {
+        ...state,
+        game: {
+          ...state.game,
+          isStarted,
+          gameRound,
+          outerRole: isAuthor ? creatorOuterRole : opponentOuterRole,
+          innerRole: isAuthor ? creatorInnerRole : opponentInnerRole,
+        },
+      };
+    }
+    case CHAT_SET_GAME_SUCCESS: {
+      console.log('CHAT_SET_GAME_SUCCESS state', state);
       return {
         ...state,
         isCreating: false,
@@ -98,12 +125,14 @@ const roomReducer = (state = INITIAL_ROOM_STATE, action) => {
           ...action.payload,
         },
       };
-    case CHAT_AVAILABLEROOMS:
+    }
+    case CHAT_AVAILABLEROOMS: {
       return {
         ...state,
         rooms: action.payload,
       };
-    case CHAT_OPPONENT_JOIN:
+    }
+    case CHAT_OPPONENT_JOIN: {
       return {
         ...state,
         room: {
@@ -111,12 +140,15 @@ const roomReducer = (state = INITIAL_ROOM_STATE, action) => {
           opponent: action.payload,
         },
       };
-    case CHAT_PLAYER_LEAVE:
+    }
+    case CHAT_PLAYER_LEAVE: {
       return {
         ...state,
       };
-    default:
+    }
+    default: {
       return state;
+    }
   }
 };
 

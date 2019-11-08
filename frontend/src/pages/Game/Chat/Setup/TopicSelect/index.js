@@ -96,9 +96,9 @@ const styles = theme => ({
 
 const TopicSelect = ({ classes, setRoom, setChatSetupTab, createRoom }) => {
   const handleTopicSelect = async selectedTopic => {
-    await setRoom({ topic: selectedTopic });
     createRoom(selectedTopic).then(() => {
       setChatSetupTab('ready');
+      setRoom({ topic: selectedTopic });
     });
   };
 

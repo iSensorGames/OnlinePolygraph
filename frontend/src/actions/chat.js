@@ -13,6 +13,7 @@ export const CHAT_SETUP_TAB = 'chat/CHAT_SETUP_TAB';
 export const CHAT_SET_GAME_REQUEST = 'chat/CHAT_SET_GAME_REQUEST';
 export const CHAT_SET_GAME_SUCCESS = 'chat/CHAT_SET_GAME_SUCCESS';
 export const CHAT_SET_GAME_FAILURE = 'chat/CHAT_SET_GAME_FAILURE';
+export const CHAT_SET_GAME_UPDATE = 'chat/CHAT_SET_GAME_UPDATE';
 
 export const CHAT_AVAILABLEROOMS = 'chat/CHAT_AVAILABLEROOMS';
 export const CHAT_OPPONENT_JOIN = 'chat/CHAT_OPPONENT_JOIN';
@@ -48,9 +49,12 @@ export const createRoom = topic => {
           .then(() => {
             dispatch({
               type: CHAT_CREATEROOM_SUCCESS,
-              payload: insertId,
+              payload: {
+                id: insertId,
+                creatorId: userId,
+              },
             });
-            resolve();
+            resolve(insertId);
           })
           .catch(error => {
             dispatch({
@@ -142,11 +146,10 @@ export const setChatSetupTab = tab => {
   };
 };
 
-export const setGame = params => {
+export const setGame = () => {
   return (dispatch, getState, { socket }) => {
     dispatch({
       type: CHAT_SET_GAME_REQUEST,
-      payload: params,
     });
 
     const state = getState();
@@ -155,14 +158,12 @@ export const setGame = params => {
     socket
       .startGame(room.id)
       .then(result => {
-        console.log('actions chat startGame success', result);
         dispatch({
           type: CHAT_SET_GAME_SUCCESS,
           payload: result,
         });
       })
       .catch(error => {
-        console.log('actions chat startGame failure', error.message);
         dispatch({
           type: CHAT_SET_GAME_FAILURE,
           payload: error.message,

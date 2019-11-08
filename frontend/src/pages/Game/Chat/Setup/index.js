@@ -43,8 +43,6 @@ const ChatSetup = ({ classes, chatSetupTab }) => {
         return <Ready />;
       case 'room-join':
         return <RoomJoin />;
-      case 'ground-truth':
-        return <GroundTruth />;
       default:
         return null;
     }

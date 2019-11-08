@@ -77,7 +77,6 @@ export const createRoom = roomId => {
   return new Promise((resolve, reject) => {
     try {
       socket.emit(RESPONSE_CREATE_ROOM, roomId);
-
       resolve();
     } catch (error) {
       reject(error.message);
@@ -113,6 +112,7 @@ export const startGame = roomId => {
   return new Promise((resolve, reject) => {
     try {
       socket.emit(RESPONSE_GAME_START, roomId);
+      resolve();
     } catch (error) {
       reject(error);
     }

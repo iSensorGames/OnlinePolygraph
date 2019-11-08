@@ -123,9 +123,16 @@ const getAvailableRooms = () => {
   });
 };
 
-const createGame = (roomId, gameRound) => {
+const createGame = (
+  roomId,
+  gameRound,
+  creatorOuterRole,
+  opponentOuterRole,
+  creatorInnerRole,
+  opponentInnerRole
+) => {
   return new Promise((resolve, reject) => {
-    const query = `INSERT INTO games (conversation_id, game_round, created_at) VALUES (${roomId}, ${gameRound}, NOW())`;
+    const query = `INSERT INTO games (conversation_id, game_round, role_outer_creator, role_outer_opponent, role_inner_creator, role_inner_opponent, created_at) VALUES (${roomId}, ${gameRound}, ${creatorOuterRole}, ${opponentOuterRole}, ${creatorInnerRole}, ${opponentInnerRole},  NOW())`;
     db.query(query, (err, results) => {
       if (err) {
         reject(err);
@@ -147,7 +154,21 @@ const getLastGame = roomId => {
         reject(err);
       }
 
-      console.log('results', results);
+      resolve(results);
+    });
+  });
+};
+
+const getGameRoles = roomId => {
+  return new Promise((resolve, reject) => {
+    const query = `
+      SELECT role_inner_creator, role_inner_opponent FROM games where conversation_id = ${roomId}
+    `;
+
+    db.query(query, (err, results) => {
+      if (err) {
+        reject(err);
+      }
 
       resolve(results);
     });
@@ -216,26 +237,84 @@ io.on('connection', socket => {
       // Start new game if there's none
       if (result.length === 0) {
         const initialGameRound = 1;
-        createGame(roomId, initialGameRound).then(response => {
+        const creatorOuterRole = utils.randomize(2);
+        const opponentOuterRole = creatorOuterRole === 1 ? 2 : 1;
+
+        const creatorInnerRole =
+          creatorOuterRole === 1 ? 1 : utils.randomize(2) === 1 ? 2 : 3;
+        const opponentInnerRole =
+          creatorInnerRole === 1 ? (utils.randomize(2) === 1 ? 2 : 3) : 1;
+
+        console.log('INITIAL----------');
+        console.log('creatorOuterRole', creatorOuterRole);
+        console.log('opponentOuterRole', opponentOuterRole);
+        console.log('creatorInnerRole', creatorInnerRole);
+        console.log('opponentInnerRole', opponentInnerRole);
+
+        createGame(
+          roomId,
+          initialGameRound,
+          creatorOuterRole,
+          opponentOuterRole,
+          creatorInnerRole,
+          opponentInnerRole
+        ).then(response => {
           const data = {
             game_round: initialGameRound,
+            creatorOuterRole,
+            opponentOuterRole,
+            creatorInnerRole,
+            opponentInnerRole,
           };
           socket.emit('game_update', data);
           socket.broadcast.to(roomId).emit('game_update', data);
         });
       } else {
         const { game_round } = result[0];
-
         const newGameRound = game_round + 1;
-        createGame(roomId, newGameRound).then(response => {
-          const data = {
-            data: {
-              game_round: newGameRound,
-            },
-          };
-          socket.emit('game_update', data);
-          socket.broadcast.to(roomId).emit('game_update', data);
-        });
+
+        if (game_round >= 2) {
+          getGameRoles(roomId).then(results => {
+            let allCreatorInnerRoles = results.map(
+              item => item.role_inner_creator
+            );
+            console.log('allCreatorInnerRoles', allCreatorInnerRoles);
+          });
+        } else {
+          let creatorOuterRole = utils.randomize(2);
+          let opponentOuterRole = creatorOuterRole === 1 ? 2 : 1;
+
+          let creatorInnerRole =
+            creatorOuterRole === 1 ? 1 : utils.randomize(2) === 1 ? 2 : 3;
+          let opponentInnerRole =
+            creatorInnerRole === 1 ? (utils.randomize(2) === 1 ? 2 : 3) : 1;
+
+          console.log('creatorOuterRole', creatorOuterRole);
+          console.log('opponentOuterRole', opponentOuterRole);
+          console.log('creatorInnerRole', creatorInnerRole);
+          console.log('opponentInnerRole', opponentInnerRole);
+
+          createGame(
+            roomId,
+            newGameRound,
+            creatorOuterRole,
+            opponentOuterRole,
+            creatorInnerRole,
+            opponentInnerRole
+          ).then(() => {
+            const data = {
+              data: {
+                game_round: newGameRound,
+                creatorOuterRole,
+                opponentOuterRole,
+                creatorInnerRole,
+                opponentInnerRole,
+              },
+            };
+            socket.emit('game_update', data);
+            socket.broadcast.to(roomId).emit('game_update', data);
+          });
+        }
       }
     });
   });

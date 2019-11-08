@@ -2,7 +2,7 @@ import {
   CHAT_AVAILABLEROOMS,
   CHAT_OPPONENT_JOIN,
   CHAT_PLAYER_LEAVE,
-  CHAT_SET_GAME_SUCCESS,
+  CHAT_SET_GAME_UPDATE,
 } from './chat';
 import * as sessionSelectors from '../reducers/session';
 import * as chatSelectors from '../reducers/chat';
@@ -37,6 +37,7 @@ export const openConnection = () => {
 
     const state = getState();
     const user = sessionSelectors.getUser(state);
+    const room = chatSelectors.getRoom(state);
 
     if (!!!user) {
       return null;
@@ -74,10 +75,27 @@ export const openConnection = () => {
             payload: data,
           });
         case RESPONSE_GAME_UPDATE:
+          console.log('room', room);
+          console.log('user', user);
           console.log('RESPONSE_GAME_UPDATE data', data);
+          const {
+            game_round,
+            creatorInnerRole,
+            creatorOuterRole,
+            opponentInnerRole,
+            opponentOuterRole,
+          } = data;
           return dispatch({
-            type: CHAT_SET_GAME_SUCCESS,
-            payload: data,
+            type: CHAT_SET_GAME_UPDATE,
+            payload: {
+              isStarted: true,
+              gameRound: game_round,
+              creatorInnerRole,
+              opponentInnerRole,
+              creatorOuterRole,
+              opponentOuterRole,
+              user,
+            },
           });
       }
     };
