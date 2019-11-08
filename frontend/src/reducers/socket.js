@@ -16,7 +16,7 @@ const INITIAL_SOCKET_STATE = {
   onlineUsers: [],
 };
 
-const socket = (state = INITIAL_SOCKET_STATE, action) => {
+const socketReducer = (state = INITIAL_SOCKET_STATE, action) => {
   switch (action.type) {
     case SOCKET_ONLINE_USERS: {
       const { onlineUsers, user } = action.payload;
@@ -68,21 +68,21 @@ const socket = (state = INITIAL_SOCKET_STATE, action) => {
 };
 
 export default combineReducers({
-  socket,
+  socketReducer,
 });
 
 const select = state => state.socket;
-const getSocketResponse = state => select(state).socket;
+const getSocketReducer = state => select(state).socketReducer;
 
 export const getOnlineUsers = state => {
-  return getSocketResponse(state).onlineUsers;
+  return getSocketReducer(state).onlineUsers;
 };
 
 export const getIsConnecting = state => {
-  return getSocketResponse(state).isConnecting;
+  return getSocketReducer(state).isConnecting;
 };
 
 export const getIsConnected = state => {
-  const socketResponse = getSocketResponse(state);
+  const socketResponse = getSocketReducer(state);
   return socketResponse.isConnected;
 };

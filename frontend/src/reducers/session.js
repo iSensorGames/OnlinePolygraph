@@ -20,7 +20,7 @@ const INITIAL_SIGNIN_STATE = {
   location: null,
 };
 
-const signIn = (state = INITIAL_SIGNIN_STATE, action) => {
+const signInReducer = (state = INITIAL_SIGNIN_STATE, action) => {
   switch (action.type) {
     case SESSION_AUTH_VERIFY_REQUEST:
     case SESSION_AUTH_SIGNIN_REQUEST:
@@ -97,22 +97,22 @@ const signIn = (state = INITIAL_SIGNIN_STATE, action) => {
 };
 
 export default combineReducers({
-  signIn,
+  signInReducer,
 });
 
 const select = state => state.session;
-const getSignIn = state => select(state).signIn;
+const getSignInReducer = state => select(state).signInReducer;
 
 export const getIsFetching = state => {
-  return getSignIn(state).isFetching;
+  return getSignInReducer(state).isFetching;
 };
 
 export const getErrorMessage = state => {
-  return getSignIn(state).errorMessage;
+  return getSignInReducer(state).errorMessage;
 };
 
 export const getSession = state => {
-  const session = getSignIn(state).session;
+  const session = getSignInReducer(state).session;
   return session;
 };
 
@@ -137,7 +137,7 @@ export const getUserId = state => {
 };
 
 export const getPreviousLocation = state => {
-  const location = getSignIn(state).location;
+  const location = getSignInReducer(state).location;
   return location;
 };
 

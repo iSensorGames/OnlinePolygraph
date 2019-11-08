@@ -275,14 +275,14 @@ const Chat = ({
   const handleRoomSelect = selectedRoomId => {
     const room = rooms[selectedRoomId];
     if (!!room) {
-      console.log('handleRoomSelect room', room);
-      const { id, creatorId, topic, name } = room;
+      const { id, creator_id, topic, name, created_at } = room;
 
       setRoom({
         id,
-        creatorId,
+        creatorId: creator_id,
         topic,
         name,
+        createdAt: created_at,
       });
 
       setChatSetupTab('room-join');

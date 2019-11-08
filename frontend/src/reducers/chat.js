@@ -103,25 +103,25 @@ export const getRoom = state => {
 };
 
 export const getIsCreating = state => {
-  return getRoom(state).isCreating;
+  return getRoomReducer(state).isCreating;
 };
 
 export const getServerMessage = state => {
-  return getRoom(state).serverMessage;
+  return getRoomReducer(state).serverMessage;
 };
 
 export const getErrorMessage = state => {
-  return getRoom(state).errorMessage;
+  return getRoomReducer(state).errorMessage;
 };
 
 export const getChatSetupTab = state => {
-  return getRoom(state).chatSetupTab;
+  return getRoomReducer(state).chatSetupTab;
 };
 
 export const getIsGameSetupComplete = state => {
-  return getRoom(state).isGameSetupComplete;
+  return getRoomReducer(state).isGameSetupComplete;
 };
 
 export const getAvailableRooms = state => {
-  return getRoom(state).rooms;
+  return getRoomReducer(state).rooms;
 };
