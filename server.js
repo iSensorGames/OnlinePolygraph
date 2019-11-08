@@ -123,6 +123,37 @@ const getAvailableRooms = () => {
   });
 };
 
+const createGame = (roomId, gameRound) => {
+  return new Promise((resolve, reject) => {
+    const query = `INSERT INTO games (conversation_id, game_round, created_at) VALUES (${roomId}, ${gameRound}, NOW())`;
+    db.query(query, (err, results) => {
+      if (err) {
+        reject(err);
+      }
+
+      resolve(results);
+    });
+  });
+};
+
+const getLastGame = roomId => {
+  return new Promise((resolve, reject) => {
+    const query = `SELECT id, conversation_id, game_round, created_at FROM games WHERE conversation_id = ${roomId} AND game_round = (SELECT max(game_round) FROM games WHERE conversation_id = ${roomId})`;
+
+    console.log('query', query);
+
+    db.query(query, (err, results) => {
+      if (err) {
+        reject(err);
+      }
+
+      console.log('results', results);
+
+      resolve(results);
+    });
+  });
+};
+
 io.on('connection', socket => {
   const emitOnlineUsers = () => {
     socket.broadcast.emit('online_users', getOnlineUsers());
@@ -158,9 +189,6 @@ io.on('connection', socket => {
 
   socket.on('create_room', roomId => {
     socket.join(roomId);
-
-    console.log('creating ROOMID', roomId);
-
     getAvailableRooms().then(result => {
       socket.emit('available_rooms', result);
       socket.broadcast.emit('available_rooms', result);
@@ -169,10 +197,6 @@ io.on('connection', socket => {
 
   socket.on('join_room', roomId => {
     socket.join(roomId);
-
-    console.log('join_room');
-    console.log('emitting to roomId', roomId);
-
     socket.broadcast.to(roomId).emit('join_room_opponent', socket.user);
   });
 
@@ -187,10 +211,32 @@ io.on('connection', socket => {
     });
   });
 
-  socket.on('message', ({ message, room }) => {
-    socket.to(room).emit('message', {
-      message,
-      name: 'Friend',
+  socket.on('game_start', roomId => {
+    getLastGame(roomId).then(result => {
+      // Start new game if there's none
+      if (result.length === 0) {
+        const initialGameRound = 1;
+        createGame(roomId, initialGameRound).then(response => {
+          const data = {
+            game_round: initialGameRound,
+          };
+          socket.emit('game_update', data);
+          socket.broadcast.to(roomId).emit('game_update', data);
+        });
+      } else {
+        const { game_round } = result[0];
+
+        const newGameRound = game_round + 1;
+        createGame(roomId, newGameRound).then(response => {
+          const data = {
+            data: {
+              game_round: newGameRound,
+            },
+          };
+          socket.emit('game_update', data);
+          socket.broadcast.to(roomId).emit('game_update', data);
+        });
+      }
     });
   });
 

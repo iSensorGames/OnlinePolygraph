@@ -10,7 +10,9 @@ export const CHAT_JOIN_FAILURE = 'chat/CHAT_JOIN_FAILURE';
 
 export const CHAT_SET_ROOM = 'chat/CHAT_SET_ROOM';
 export const CHAT_SETUP_TAB = 'chat/CHAT_SETUP_TAB';
-export const CHAT_SET_GAMESETUPCOMPLETE = 'chat/CHAT_SET_GAMESETUPCOMPLETE';
+export const CHAT_SET_GAME_REQUEST = 'chat/CHAT_SET_GAME_REQUEST';
+export const CHAT_SET_GAME_SUCCESS = 'chat/CHAT_SET_GAME_SUCCESS';
+export const CHAT_SET_GAME_FAILURE = 'chat/CHAT_SET_GAME_FAILURE';
 
 export const CHAT_AVAILABLEROOMS = 'chat/CHAT_AVAILABLEROOMS';
 export const CHAT_OPPONENT_JOIN = 'chat/CHAT_OPPONENT_JOIN';
@@ -140,10 +142,31 @@ export const setChatSetupTab = tab => {
   };
 };
 
-export const setIsGameSetupComplete = () => {
-  return dispatch => {
+export const setGame = params => {
+  return (dispatch, getState, { socket }) => {
     dispatch({
-      type: CHAT_SET_GAMESETUPCOMPLETE,
+      type: CHAT_SET_GAME_REQUEST,
+      payload: params,
     });
+
+    const state = getState();
+    const room = chatSelectors.getRoom(state);
+
+    socket
+      .startGame(room.id)
+      .then(result => {
+        console.log('actions chat startGame success', result);
+        dispatch({
+          type: CHAT_SET_GAME_SUCCESS,
+          payload: result,
+        });
+      })
+      .catch(error => {
+        console.log('actions chat startGame failure', error.message);
+        dispatch({
+          type: CHAT_SET_GAME_FAILURE,
+          payload: error.message,
+        });
+      });
   };
 };

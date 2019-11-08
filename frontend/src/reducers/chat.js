@@ -1,12 +1,14 @@
 import { combineReducers } from 'redux';
+import * as utils from '../utils';
 import {
   CHAT_CREATEROOM_REQUEST,
   CHAT_CREATEROOM_SUCCESS,
   CHAT_CREATEROOM_FAILURE,
   CHAT_SET_ROOM,
-  CHAT_SET_ROOMID,
   CHAT_SETUP_TAB,
-  CHAT_SET_GAMESETUPCOMPLETE,
+  CHAT_SET_GAME_REQUEST,
+  CHAT_SET_GAME_SUCCESS,
+  CHAT_SET_GAME_FAILURE,
   CHAT_AVAILABLEROOMS,
   CHAT_OPPONENT_JOIN,
   CHAT_PLAYER_LEAVE,
@@ -21,6 +23,14 @@ const INITIAL_ROOM_STATE = {
     opponent: null,
     groundTruth: null,
     createdAt: null,
+  },
+  game: {
+    isStarted: false,
+    round: 0,
+    roles: {
+      outerRole: null,
+      innerRole: null,
+    },
   },
   isCreating: false,
   serverMessage: null,
@@ -64,10 +74,29 @@ const roomReducer = (state = INITIAL_ROOM_STATE, action) => {
           ...action.payload,
         },
       };
-    case CHAT_SET_GAMESETUPCOMPLETE:
+    case CHAT_SET_GAME_REQUEST: {
       return {
         ...state,
-        isGameSetupComplete: true,
+        isCreating: true,
+        errorMessage: null,
+      };
+    }
+    case CHAT_SET_GAME_FAILURE: {
+      return {
+        ...state,
+        isCreating: false,
+        errorMessage: action.payload,
+      };
+    }
+    case CHAT_SET_GAME_SUCCESS:
+      return {
+        ...state,
+        isCreating: false,
+        errorMessage: null,
+        game: {
+          ...state.game,
+          ...action.payload,
+        },
       };
     case CHAT_AVAILABLEROOMS:
       return {
@@ -118,8 +147,8 @@ export const getChatSetupTab = state => {
   return getRoomReducer(state).chatSetupTab;
 };
 
-export const getIsGameSetupComplete = state => {
-  return getRoomReducer(state).isGameSetupComplete;
+export const getGame = state => {
+  return getRoomReducer(state).game;
 };
 
 export const getAvailableRooms = state => {

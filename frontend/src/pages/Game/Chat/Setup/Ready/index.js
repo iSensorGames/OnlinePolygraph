@@ -46,7 +46,7 @@ const styles = theme => ({
   },
 });
 
-const Ready = ({ classes, room, setIsGameSetupComplete }) => {
+const Ready = ({ classes, room, setGame }) => {
   const { id, topic, name, opponent } = room;
   return (
     <div className={classes.container}>
@@ -104,10 +104,10 @@ const Ready = ({ classes, room, setIsGameSetupComplete }) => {
         variant="contained"
         size="large"
         className={classes.button}
-        onClick={() => setIsGameSetupComplete()}
+        onClick={() => setGame()}
         disabled={!!!opponent}
       >
-        Play Game
+        Start Game
       </Button>
     </div>
   );
@@ -120,8 +120,7 @@ const mapStateToProps = state => {
 };
 
 const actionCreators = {
-  createRoom: chatActions.createRoom,
-  setIsGameSetupComplete: chatActions.setIsGameSetupComplete,
+  setGame: chatActions.setGame,
 };
 
 export default compose(

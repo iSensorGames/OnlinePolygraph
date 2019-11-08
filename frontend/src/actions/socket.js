@@ -2,8 +2,10 @@ import {
   CHAT_AVAILABLEROOMS,
   CHAT_OPPONENT_JOIN,
   CHAT_PLAYER_LEAVE,
+  CHAT_SET_GAME_SUCCESS,
 } from './chat';
 import * as sessionSelectors from '../reducers/session';
+import * as chatSelectors from '../reducers/chat';
 
 export const SOCKET_ONLINE_USERS = 'socket/SOCKET_ONLINE_USERS';
 export const SOCKET_SERVER_MESSAGE = 'socket/SOCKET_SERVER_MESSAGE';
@@ -23,6 +25,9 @@ export const RESPONSE_JOIN_ROOM_OPPONENT = 'join_room_opponent';
 export const RESPONSE_AVAILABLE_ROOMS = 'available_rooms';
 export const RESPONSE_CONNECT_USER = 'connect_user';
 export const RESPONSE_CREATE_ROOM = 'create_room';
+
+export const RESPONSE_GAME_START = 'game_start';
+export const RESPONSE_GAME_UPDATE = 'game_update';
 
 export const openConnection = () => {
   return async (dispatch, getState, { socket }) => {
@@ -68,6 +73,12 @@ export const openConnection = () => {
             type: CHAT_PLAYER_LEAVE,
             payload: data,
           });
+        case RESPONSE_GAME_UPDATE:
+          console.log('RESPONSE_GAME_UPDATE data', data);
+          return dispatch({
+            type: CHAT_SET_GAME_SUCCESS,
+            payload: data,
+          });
       }
     };
 
@@ -83,5 +94,10 @@ export const openConnection = () => {
           type: SOCKET_CONNECT_FAILURE,
         });
       });
+
+    return () => {
+      const room = chatSelectors.getRoom(state);
+      socket.leaveRoom(room.id);
+    };
   };
 };

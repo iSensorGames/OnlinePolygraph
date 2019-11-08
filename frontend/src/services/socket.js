@@ -11,6 +11,8 @@ import {
   RESPONSE_JOIN_ROOM_OPPONENT,
   RESPONSE_LEAVE_ROOM,
   RESPONSE_LEAVE_ROOM_PLAYER,
+  RESPONSE_GAME_START,
+  RESPONSE_GAME_UPDATE,
 } from '../actions/socket';
 
 let socket = null;
@@ -44,6 +46,10 @@ export const openConnection = (listener, user) => {
         listener(RESPONSE_LEAVE_ROOM_PLAYER, res);
       };
 
+      const gameUpdateListener = res => {
+        listener(RESPONSE_GAME_UPDATE, res);
+      };
+
       const serverMessage = res => {
         listener(RESPONSE_SERVER_MESSAGE, res);
       };
@@ -56,6 +62,7 @@ export const openConnection = (listener, user) => {
       socket.on(RESPONSE_AVAILABLE_ROOMS, availableRoomListener);
       socket.on(RESPONSE_JOIN_ROOM_OPPONENT, joinRoomByOpponent);
       socket.on(RESPONSE_LEAVE_ROOM_PLAYER, leaveRoomByPlayer);
+      socket.on(RESPONSE_GAME_UPDATE, gameUpdateListener);
       socket.on(RESPONSE_SERVER_MESSAGE, serverMessage);
       socket.on(RESPONSE_DISCONNECT, disconnectListener);
 
@@ -98,6 +105,16 @@ export const leaveRoom = roomId => {
       resolve();
     } catch (error) {
       reject(error.message);
+    }
+  });
+};
+
+export const startGame = roomId => {
+  return new Promise((resolve, reject) => {
+    try {
+      socket.emit(RESPONSE_GAME_START, roomId);
+    } catch (error) {
+      reject(error);
     }
   });
 };

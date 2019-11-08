@@ -2,6 +2,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
 
+// Utility function
+import * as utils from '../../../../../utils';
+
 // Components
 import Button from '../../../../../modules/components/Button';
 import Typography from '../../../../../modules/components/Typography';
@@ -50,11 +53,12 @@ const styles = () => ({
   },
 });
 
-const randomize = maximumLength => {
-  return Math.floor(Math.random() * maximumLength);
-};
+const GroundTruth = ({ classes, game, room, setChatSetupTab, setRoom }) => {
+  const {
+    roles: { outerRole },
+  } = game;
+  const { topic } = room;
 
-const GroundTruth = ({ classes, topic, setChatSetupTab, setRoom }) => {
   const QuestionRenderer = () => {
     const groundTruthTopic = questionItems.filter(questionItem => {
       return questionItem.topic === topic;
@@ -63,7 +67,7 @@ const GroundTruth = ({ classes, topic, setChatSetupTab, setRoom }) => {
       <Typography variant="h4">
         {
           groundTruthTopic.questions[
-            randomize(groundTruthTopic.questions.length)
+            utils.randomize(groundTruthTopic.questions.length)
           ]
         }
       </Typography>
@@ -75,8 +79,13 @@ const GroundTruth = ({ classes, topic, setChatSetupTab, setRoom }) => {
     setChatSetupTab('ready');
   };
 
-  return (
+  return outerRole === 'Detector' ? (
+    <div className={classes.container}></div>
+  ) : (
     <div className={classes.container}>
+      <Typography className={classes.roleExplanation} variant="h4">
+        Your role is ""
+      </Typography>
       <QuestionRenderer />
       <div className={classes.buttonsContainer}>
         <Button
@@ -104,7 +113,8 @@ const GroundTruth = ({ classes, topic, setChatSetupTab, setRoom }) => {
 
 const mapStateToProps = state => {
   return {
-    topic: chatSelectors.getRoom(state).topic,
+    room: chatSelectors.getRoom(state),
+    game: chatSelectors.getGame(state),
   };
 };
 

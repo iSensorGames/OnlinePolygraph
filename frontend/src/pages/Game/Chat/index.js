@@ -13,7 +13,7 @@ import moment from 'moment';
 import { compose } from 'recompose';
 
 // View
-import ChatSetup from './ChatSetup';
+import ChatSetup from './Setup';
 
 // Icons
 import SendIcon from '@material-ui/icons/Send';
@@ -221,13 +221,16 @@ const messages = [
 const Chat = ({
   classes,
   setRoom,
-  activeRoomId,
   userId,
+  room,
   rooms,
+  game,
   joinRoom,
   setChatSetupTab,
-  isGameSetupComplete,
 }) => {
+  const activeRoomId = room.id;
+  const { isStarted } = game;
+
   const ChatMessageContainer = () => {
     return (
       <div className={classes.message}>
@@ -313,7 +316,7 @@ const Chat = ({
                           classes.chatList,
                           isActiveRoom && classes.activeChat
                         )}
-                        onClick={() => handleRoomSelect(id)}
+                        onClick={() => !isAuthor && handleRoomSelect(id)}
                       >
                         <div className={classes.chatPeople}>
                           <div className={classes.chat}>
@@ -335,7 +338,7 @@ const Chat = ({
                 : null}
             </div>
           </div>
-          {isGameSetupComplete ? <ChatMessageContainer /> : <ChatSetup />}
+          {isStarted ? <ChatMessageContainer /> : <ChatSetup />}
         </div>
       </div>
     </ChatLayout>
@@ -344,9 +347,9 @@ const Chat = ({
 
 const mapStateToProps = state => {
   return {
-    isGameSetupComplete: chatSelectors.getIsGameSetupComplete(state),
+    game: chatSelectors.getGame(state),
+    room: chatSelectors.getRoom(state),
     rooms: chatSelectors.getAvailableRooms(state),
-    activeRoomId: chatSelectors.getRoom(state).id,
     userId: sessionSelectors.getUserId(state),
   };
 };
@@ -356,6 +359,7 @@ const actionCreators = {
   setRoom: chatActions.setRoom,
   setChatSetupTab: chatActions.setChatSetupTab,
   joinRoom: chatActions.joinRoom,
+  leaveRoom: chatActions.leaveRoom,
 };
 
 export default compose(

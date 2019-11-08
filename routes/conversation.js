@@ -1,14 +1,8 @@
-const utils = require('../utils');
-
 const middleware = require('../services/middleware');
 
 module.exports = ({ app, db }) => {
   app.post('/api/addConversation', middleware.checkToken, (req, res) => {
     const { userId, name, topic } = req.body;
-
-    console.log('userId', userId);
-    console.log('name', name);
-    console.log('topic', topic);
 
     db.query(
       `INSERT INTO conversations (creator_id, name, topic, created_at) VALUES (${userId}, '${name}', '${topic}', NOW())`,
