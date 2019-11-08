@@ -14,7 +14,7 @@ import { compose } from 'recompose';
 
 // View
 import ChatSetup from './Setup';
-import GroundTruth from './Setup/GroundTruth';
+import GameView from './GameView';
 
 // Layout
 import ChatLayout from '../../../layout/Chat';
@@ -177,7 +177,7 @@ const Chat = ({
                 : null}
             </div>
           </div>
-          {isStarted ? <GroundTruth /> : <ChatSetup />}
+          {isStarted ? <GameView /> : <ChatSetup />}
         </div>
       </div>
     </ChatLayout>

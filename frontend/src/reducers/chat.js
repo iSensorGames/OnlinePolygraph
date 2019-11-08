@@ -26,6 +26,7 @@ const INITIAL_ROOM_STATE = {
   },
   game: {
     isStarted: false,
+    tab: null,
     gameRound: null,
     outerRole: null,
     innerRole: null,
@@ -115,7 +116,6 @@ const roomReducer = (state = INITIAL_ROOM_STATE, action) => {
       };
     }
     case CHAT_SET_GAME_SUCCESS: {
-      console.log('CHAT_SET_GAME_SUCCESS state', state);
       return {
         ...state,
         isCreating: false,

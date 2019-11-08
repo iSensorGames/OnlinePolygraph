@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import Intro from './Intro';
 import TopicSelect from './TopicSelect';
 import RoomJoin from './RoomJoin';
-import GroundTruth from './GroundTruth';
+import GroundTruth from '../GameView/GroundTruth';
 import Ready from './Ready';
 
 // Actions
@@ -31,8 +31,6 @@ const styles = () => ({
 });
 
 const ChatSetup = ({ classes, chatSetupTab }) => {
-  console.log('ChatSetup chatSetupTab', chatSetupTab);
-
   const Tab = () => {
     switch (chatSetupTab) {
       case 'intro':

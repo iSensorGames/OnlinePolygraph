@@ -104,7 +104,7 @@ const Ready = ({ classes, room, setGame }) => {
         variant="contained"
         size="large"
         className={classes.button}
-        onClick={() => setGame()}
+        onClick={() => setGame({ tab: 'ground-truth' })}
         disabled={!!!opponent}
       >
         Start Game

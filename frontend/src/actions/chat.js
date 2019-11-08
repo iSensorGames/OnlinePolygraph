@@ -146,7 +146,7 @@ export const setChatSetupTab = tab => {
   };
 };
 
-export const setGame = () => {
+export const setGame = params => {
   return (dispatch, getState, { socket }) => {
     dispatch({
       type: CHAT_SET_GAME_REQUEST,
@@ -160,7 +160,10 @@ export const setGame = () => {
       .then(result => {
         dispatch({
           type: CHAT_SET_GAME_SUCCESS,
-          payload: result,
+          payload: {
+            ...result,
+            ...params,
+          },
         });
       })
       .catch(error => {

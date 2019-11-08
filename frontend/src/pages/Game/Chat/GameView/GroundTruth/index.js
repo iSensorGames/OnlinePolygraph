@@ -81,20 +81,28 @@ const GroundTruth = ({ classes, game, room, setChatSetupTab, setRoom }) => {
   };
 
   const handleGroundTruthSelect = answer => {
-    setRoom({ groundTruth: answer });
-    setChatSetupTab('ready');
+    setRoom({ groundTruth: answer, tab: 'messenger' });
   };
 
   return (
     <div className={classes.container}>
-      <Typography className={classes.outerRoleExplanation} variant="h4">
-        {`Your outer role is ${outerRole}`}
-      </Typography>
-      <Typography className={classes.innerRoleExplanation} variant="h4">
-        {`Your inner role is ${innerRole}`}
-      </Typography>
-      {outerRole === ROLES.OUTER_ROLE.DETECTOR && (
+      {ROLES.OUTER_ROLE[outerRole].ID === 1 ? (
         <React.Fragment>
+          <Typography variant="h6">
+            {`${ROLES.INNER_ROLE[innerRole].DESCRIPTION}`}
+          </Typography>
+          <Typography variant="h6">
+            {`${ROLES.INNER_ROLE[innerRole].DESCRIPTION2}`}
+          </Typography>
+        </React.Fragment>
+      ) : (
+        <React.Fragment>
+          <Typography variant="h6">
+            {`${ROLES.INNER_ROLE[innerRole].DESCRIPTION}`}
+          </Typography>
+          <Typography variant="h6">
+            {`${ROLES.INNER_ROLE[innerRole].DESCRIPTION2}`}
+          </Typography>
           <QuestionRenderer />
           <div className={classes.buttonsContainer}>
             <Button
