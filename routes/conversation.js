@@ -1,10 +1,14 @@
-const utils = require("../utils");
+const utils = require('../utils');
 
-const middleware = require("../services/middleware");
+const middleware = require('../services/middleware');
 
 module.exports = ({ app, db }) => {
-  app.post("/api/addConversation", middleware.checkToken, (req, res) => {
+  app.post('/api/addConversation', middleware.checkToken, (req, res) => {
     const { userId, name, topic } = req.body;
+
+    console.log('userId', userId);
+    console.log('name', name);
+    console.log('topic', topic);
 
     db.query(
       `INSERT INTO conversations (creator_id, name, topic, created_at) VALUES (${userId}, '${name}', '${topic}', NOW())`,
@@ -17,18 +21,18 @@ module.exports = ({ app, db }) => {
 
         return res.json({
           success: true,
-          insertId
+          insertId,
         });
       }
     );
   });
 
-  app.post("/api/message", middleware.checkToken, (req, res) => {
+  app.post('/api/message', middleware.checkToken, (req, res) => {
     const { userId, roomId, message } = req.body;
 
-    console.log("userId: ", userId);
-    console.log("roomId: ", roomId);
-    console.log("message: ", message);
+    console.log('userId: ', userId);
+    console.log('roomId: ', roomId);
+    console.log('message: ', message);
 
     // db.query(
     //   `INSERT INTO messages (conversation_id, sender_id, message, created_at) VALUES (${roomId}, ${userId}, ${message}, NOW())`,

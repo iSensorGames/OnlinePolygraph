@@ -1,60 +1,60 @@
-import React from "react";
-import { connect } from "react-redux";
-import { compose } from "recompose";
+import React from 'react';
+import { connect } from 'react-redux';
+import { compose } from 'recompose';
 
 // Components
-import Button from "../../../../../modules/components/Button";
-import Typography from "../../../../../modules/components/Typography";
+import Button from '../../../../../modules/components/Button';
+import Typography from '../../../../../modules/components/Typography';
 
 // Styles
-import { withStyles } from "@material-ui/core/styles";
+import { withStyles } from '@material-ui/core/styles';
 
 // Data
-import questionItems from "./data";
+import questionItems from './data';
 
 // Actions
-import * as chatActions from "../../../../../actions/chat";
+import * as chatActions from '../../../../../actions/chat';
 
 // Selecter
-import * as chatSelectors from "../../../../../reducers/chat";
+import * as chatSelectors from '../../../../../reducers/chat';
 
 const styles = () => ({
   container: {
-    alignItems: "center",
-    display: "flex",
-    flexDirection: "column",
+    alignItems: 'center',
+    display: 'flex',
+    flexDirection: 'column',
     flex: 1,
-    justifyContent: "center"
+    justifyContent: 'center',
   },
   inputMsgWrite: {
-    alignItems: "center",
-    display: "flex",
-    flexDirection: "row",
-    position: "relative",
+    alignItems: 'center',
+    display: 'flex',
+    flexDirection: 'row',
+    position: 'relative',
     paddingRight: 20,
     paddingLeft: 20,
-    background: "white"
+    background: 'white',
   },
   writeMsg: {
-    "&:focus": {
-      outline: "none"
-    }
+    '&:focus': {
+      outline: 'none',
+    },
   },
   button: {
-    minWidth: 200
+    minWidth: 200,
   },
   buttonsContainer: {
     marginBottom: 40,
     maxWidth: 500,
-    textAlign: "center"
-  }
+    textAlign: 'center',
+  },
 });
 
 const randomize = maximumLength => {
   return Math.floor(Math.random() * maximumLength);
 };
 
-const GroundTruth = ({ classes, topic, setChatSetupTab, setGroundTruth }) => {
+const GroundTruth = ({ classes, topic, setChatSetupTab, setRoom }) => {
   const QuestionRenderer = () => {
     const groundTruthTopic = questionItems.filter(questionItem => {
       return questionItem.topic === topic;
@@ -71,8 +71,8 @@ const GroundTruth = ({ classes, topic, setChatSetupTab, setGroundTruth }) => {
   };
 
   const handleGroundTruthSelect = answer => {
-    setGroundTruth(answer);
-    setChatSetupTab("ready");
+    setRoom({ groundTruth: answer });
+    setChatSetupTab('ready');
   };
 
   return (
@@ -84,7 +84,7 @@ const GroundTruth = ({ classes, topic, setChatSetupTab, setGroundTruth }) => {
           variant="contained"
           size="large"
           className={classes.button}
-          onClick={() => handleGroundTruthSelect("yes")}
+          onClick={() => handleGroundTruthSelect('yes')}
         >
           Yes
         </Button>
@@ -93,7 +93,7 @@ const GroundTruth = ({ classes, topic, setChatSetupTab, setGroundTruth }) => {
           variant="contained"
           size="large"
           className={classes.button}
-          onClick={() => handleGroundTruthSelect("no")}
+          onClick={() => handleGroundTruthSelect('no')}
         >
           No
         </Button>
@@ -104,13 +104,13 @@ const GroundTruth = ({ classes, topic, setChatSetupTab, setGroundTruth }) => {
 
 const mapStateToProps = state => {
   return {
-    topic: chatSelectors.getTopic(state)
+    topic: chatSelectors.getRoom(state).topic,
   };
 };
 
 const actionCreators = {
   setChatSetupTab: chatActions.setChatSetupTab,
-  setGroundTruth: chatActions.setGroundTruth
+  setRoom: chatActions.setRoom,
 };
 
 export default compose(

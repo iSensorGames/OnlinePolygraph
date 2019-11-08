@@ -1,7 +1,7 @@
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
-const config = require("../config/auth/config");
-const middleware = require("../services/middleware");
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const config = require('../config/auth/config');
+const middleware = require('../services/middleware');
 
 // Utility Function
 const emailIsValid = email => {
@@ -9,71 +9,79 @@ const emailIsValid = email => {
 };
 
 module.exports = ({ app, db }) => {
-  app.post("/api/verify", middleware.checkToken, (req, res) => {
+  app.post('/api/verify', middleware.checkToken, (req, res) => {
     return res
       .json({
         success: true,
-        data: req.payload
+        data: req.payload,
       })
       .status(200);
   });
-  app.post("/api/signup", (req, res) => {
+  app.post('/api/signup', (req, res) => {
     const { first_name, last_name, email, password, roles } = req.body;
 
+    let errorMessage = {
+      success: false,
+      error: 'email_password_validation',
+    };
+
     if (!emailIsValid(email)) {
-      return res
-        .json({
-          message: "Email format is invalid!",
-          error: "email_validation"
-        })
-        .status(403);
+      errorMessage['message'] = 'Email format is invalid!';
+      return res.status(200).json(errorMessage);
     }
 
     bcrypt.hash(password, config.bcryptSaltRound, (err, hash) => {
-      if (err) throw err;
+      if (err) {
+        errorMessage['message'] = 'BCrypt: password format error: ' + err;
+        errorMessage['error'] = 'bcrypt_password';
+        return res.status(200).json(errorMessage);
+      }
+
       db.query(
         `INSERT INTO users (first_name, last_name, email, password, roles, created_at) VALUES ("${first_name}", "${last_name}", "${email}", "${hash}", ${roles}, NOW())`,
         (err, results) => {
-          const errorMessage = {
-            message: err,
-            error: "email_password_validation"
-          };
-
           if (err) {
-            return res.status(403).json(errorMessage);
+            errorMessage['message'] = err.sqlMessage || err.code;
+            errorMessage['error'] = err.code || 'SQL Error';
+            return res.status(200).json(errorMessage);
           }
+
+          const { insertId } = results;
+          const id = insertId;
 
           // Create a new token with the email in the payload
           // and which expires 300 seconds after issue
           const token = jwt.sign(
-            { email, first_name, last_name, roles },
+            { id, email, first_name, last_name, roles },
             config.secret,
             {
-              algorithm: "HS256",
-              expiresIn: config.jwtExpirySeconds
+              algorithm: 'HS256',
+              expiresIn: config.jwtExpirySeconds,
             }
           );
 
-          return res.json({
+          return res.status(200).json({
             success: true,
-            message: "Authentication successful!",
+            message: 'Authentication successful!',
             token: token,
             user: {
+              id,
               email,
               first_name,
               last_name,
-              roles
-            }
+              roles,
+            },
           });
         }
       );
     });
   });
-  app.post("/api/signin", (req, res) => {
+
+  app.post('/api/signin', (req, res) => {
     let { email } = req.body;
     const errorMessage = {
-      message: "Email or Password is incorrect.",
-      error: "email_password_validation"
+      message: 'Email or Password is incorrect.',
+      error: 'email_password_validation',
     };
 
     db.query(
@@ -95,8 +103,8 @@ module.exports = ({ app, db }) => {
                 { id, email, first_name, last_name, roles },
                 config.secret,
                 {
-                  algorithm: "HS256",
-                  expiresIn: config.jwtExpirySeconds
+                  algorithm: 'HS256',
+                  expiresIn: config.jwtExpirySeconds,
                 }
               );
 
@@ -104,8 +112,8 @@ module.exports = ({ app, db }) => {
               // here, the max age is in milliseconds, so we multiply by 1000
               return res.json({
                 success: true,
-                message: "Authentication successful!",
-                token
+                message: 'Authentication successful!',
+                token,
               });
             } else {
               return res.status(200).json(errorMessage);

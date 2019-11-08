@@ -1,58 +1,62 @@
-import React from "react";
-import { compose } from "recompose";
-import { connect } from "react-redux";
+import React from 'react';
+import { compose } from 'recompose';
+import { connect } from 'react-redux';
 
 // Component
-import Button from "../../../../../modules/components/Button";
-import List from "@material-ui/core/List";
-import ListSubheader from "@material-ui/core/ListSubheader";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemText from "@material-ui/core/ListItemText";
-import ListItemAvatar from "@material-ui/core/ListItemAvatar";
-import Avatar from "@material-ui/core/Avatar";
-import ImageIcon from "@material-ui/icons/Image";
-import WorkIcon from "@material-ui/icons/Work";
-import BeachAccessIcon from "@material-ui/icons/BeachAccess";
+import Button from '../../../../../modules/components/Button';
+import List from '@material-ui/core/List';
+import ListSubheader from '@material-ui/core/ListSubheader';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+import Avatar from '@material-ui/core/Avatar';
+import ImageIcon from '@material-ui/icons/Image';
+import WorkIcon from '@material-ui/icons/Work';
+import BeachAccessIcon from '@material-ui/icons/BeachAccess';
 
 // Actions
-import * as chatActions from "../../../../../actions/chat";
+import * as chatActions from '../../../../../actions/chat';
 
 // Selectors
-import * as chatSelectors from "../../../../../reducers/chat";
+import * as chatSelectors from '../../../../../reducers/chat';
+import * as socketSelectors from '../../../../../reducers/socket';
 
 // Styles
-import { withStyles } from "@material-ui/core/styles";
-import { Typography } from "@material-ui/core";
+import { withStyles } from '@material-ui/core/styles';
+import { Typography } from '@material-ui/core';
 const styles = theme => ({
   root: {
-    width: "100%",
+    width: '100%',
     maxWidth: 360,
     backgroundColor: theme.palette.background.paper,
-    color: "black",
-    marginBottom: 20
+    color: 'black',
+    marginBottom: 20,
   },
   container: {
-    alignItems: "center",
-    display: "flex",
-    flexDirection: "column",
+    alignItems: 'center',
+    display: 'flex',
+    flexDirection: 'column',
     flex: 1,
-    justifyContent: "center"
+    justifyContent: 'center',
   },
   textMessage: {
-    marginBottom: 20
+    marginBottom: 20,
   },
   button: {
-    minWidth: 200
-  }
+    minWidth: 200,
+  },
 });
 
-const RoomJoin = ({
-  classes,
-  topic,
-  roomName,
-  roomId,
-  setIsGameSetupComplete
-}) => {
+const RoomJoin = ({ classes, room, setIsGameSetupComplete, onlineUsers }) => {
+  console.log('RoomJoin room', room);
+  console.log('RoomJoin onlineUsers', onlineUsers);
+
+  const { id, creatorId, topic, name } = room;
+
+  const roomAuthor = onlineUsers.filter(onlineUser => {
+    return onlineUser.id === creatorId;
+  })[0];
+
   return (
     <div className={classes.container}>
       <List className={classes.root}>
@@ -73,7 +77,7 @@ const RoomJoin = ({
               <WorkIcon />
             </Avatar>
           </ListItemAvatar>
-          <ListItemText primary={`Room ID`} secondary={`${roomId}`} />
+          <ListItemText primary={`Room ID`} secondary={`${id}`} />
         </ListItem>
         <ListItem>
           <ListItemAvatar>
@@ -81,7 +85,7 @@ const RoomJoin = ({
               <BeachAccessIcon />
             </Avatar>
           </ListItemAvatar>
-          <ListItemText primary={`Room Name:`} secondary={`${roomName}`} />
+          <ListItemText primary={`Room Name:`} secondary={`${name}`} />
         </ListItem>
         <ListItem>
           <ListItemAvatar>
@@ -91,40 +95,24 @@ const RoomJoin = ({
           </ListItemAvatar>
           <ListItemText
             primary={`Opponent`}
-            secondary={`Waiting for your opponent to connect...`}
+            secondary={`${roomAuthor.firstName}`}
           />
         </ListItem>
       </List>
-      <Typography
-        variant="h4"
-        color="primaryText"
-        className={classes.textMessage}
-      ></Typography>
-      <Button
-        color="primary"
-        variant="contained"
-        size="large"
-        className={classes.button}
-        onClick={() => setIsGameSetupComplete()}
-        disabled
-      >
-        Play Game
-      </Button>
     </div>
   );
 };
 
 const mapStateToProps = state => {
   return {
-    topic: chatSelectors.getTopic(state),
-    roomName: chatSelectors.getRoomName(state),
-    roomId: chatSelectors.getRoomId(state)
+    room: chatSelectors.getRoom(state),
+    onlineUsers: socketSelectors.getOnlineUsers(state),
   };
 };
 
 const actionCreators = {
   joinRoom: chatActions.joinRoom,
-  setIsGameSetupComplete: chatActions.setIsGameSetupComplete
+  setIsGameSetupComplete: chatActions.setIsGameSetupComplete,
 };
 
 export default compose(

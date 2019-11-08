@@ -1,4 +1,4 @@
-import io from "socket.io-client";
+import io from 'socket.io-client';
 
 import {
   RESPONSE_DISCONNECT,
@@ -7,8 +7,11 @@ import {
   RESPONSE_SERVER_MESSAGE,
   RESPONSE_CREATE_ROOM,
   RESPONSE_AVAILABLE_ROOMS,
-  RESPONSE_JOIN_ROOM
-} from "../actions/socket";
+  RESPONSE_JOIN_ROOM,
+  RESPONSE_JOIN_ROOM_OPPONENT,
+  RESPONSE_LEAVE_ROOM,
+  RESPONSE_LEAVE_ROOM_PLAYER,
+} from '../actions/socket';
 
 let socket = null;
 
@@ -18,9 +21,9 @@ export const openConnection = (listener, user) => {
       socket = io.connect(`${process.env.PUBLIC_URL}`, {
         secure: true,
         rejectUnauthorized: false,
-        path: "/users/socket.io",
+        path: '/users/socket.io',
         forceNew: true,
-        reconnection: false
+        reconnection: false,
       });
 
       socket.emit(RESPONSE_CONNECT_USER, user);
@@ -33,6 +36,14 @@ export const openConnection = (listener, user) => {
         listener(RESPONSE_AVAILABLE_ROOMS, res);
       };
 
+      const joinRoomByOpponent = res => {
+        listener(RESPONSE_JOIN_ROOM_OPPONENT, res);
+      };
+
+      const leaveRoomByPlayer = res => {
+        listener(RESPONSE_LEAVE_ROOM_PLAYER, res);
+      };
+
       const serverMessage = res => {
         listener(RESPONSE_SERVER_MESSAGE, res);
       };
@@ -43,6 +54,8 @@ export const openConnection = (listener, user) => {
 
       socket.on(RESPONSE_ONLINE_USERS, onlineUsersListener);
       socket.on(RESPONSE_AVAILABLE_ROOMS, availableRoomListener);
+      socket.on(RESPONSE_JOIN_ROOM_OPPONENT, joinRoomByOpponent);
+      socket.on(RESPONSE_LEAVE_ROOM_PLAYER, leaveRoomByPlayer);
       socket.on(RESPONSE_SERVER_MESSAGE, serverMessage);
       socket.on(RESPONSE_DISCONNECT, disconnectListener);
 
@@ -69,6 +82,18 @@ export const joinRoom = roomId => {
   return new Promise((resolve, reject) => {
     try {
       socket.emit(RESPONSE_JOIN_ROOM, roomId);
+
+      resolve();
+    } catch (error) {
+      reject(error.message);
+    }
+  });
+};
+
+export const leaveRoom = roomId => {
+  return new Promise((resolve, reject) => {
+    try {
+      socket.emit(RESPONSE_LEAVE_ROOM, roomId);
 
       resolve();
     } catch (error) {

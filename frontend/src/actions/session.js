@@ -1,31 +1,38 @@
+// Utility functions
+import * as utils from '../utils';
+
 // Selectors
-import * as sessionSelectors from "../reducers/session";
+import * as sessionSelectors from '../reducers/session';
 
 export const SESSION_AUTH_SIGNIN_REQUEST =
-  "session/SESSION_AUTH_SIGNIN_REQUEST";
+  'session/SESSION_AUTH_SIGNIN_REQUEST';
 export const SESSION_AUTH_SIGNIN_SUCCESS =
-  "session/SESSION_AUTH_SIGNIN_SUCCESS";
+  'session/SESSION_AUTH_SIGNIN_SUCCESS';
 export const SESSION_AUTH_SIGNIN_FAILURE =
-  "session/SESSION_AUTH_SIGNIN_FAILURE";
+  'session/SESSION_AUTH_SIGNIN_FAILURE';
 
 export const SESSION_AUTH_VERIFY_REQUEST =
-  "session/SESSION_AUTH_VERIFY_REQUEST";
+  'session/SESSION_AUTH_VERIFY_REQUEST';
 export const SESSION_AUTH_VERIFY_SUCCESS =
-  "session/SESSION_AUTH_VERIFY_SUCCESS";
+  'session/SESSION_AUTH_VERIFY_SUCCESS';
 export const SESSION_AUTH_VERIFY_FAILURE =
-  "session/SESSION_AUTH_VERIFY_FAILURE";
+  'session/SESSION_AUTH_VERIFY_FAILURE';
 
-export const SESSION_AUTH_SIGNUP = "session/SESSION_AUTH_SIGNUP";
-export const SESSION_AUTH_SIGNOUT = "session/SESSION_AUTH_SIGNOUT";
-export const SESSION_LOCATION = "session/SESSION_LOCATION";
+export const SESSION_AUTH_SIGNUP_REQUEST =
+  'session/SESSION_AUTH_SIGNUP_REQUEST';
+export const SESSION_AUTH_SIGNUP_SUCCESS =
+  'session/SESSION_AUTH_SIGNUP_SUCCESS';
+export const SESSION_AUTH_SIGNUP_FAILURE =
+  'session/SESSION_AUTH_SIGNUP_FAILURE';
 
-const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
+export const SESSION_AUTH_SIGNOUT = 'session/SESSION_AUTH_SIGNOUT';
+export const SESSION_LOCATION = 'session/SESSION_LOCATION';
 
 export const signIn = (email, password) => {
   return async (dispatch, getState, { api, browser }) => {
-    return delay(300).then(() => {
+    return utils.delay(300).then(() => {
       dispatch({
-        type: SESSION_AUTH_SIGNIN_REQUEST
+        type: SESSION_AUTH_SIGNIN_REQUEST,
       });
 
       return api.signIn(email, password).then(
@@ -38,14 +45,14 @@ export const signIn = (email, password) => {
           dispatch({
             type: SESSION_AUTH_SIGNIN_SUCCESS,
             payload: {
-              ...session
-            }
+              ...session,
+            },
           });
         },
         error => {
           dispatch({
             type: SESSION_AUTH_SIGNIN_FAILURE,
-            payload: error.message || "Something went wrong"
+            payload: error.message || 'Something went wrong',
           });
         }
       );
@@ -55,13 +62,36 @@ export const signIn = (email, password) => {
 
 export const signUp = user => {
   return async (dispatch, getState, { api, browser }) => {
-    const response = await api.signUp(user);
-    const { token } = await response.json();
+    return utils.delay(300).then(() => {
+      dispatch({
+        type: SESSION_AUTH_SIGNUP_REQUEST,
+      });
 
-    await browser.updateSession(token);
-    await dispatch({
-      type: SESSION_AUTH_SIGNUP,
-      payload: response
+      api
+        .signUp(user)
+        .then(response => {
+          if ('error' in response) {
+            dispatch({
+              type: SESSION_AUTH_SIGNUP_FAILURE,
+              payload: response.error,
+            });
+          } else {
+            const { token } = response;
+            browser.updateSession(token);
+            dispatch({
+              type: SESSION_AUTH_SIGNUP_SUCCESS,
+              payload: {
+                ...response,
+              },
+            });
+          }
+        })
+        .catch(error => {
+          dispatch({
+            type: SESSION_AUTH_SIGNUP_FAILURE,
+            payload: error.message || 'Something went wrong',
+          });
+        });
     });
   };
 };
@@ -71,7 +101,7 @@ export const signOut = () => {
     return new Promise((resolve, reject) => {
       browser.updateSession();
       dispatch({
-        type: SESSION_AUTH_SIGNOUT
+        type: SESSION_AUTH_SIGNOUT,
       });
       resolve();
     });
@@ -86,7 +116,7 @@ export const signOut = () => {
 export const verifyToken = () => {
   return async (dispatch, getState, { api, browser }) => {
     dispatch({
-      type: SESSION_AUTH_VERIFY_REQUEST
+      type: SESSION_AUTH_VERIFY_REQUEST,
     });
 
     const token = browser.getToken();
@@ -96,13 +126,13 @@ export const verifyToken = () => {
 
         dispatch({
           type: SESSION_AUTH_VERIFY_SUCCESS,
-          payload: data
+          payload: data,
         });
       },
       error => {
         dispatch({
           type: SESSION_AUTH_VERIFY_FAILURE,
-          payload: error.message
+          payload: error.message,
         });
         throw new Error(error.message);
       }
@@ -114,7 +144,7 @@ export const updateLocation = newLocation => {
   return async dispatch => {
     return await dispatch({
       type: SESSION_LOCATION,
-      payload: newLocation
+      payload: newLocation,
     });
   };
 };

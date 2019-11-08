@@ -1,4 +1,4 @@
-import { combineReducers } from "redux";
+import { combineReducers } from 'redux';
 
 import {
   SOCKET_ONLINE_USERS,
@@ -6,14 +6,14 @@ import {
   SOCKET_DISCONNECT,
   SOCKET_CONNECT_REQUEST,
   SOCKET_CONNECT_SUCCESS,
-  SOCKET_CONNECT_FAILURE
-} from "../actions/socket";
+  SOCKET_CONNECT_FAILURE,
+} from '../actions/socket';
 
 const INITIAL_SOCKET_STATE = {
   isConnecting: false,
   isConnected: false,
   serverMessage: null,
-  onlineUsers: []
+  onlineUsers: [],
 };
 
 const socket = (state = INITIAL_SOCKET_STATE, action) => {
@@ -26,41 +26,41 @@ const socket = (state = INITIAL_SOCKET_STATE, action) => {
           ...state,
           onlineUsers: onlineUsers
             ? onlineUsers.filter(onlineUser => onlineUser.id !== user.id)
-            : []
+            : [],
         };
       } else {
         return {
-          ...state
+          ...state,
         };
       }
     }
     case SOCKET_SERVER_MESSAGE: {
       return {
         ...state,
-        serverMessage: action.payload
+        serverMessage: action.payload,
       };
     }
     case SOCKET_CONNECT_REQUEST: {
       return {
         ...state,
-        isConnecting: true
+        isConnecting: true,
       };
     }
     case SOCKET_CONNECT_SUCCESS: {
-      console.log("SOCKET_CONNECT_SUCCESS");
+      console.log('SOCKET_CONNECT_SUCCESS');
       return {
         ...state,
         isConnecting: false,
-        isConnected: true
+        isConnected: true,
       };
     }
     case SOCKET_DISCONNECT:
     case SOCKET_CONNECT_FAILURE:
-      console.log("DISCONNECTED");
+      console.log('DISCONNECTED', action.payload);
       return {
         ...state,
         isConnecting: false,
-        errorMessage: action.payload
+        errorMessage: action.payload,
       };
     default:
       return state;
@@ -68,7 +68,7 @@ const socket = (state = INITIAL_SOCKET_STATE, action) => {
 };
 
 export default combineReducers({
-  socket
+  socket,
 });
 
 const select = state => state.socket;

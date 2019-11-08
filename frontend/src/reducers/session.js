@@ -1,4 +1,4 @@
-import { combineReducers } from "redux";
+import { combineReducers } from 'redux';
 import {
   SESSION_AUTH_SIGNIN_REQUEST,
   SESSION_AUTH_SIGNIN_SUCCESS,
@@ -6,15 +6,18 @@ import {
   SESSION_AUTH_VERIFY_REQUEST,
   SESSION_AUTH_VERIFY_SUCCESS,
   SESSION_AUTH_VERIFY_FAILURE,
+  SESSION_AUTH_SIGNUP_REQUEST,
+  SESSION_AUTH_SIGNUP_SUCCESS,
+  SESSION_AUTH_SIGNUP_FAILURE,
   SESSION_AUTH_SIGNOUT,
-  SESSION_LOCATION
-} from "../actions/session";
+  SESSION_LOCATION,
+} from '../actions/session';
 
 const INITIAL_SIGNIN_STATE = {
   isFetching: false,
   errorMessage: null,
   session: null,
-  location: null
+  location: null,
 };
 
 const signIn = (state = INITIAL_SIGNIN_STATE, action) => {
@@ -24,7 +27,7 @@ const signIn = (state = INITIAL_SIGNIN_STATE, action) => {
       return {
         ...state,
         isFetching: true,
-        errorMessage: null
+        errorMessage: null,
       };
     case SESSION_AUTH_VERIFY_FAILURE:
     case SESSION_AUTH_SIGNIN_FAILURE:
@@ -32,7 +35,7 @@ const signIn = (state = INITIAL_SIGNIN_STATE, action) => {
         ...state,
         session: null,
         isFetching: false,
-        errorMessage: action.payload
+        errorMessage: action.payload,
       };
     case SESSION_AUTH_VERIFY_SUCCESS:
       return {
@@ -43,28 +46,48 @@ const signIn = (state = INITIAL_SIGNIN_STATE, action) => {
           user: {
             firstName: action.payload.first_name,
             lastName: action.payload.last_name,
-            ...action.payload
-          }
+            ...action.payload,
+          },
         },
         isFetching: false,
-        errorMessage: null
+        errorMessage: null,
       };
     case SESSION_AUTH_SIGNIN_SUCCESS:
       return {
         ...state,
         session: action.payload,
         isFetching: false,
-        errorMessage: null
+        errorMessage: null,
       };
+    case SESSION_AUTH_SIGNUP_REQUEST: {
+      return {
+        ...state,
+        isFetching: true,
+      };
+    }
+    case SESSION_AUTH_SIGNUP_SUCCESS: {
+      return {
+        ...state,
+        isFetching: false,
+        session: action.payload,
+      };
+    }
+    case SESSION_AUTH_SIGNUP_FAILURE: {
+      return {
+        ...state,
+        isFetching: false,
+        errorMessage: action.payload,
+      };
+    }
     case SESSION_AUTH_SIGNOUT:
       return {
         ...state,
-        session: null
+        session: null,
       };
     case SESSION_LOCATION: {
       return {
         ...state,
-        location: action.payload
+        location: action.payload,
       };
     }
     default: {
@@ -74,7 +97,7 @@ const signIn = (state = INITIAL_SIGNIN_STATE, action) => {
 };
 
 export default combineReducers({
-  signIn
+  signIn,
 });
 
 const select = state => state.session;

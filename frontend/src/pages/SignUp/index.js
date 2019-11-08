@@ -1,51 +1,58 @@
-import React from "react";
-import { connect } from "react-redux";
-import { compose } from "recompose";
-import { withRouter } from "react-router-dom";
+import React from 'react';
+import { connect } from 'react-redux';
+import { compose } from 'recompose';
+import { withRouter } from 'react-router-dom';
+
+// Selectors
+import * as sessionSelectors from '../../reducers/session';
 
 // Actions
-import * as sessionActions from "../../actions/session";
+import * as sessionActions from '../../actions/session';
 
 // Constants
-import * as ROUTES from "../../modules/constants/routes";
-import * as ROLES from "../../modules/constants/roles";
+import * as ROUTES from '../../modules/constants/routes';
+import * as ROLES from '../../modules/constants/roles';
 
 // Layout
-import BaseLayout from "../../layout/Base";
+import BaseLayout from '../../layout/Base';
 
 // Components
-import Grid from "@material-ui/core/Grid";
-import Link from "@material-ui/core/Link";
-import { Field, Form } from "react-final-form";
-import Typography from "../../modules/components/Typography";
-import AppForm from "../../modules/views/AppForm";
-import { email, required } from "../../modules/form/validation";
-import RFTextField from "../../modules/form/RFTextField";
-import FormButton from "../../modules/form/FormButton";
-import FormFeedback from "../../modules/form/FormFeedback";
+import Grid from '@material-ui/core/Grid';
+import Link from '@material-ui/core/Link';
+import { Field, Form } from 'react-final-form';
+import Typography from '../../modules/components/Typography';
+import AppForm from '../../modules/views/AppForm';
+import { email, required } from '../../modules/form/validation';
+import RFTextField from '../../modules/form/RFTextField';
+import FormButton from '../../modules/form/FormButton';
+import FormFeedback from '../../modules/form/FormFeedback';
 
 // Styles
-import { withStyles } from "@material-ui/core/styles";
+import { withStyles } from '@material-ui/core/styles';
 const styles = theme => ({
   form: {
-    marginTop: theme.spacing(6)
+    marginTop: theme.spacing(6),
   },
   button: {
     marginTop: theme.spacing(3),
-    marginBottom: theme.spacing(2)
+    marginBottom: theme.spacing(2),
   },
   feedback: {
-    marginTop: theme.spacing(2)
-  }
+    marginTop: theme.spacing(2),
+  },
 });
 
-const SignUp = ({ history, classes, signUp }) => {
-  const [sent, setSent] = React.useState(false);
-  const [submitError, setSubmitError] = React.useState(null);
-
+const SignUp = ({
+  history,
+  classes,
+  isFetching,
+  user,
+  errorMessage,
+  signUp,
+}) => {
   const validate = values => {
     const errors = required(
-      ["firstName", "lastName", "email", "password"],
+      ['firstName', 'lastName', 'email', 'password'],
       values
     );
 
@@ -59,37 +66,24 @@ const SignUp = ({ history, classes, signUp }) => {
     return errors;
   };
 
-  const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
   const onSubmit = async values => {
     const { email, password, firstName, lastName, isAdmin } = values;
-    let roles = ROLES.USER;
-
-    if (isAdmin) {
-      roles = ROLES.ADMIN;
-    }
-
-    // Add a slight delay before proceding with the request
-    await sleep(300);
-    setSent(true);
-
-    const response = await signUp({
+    await signUp({
       email,
       password,
       firstName,
       lastName,
-      roles
+      roles: isAdmin ? ROLES.ADMIN : ROLES.USER,
     });
-
-    const { data } = response;
-
-    if ("error" in data) {
-      setSubmitError(data.message);
-      setSent(false);
-    } else {
-      history.push(ROUTES.SCOREBOARD);
-    }
-    return;
   };
+
+  if (!!user) {
+    history.push(ROUTES.SCOREBOARD);
+  }
+
+  if (isFetching) {
+    return null;
+  }
 
   return (
     <BaseLayout>
@@ -137,7 +131,7 @@ const SignUp = ({ history, classes, signUp }) => {
               <Field
                 autoComplete="email"
                 component={RFTextField}
-                disabled={submitting || sent}
+                disabled={submitting || isFetching}
                 fullWidth
                 label="Email"
                 margin="normal"
@@ -147,7 +141,7 @@ const SignUp = ({ history, classes, signUp }) => {
               <Field
                 fullWidth
                 component={RFTextField}
-                disabled={submitting || sent}
+                disabled={submitting || isFetching}
                 required
                 name="password"
                 autoComplete="current-password"
@@ -155,18 +149,18 @@ const SignUp = ({ history, classes, signUp }) => {
                 type="password"
                 margin="normal"
               />
-              {submitError ? (
+              {errorMessage ? (
                 <FormFeedback className={classes.feedback} error>
-                  {submitError}
+                  {errorMessage}
                 </FormFeedback>
               ) : null}
               <FormButton
                 className={classes.button}
-                disabled={submitting || sent}
+                disabled={submitting || isFetching}
                 color="secondary"
                 fullWidth
               >
-                {submitting || sent ? "In progress…" : "Sign Up"}
+                {submitting || isFetching ? 'In progress…' : 'Sign Up'}
               </FormButton>
             </form>
           )}
@@ -176,15 +170,23 @@ const SignUp = ({ history, classes, signUp }) => {
   );
 };
 
+const mapStateToProps = state => {
+  return {
+    user: sessionSelectors.getUser(state),
+    isFetching: sessionSelectors.getIsFetching(state),
+    errorMessage: sessionSelectors.getErrorMessage(state),
+  };
+};
+
 const actionCreators = {
-  signUp: sessionActions.signUp
+  signUp: sessionActions.signUp,
 };
 
 export default compose(
   withRouter,
   withStyles(styles),
   connect(
-    null,
+    mapStateToProps,
     actionCreators
   )
 )(SignUp);
