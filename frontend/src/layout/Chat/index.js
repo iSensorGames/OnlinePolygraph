@@ -17,7 +17,10 @@ const styles = theme => ({
     paddingBottom: 24,
     display: "flex",
     flexDirection: "row",
-    height: "100%"
+    height: "100%",
+    [theme.breakpoints.down("sm")]: {
+      marginTop: 64
+    }
   }
 });
 

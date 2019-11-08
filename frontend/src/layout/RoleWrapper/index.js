@@ -50,8 +50,9 @@ let timeRemaining = 300000;
 const RoleWrapperLayout = ({ children, classes, game }) => {
   useEffect(() => {
     let interval = setInterval(() => {
+      console.log("HELLO");
       timeRemaining -= 1000;
-    }, 1000);
+    }, 1);
 
     return () => {
       clearInterval(interval);

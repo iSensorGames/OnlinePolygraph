@@ -1,39 +1,34 @@
-import React from 'react';
-import { compose } from 'recompose';
-import { connect } from 'react-redux';
+import React from "react";
+import { compose } from "recompose";
+import { connect } from "react-redux";
 
 // Component
-import Button from '../../../../../modules/components/Button';
-import Typography from '../../../../../modules/components/Typography';
-import Grid from '@material-ui/core/Grid';
-import Container from '@material-ui/core/Container';
+import Button from "../../../../../modules/components/Button";
+import Typography from "../../../../../modules/components/Typography";
+import Grid from "@material-ui/core/Grid";
+import Container from "@material-ui/core/Container";
 
 // Actions
-import * as chatActions from '../../../../../actions/chat';
+import * as chatActions from "../../../../../actions/chat";
 
 // Styles
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles } from "@material-ui/core/styles";
 
 // Assets
-import productCurvyLines from '../../../../../static/img/productCurvyLines.png';
-import productHowItWorks1 from '../../../../../static/img/productHowItWorks1.svg';
-import productHowItWorks2 from '../../../../../static/img/productHowItWorks2.svg';
-import productHowItWorks3 from '../../../../../static/img/productHowItWorks3.svg';
+import productHowItWorks1 from "../../../../../static/img/productHowItWorks1.svg";
+import productHowItWorks2 from "../../../../../static/img/productHowItWorks2.svg";
+import productHowItWorks3 from "../../../../../static/img/productHowItWorks3.svg";
 
 const styles = theme => ({
   container: {
-    alignItems: 'center',
-    display: 'flex',
-    flexDirection: 'column',
+    alignItems: "center",
+    display: "flex",
+    flexDirection: "column",
     flex: 1,
-    justifyContent: 'flex-start',
+    justifyContent: "flex-start",
     marginTop: 80,
-    width: '100%',
-    overflowY: 'auto',
-  },
-  inputMsgWrite: {
-    display: 'flex',
-    flexDirection: 'column',
+    width: "100%",
+    overflowY: "auto"
   },
   writeMsg: {
     paddingLeft: 20,
@@ -42,68 +37,68 @@ const styles = theme => ({
     paddingBottom: 10,
     fontSize: 30,
     minWidth: 600,
-    '&:focus': {
-      outline: 'none',
+    "&:focus": {
+      outline: "none"
     },
-    [theme.breakpoints.down('sm')]: {
-      minWidth: 'inherit',
+    [theme.breakpoints.down("sm")]: {
+      minWidth: "inherit",
       marginRight: 10,
-      marginLeft: 10,
-    },
+      marginLeft: 10
+    }
   },
   button: {
     minWidth: 300,
     minHeight: 55,
-    margin: '20px auto 80px',
+    margin: "20px auto 80px"
   },
   description: {
     marginTop: 40,
-    marginBottom: 15,
+    marginBottom: 15
   },
   item: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    padding: theme.spacing(0, 5),
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    padding: theme.spacing(0, 5)
   },
   title: {
-    color: '#48542a',
+    color: "#48542a",
     marginBottom: theme.spacing(4),
-    textAlign: 'center',
-    marginTop: 40,
+    textAlign: "center",
+    marginTop: 40
   },
   number: {
     fontSize: 24,
     fontFamily: theme.typography.fontFamily,
     color: theme.palette.secondary.main,
-    fontWeight: theme.typography.fontWeightMedium,
+    fontWeight: theme.typography.fontWeightMedium
   },
   image: {
     height: 55,
     marginTop: theme.spacing(4),
-    marginBottom: theme.spacing(4),
+    marginBottom: theme.spacing(4)
   },
   curvyLines: {
-    pointerEvents: 'none',
-    position: 'absolute',
+    pointerEvents: "none",
+    position: "absolute",
     top: -180,
-    opacity: 0.7,
+    opacity: 0.7
   },
   inputContainer: {
-    alignItems: 'center',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    marginTop: 50,
+    alignItems: "center",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    marginTop: 50
   },
   divider: {
-    borderTop: '1px solid',
-    marginTop: 40,
-  },
+    borderTop: "1px solid",
+    marginTop: 40
+  }
 });
 
 const Intro = ({ classes, setRoom, setChatSetupTab }) => {
-  console.log('INTRO PAGE LOAD');
+  console.log("INTRO PAGE LOAD");
   return (
     <div className={classes.container}>
       <Container>
@@ -117,7 +112,7 @@ const Intro = ({ classes, setRoom, setChatSetupTab }) => {
         </Typography>
         <div>
           <Grid container spacing={5}>
-            <Grid item xs={12} md={4}>
+            <Grid item xs={6} md={4}>
               <div className={classes.item}>
                 <div className={classes.number}>1.</div>
                 <img
@@ -130,7 +125,7 @@ const Intro = ({ classes, setRoom, setChatSetupTab }) => {
                 </Typography>
               </div>
             </Grid>
-            <Grid item xs={12} md={4}>
+            <Grid item xs={6} md={4}>
               <div className={classes.item}>
                 <div className={classes.number}>2.</div>
                 <img
@@ -180,7 +175,7 @@ const Intro = ({ classes, setRoom, setChatSetupTab }) => {
             variant="contained"
             size="large"
             className={classes.button}
-            onClick={() => setChatSetupTab('topic')}
+            onClick={() => setChatSetupTab("topic")}
           >
             Got it
           </Button>
@@ -192,7 +187,7 @@ const Intro = ({ classes, setRoom, setChatSetupTab }) => {
 
 const actionCreators = {
   setChatSetupTab: chatActions.setChatSetupTab,
-  setRoom: chatActions.setRoom,
+  setRoom: chatActions.setRoom
 };
 
 export default compose(

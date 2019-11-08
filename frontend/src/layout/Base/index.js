@@ -16,11 +16,15 @@ const styles = theme => ({
   container: {
     alignItems: "center",
     marginTop: 70,
+    marginBottom: 70,
     paddingBottom: 24,
     paddingTop: 24,
     display: "flex",
     flexDirection: "column",
-    position: "relative"
+    position: "relative",
+    [theme.breakpoints.down("sm")]: {
+      marginTop: 64
+    }
   },
   backdrop: {
     position: "absolute",

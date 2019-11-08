@@ -90,8 +90,6 @@ const getOnlineUsers = () => {
 
 const getAvailableRooms = () => {
   return new Promise((resolve, reject) => {
-    console.log("==============================");
-    console.log("io.sockets.adapter.rooms", io.sockets.adapter.rooms);
     const rooms = Object.keys(io.sockets.adapter.rooms);
 
     if (rooms.length > 0) {
@@ -146,9 +144,6 @@ const createGame = (
 const getLastGame = roomId => {
   return new Promise((resolve, reject) => {
     const query = `SELECT id, conversation_id, game_round, created_at FROM games WHERE conversation_id = ${roomId} AND game_round = (SELECT max(game_round) FROM games WHERE conversation_id = ${roomId})`;
-
-    console.log("query", query);
-
     db.query(query, (err, results) => {
       if (err) {
         reject(err);

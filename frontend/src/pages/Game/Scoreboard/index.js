@@ -8,6 +8,12 @@ import logo from "../../../static/img/logo.png";
 import clsx from "clsx";
 import { compose } from "recompose";
 import Typography from "../../../modules/components/Typography";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
+import Paper from "@material-ui/core/Paper";
 
 // Layout
 import BaseLayout from "../../../layout/Base";
@@ -33,6 +39,14 @@ const styles = theme => ({
       marginTop: theme.spacing(10)
     }
   },
+  root: {
+    width: "100%",
+    marginTop: theme.spacing(3),
+    overflowX: "auto"
+  },
+  table: {
+    minWidth: 700
+  },
   slogan: {
     fontWeight: "bold",
     fontSize: 25
@@ -42,18 +56,40 @@ const styles = theme => ({
   }
 });
 
+const StyledTableCell = withStyles(theme => ({
+  head: {
+    backgroundColor: theme.palette.common.black,
+    color: theme.palette.common.white
+  },
+  body: {
+    fontSize: 14
+  }
+}))(TableCell);
+
+const StyledTableRow = withStyles(theme => ({
+  root: {
+    "&:nth-of-type(odd)": {
+      backgroundColor: theme.palette.background.default
+    }
+  }
+}))(TableRow);
+
+function createData(name, ranking, fat, carbs, protein) {
+  return { name, ranking, fat, carbs, protein };
+}
+
+const rows = [
+  createData("John Smith", 159),
+  createData("Jennifer Oliveira", 237),
+  createData("Gustavo Lee", 262),
+  createData("Henry Tradford", 305),
+  createData("Katherine Jameson", 356)
+];
+
 const Scoreboard = ({ classes }) => {
   return (
     <BaseLayout>
       <GameSetupLayout>
-        <Typography
-          color="inherit"
-          align="center"
-          variant="h2"
-          className={clsx(classes.h5, classes.slogan)}
-        >
-          Scoreboard
-        </Typography>
         <Typography
           color="inherit"
           align="center"
@@ -63,9 +99,28 @@ const Scoreboard = ({ classes }) => {
           A multiplayer game for devious people. Enhance your detection and
           persuading skills. Gain extra points. Be the winner.
         </Typography>
-        <Typography variant="body2" color="inherit" className={classes.more}>
-          Discover the experience
-        </Typography>
+        <Paper className={classes.root}>
+          <Table className={classes.table} aria-label="customized table">
+            <TableHead>
+              <TableRow>
+                <StyledTableCell>Scoreboard</StyledTableCell>
+                <StyledTableCell align="right">Ranking</StyledTableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {rows.map(row => (
+                <StyledTableRow key={row.name}>
+                  <StyledTableCell component="th" scope="row">
+                    {row.name}
+                  </StyledTableCell>
+                  <StyledTableCell align="right">
+                    {row.calories}
+                  </StyledTableCell>
+                </StyledTableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </Paper>
       </GameSetupLayout>
     </BaseLayout>
   );
