@@ -197,6 +197,8 @@ const getGameRoles = roomId => {
 };
 
 io.on('connection', socket => {
+  console.log('CONNECTED');
+  console.log('socket', socket);
   const emitOnlineUsers = () => {
     socket.broadcast.emit('online_users', getOnlineUsers());
   };
