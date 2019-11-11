@@ -51,7 +51,7 @@ const Logout = ({ classes, history, signOut }) => (
     )}
     onClick={() => {
       signOut().then(() => {
-        history.push(ROUTES.SIGN_IN_ROUTE);
+        history.push(ROUTES.SIGN_IN);
       });
     }}
   >

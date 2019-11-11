@@ -170,7 +170,7 @@ const AppAppBar = ({ classes, user, chatSetupTab }) => {
                   variant="h6"
                   underline="none"
                   className={classes.rightLink}
-                  href={ROUTES.SIGN_IN_ROUTE}
+                  href={ROUTES.SIGN_IN}
                 >
                   {settings.signin}
                 </Link>
@@ -178,7 +178,7 @@ const AppAppBar = ({ classes, user, chatSetupTab }) => {
                   variant="h6"
                   underline="none"
                   className={clsx(classes.rightLink, classes.linkSecondary)}
-                  href={ROUTES.SIGN_UP_ROUTE}
+                  href={ROUTES.SIGN_UP}
                 >
                   {settings.signup}
                 </Link>

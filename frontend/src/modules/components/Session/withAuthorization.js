@@ -32,7 +32,7 @@ const withAuthorization = Component => {
         updateLocation(location.pathname);
 
         verifyToken().catch(error => {
-          history.push(ROUTES.SIGN_IN_ROUTE);
+          history.push(ROUTES.SIGN_IN);
         });
       }
     }

@@ -25,7 +25,7 @@ const withAuthentication = Component => {
 
       verifyToken().catch(() => {
         if (!publicRoutes.includes(location.pathname)) {
-          history.push(ROUTES.SIGN_IN_ROUTE);
+          history.push(ROUTES.SIGN_IN);
         }
       });
     }
