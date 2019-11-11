@@ -196,9 +196,15 @@ const getGameRoles = roomId => {
   });
 };
 
+<<<<<<< HEAD
 io.on("connection", socket => {
   console.log("Socket connected", socket);
 
+=======
+io.on('connection', socket => {
+  console.log('CONNECTED');
+  console.log('socket', socket);
+>>>>>>> e179eb4751d8b73f4f54e4ea953ee568903ee9b9
   const emitOnlineUsers = () => {
     socket.broadcast.emit("online_users", getOnlineUsers());
   };
