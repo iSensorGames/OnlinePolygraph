@@ -1,19 +1,19 @@
-const express = require("express");
-const https = require("https");
+const express = require('express');
+const https = require('https');
 const app = express();
-const socket = require("socket.io");
-const path = require("path");
-const bodyParser = require("body-parser");
-const morgan = require("morgan");
-const fs = require("fs");
-const dotenv = require("dotenv");
-const utils = require("./utils");
+const socket = require('socket.io');
+const path = require('path');
+const bodyParser = require('body-parser');
+const morgan = require('morgan');
+const fs = require('fs');
+const dotenv = require('dotenv');
+const utils = require('./utils');
 
 /**************************
  * SETUP GLOBAL VARIABLES *
  **************************/
-const isProduction = process.env.NODE_ENV === "production";
-const isTest = process.env.NODE_ENV === "test";
+const isProduction = process.env.NODE_ENV === 'production';
+const isTest = process.env.NODE_ENV === 'test';
 const PORT = process.env.PORT || 5000;
 global.appRoot = path.resolve(__dirname);
 
@@ -24,23 +24,23 @@ if (isProduction || isTest) {
   // Load Environment Variables from .env
   dotenv.config();
 
-  app.use(express.static(path.join(__dirname, "frontend/build")));
+  app.use(express.static(path.join(__dirname, 'frontend/build')));
 
   // Handle React routing, return all requests to React app
-  app.get("*", function(req, res) {
-    res.sendFile(path.join(__dirname, "frontend/build", "index.html"));
+  app.get('*', function(req, res) {
+    res.sendFile(path.join(__dirname, 'frontend/build', 'index.html'));
   });
 }
 
 app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "X-Requested-With");
-  res.header("Access-Control-Allow-Headers", "Content-Type");
-  res.header("Access-Control-Allow-Methods", "PUT, GET, POST, DELETE, OPTIONS");
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', 'X-Requested-With');
+  res.header('Access-Control-Allow-Headers', 'Content-Type');
+  res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
   next();
 });
 
-app.use(morgan(isProduction ? "" : "dev"));
+app.use(morgan(isProduction ? '' : 'dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -49,38 +49,38 @@ app.use(bodyParser.urlencoded({ extended: false }));
  ********************/
 const httpsOptions = {
   key: fs.readFileSync(
-    isProduction ? "./security/ssl.key" : "./security/cert.key"
+    isProduction ? './security/ssl.key' : './security/cert.key'
   ),
   cert: fs.readFileSync(
-    isProduction ? "./security/ssl.cert" : "./security/cert.pem"
-  )
+    isProduction ? './security/ssl.cert' : './security/cert.pem'
+  ),
 };
 
 const server = https.createServer(httpsOptions, app).listen(PORT, () => {
-  console.log("Server listening to Port: " + PORT);
+  console.log('Server listening to Port: ' + PORT);
 });
 
 /**************************************
  * SOCKET & DATABASE CONNECTION SETUP *
  **************************************/
 const io = socket(server, {
-  path: "/users/socket.io",
+  path: '/users/socket.io',
   log: false,
-  origin: "*:*"
+  origin: '*:*',
 });
 
-const db = require("./services/database");
+const db = require('./services/database');
 db.connect(err => {
   if (err) {
-    console.log("Err: ", err);
-    throw new Error("Could not connect to the Database");
+    console.log('Err: ', err);
+    throw new Error('Could not connect to the Database');
   }
 
   // ROUTES
-  require("./routes")({ app, db });
+  require('./routes')({ app, db });
 });
 
-const website = "Real or Spiel Game";
+const website = 'Real or Spiel Game';
 const getOnlineUsers = () => {
   let clients = io.sockets.clients().connected;
   let sockets = Object.values(clients);
@@ -109,7 +109,7 @@ const getAvailableRooms = () => {
         const roomsFormatted = results.map(room => {
           return {
             ...room,
-            length: room.id in roomsObject ? roomsObject[room.id].length : 0
+            length: room.id in roomsObject ? roomsObject[room.id].length : 0,
           };
         });
 
@@ -196,91 +196,85 @@ const getGameRoles = roomId => {
   });
 };
 
-<<<<<<< HEAD
-io.on("connection", socket => {
-  console.log("Socket connected", socket);
-
-=======
 io.on('connection', socket => {
   console.log('CONNECTED');
   console.log('socket', socket);
->>>>>>> e179eb4751d8b73f4f54e4ea953ee568903ee9b9
   const emitOnlineUsers = () => {
-    socket.broadcast.emit("online_users", getOnlineUsers());
+    socket.broadcast.emit('online_users', getOnlineUsers());
   };
 
-  socket.on("connect_user", user => {
-    socket.emit("server_message", {
+  socket.on('connect_user', user => {
+    socket.emit('server_message', {
       name: website,
-      message: `Welcome to the ${website}`
+      message: `Welcome to the ${website}`,
     });
 
     getAvailableRooms().then(result => {
-      socket.emit("available_rooms", result);
+      socket.emit('available_rooms', result);
     });
 
     socket.user = user;
-    socket.emit("online_users", getOnlineUsers());
+    socket.emit('online_users', getOnlineUsers());
     emitOnlineUsers();
   });
 
-  socket.on("disconnect", res => {
+  socket.on('disconnect', res => {
     const { user } = socket;
 
-    console.log("---------------------------");
+    console.log('---------------------------');
     console.log(user);
-    console.log("disconnected from the server. " + res);
+    console.log('disconnected from the server. ' + res);
 
     emitOnlineUsers();
     getAvailableRooms().then(result => {
-      socket.emit("available_rooms", result);
-      socket.broadcast.emit("available_rooms", result);
+      socket.emit('available_rooms', result);
+      socket.broadcast.emit('available_rooms', result);
     });
   });
 
-  socket.on("create_room", roomId => {
+  socket.on('create_room', roomId => {
     socket.join(roomId);
     getAvailableRooms().then(result => {
-      socket.emit("available_rooms", result);
-      socket.broadcast.emit("available_rooms", result);
+      socket.emit('available_rooms', result);
+      socket.broadcast.emit('available_rooms', result);
     });
   });
 
-  socket.on("join_room", roomId => {
+  socket.on('join_room', roomId => {
     socket.join(roomId);
-    socket.broadcast.to(roomId).emit("join_room_opponent", socket.user);
+    socket.broadcast.to(roomId).emit('join_room_opponent', socket.user);
     getAvailableRooms().then(result => {
-      socket.emit("available_rooms", result);
-      socket.broadcast.emit("available_rooms", result);
+      socket.emit('available_rooms', result);
+      socket.broadcast.emit('available_rooms', result);
     });
   });
 
-  socket.on("leave_room", roomId => {
-    console.log("leave_room", roomId);
+  socket.on('leave_room', roomId => {
+    console.log('leave_room', roomId);
     socket.leave(roomId);
 
-    socket.broadcast.to(roomId).emit("leave_room_player", socket.user);
+    socket.broadcast.to(roomId).emit('leave_room_player', socket.user);
 
     getAvailableRooms().then(result => {
-      socket.emit("available_rooms", result);
-      socket.broadcast.emit("available_rooms", result);
+      socket.emit('available_rooms', result);
+      socket.broadcast.emit('available_rooms', result);
     });
   });
 
-  socket.on("game_set", ({ roomId, params }) => {
+  socket.on('game_set', ({ roomId, params }) => {
     const data = {
-      ...params
+      ...params,
     };
 
     const { gameRound, groundTruth } = params;
     updateGroundTruth(roomId, gameRound, groundTruth).then(result => {
-      console.log("updateGroundTruth", result);
-      io.to(roomId).emit("game_update", data);
-      socket.broadcast.to(roomId).emit("game_update", data);
+      console.log('updateGroundTruth', result);
+      io.to(roomId).emit('game_update', data);
+      socket.broadcast.to(roomId).emit('game_update', data);
     });
   });
 
-  socket.on("game_start", ({ roomId, detectorResponse }) => {
+  socket.on('game_start', ({ roomId, detectorResponse }) => {
     getLastGame(roomId).then(result => {
       // Start a new game if there's none
       if (result.length === 0) {
@@ -304,14 +298,14 @@ io.on('connection', socket => {
           const data = {
             gameId: insertId,
             isStarted: true,
-            tab: "ground-truth",
+            tab: 'ground-truth',
             gameRound: initialGameRound,
             creatorOuterRole,
             opponentOuterRole,
             creatorInnerRole,
-            opponentInnerRole
+            opponentInnerRole,
           };
-          io.in(roomId).emit("game_update", data);
+          io.in(roomId).emit('game_update', data);
         });
       } else {
         const { game_round } = result[0];
@@ -325,7 +319,7 @@ io.on('connection', socket => {
                 let allCreatorInnerRoles = results.map(
                   item => item.role_inner_creator
                 );
-                console.log("allCreatorInnerRoles", allCreatorInnerRoles);
+                console.log('allCreatorInnerRoles', allCreatorInnerRoles);
               });
             } else {
               let creatorOuterRole = utils.randomize(2);
@@ -347,14 +341,14 @@ io.on('connection', socket => {
                 const data = {
                   gameId: insertId,
                   isStarted: true,
-                  tab: "ground-truth",
+                  tab: 'ground-truth',
                   gameRound: newGameRound,
                   creatorOuterRole,
                   opponentOuterRole,
                   creatorInnerRole,
-                  opponentInnerRole
+                  opponentInnerRole,
                 };
-                io.in(roomId).emit("game_update", data);
+                io.in(roomId).emit('game_update', data);
               });
             }
           }
@@ -363,12 +357,12 @@ io.on('connection', socket => {
     });
   });
 
-  socket.on("send_message", ({ roomId, params }) => {
+  socket.on('send_message', ({ roomId, params }) => {
     const { gameId, message } = params;
     const sender_id = socket.user.id;
     const query = `INSERT INTO messages (game_id, sender_id, message, created_at) VALUES (${gameId}, ${sender_id}, "${message}", NOW())`;
 
-    console.log("SEND_MESSAGE query", query);
+    console.log('SEND_MESSAGE query', query);
     db.query(query, (err, results) => {
       if (err) {
         throw new Error(err);
@@ -376,22 +370,22 @@ io.on('connection', socket => {
 
       const { insertId } = results;
 
-      console.log("SEND_MESSAGE results", results);
+      console.log('SEND_MESSAGE results', results);
 
-      socket.broadcast.to(roomId).emit("receive_message", {
+      socket.broadcast.to(roomId).emit('receive_message', {
         id: insertId,
         game_id: gameId,
         sender_id,
-        message
+        message,
       });
     });
   });
 
-  socket.on("typing", ({ room }) => {
-    socket.to(room).emit("typing", "typing...");
+  socket.on('typing', ({ room }) => {
+    socket.to(room).emit('typing', 'typing...');
   });
 
-  socket.on("stopped_typing", ({ room }) => {
-    socket.to(room).emit("stopped_typing");
+  socket.on('stopped_typing', ({ room }) => {
+    socket.to(room).emit('stopped_typing');
   });
 });
