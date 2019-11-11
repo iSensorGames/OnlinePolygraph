@@ -1,4 +1,4 @@
-import io from 'socket.io-client';
+import io from "socket.io-client";
 
 import {
   RESPONSE_DISCONNECT,
@@ -15,8 +15,8 @@ import {
   RESPONSE_GAME_UPDATE,
   RESPONSE_GAME_SET,
   RESPONSE_GAME_SENDMESSAGE,
-  RESPONSE_GAME_RECEIVEMESSAGE,
-} from '../actions/socket';
+  RESPONSE_GAME_RECEIVEMESSAGE
+} from "../actions/socket";
 
 let socket = null;
 
@@ -26,9 +26,9 @@ export const openConnection = (listener, user) => {
       socket = io.connect(`${process.env.PUBLIC_URL}`, {
         secure: true,
         rejectUnauthorized: false,
-        path: '/realspiel/users/socket.io',
+        path: "/users/socket.io",
         forceNew: true,
-        reconnection: false,
+        reconnection: false
       });
 
       socket.emit(RESPONSE_CONNECT_USER, user);
