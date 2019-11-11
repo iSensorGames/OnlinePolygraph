@@ -1,30 +1,57 @@
-import React from "react";
-import { connect } from "react-redux";
-import { compose } from "recompose";
-import * as ROUTES from "../../constants/routes";
+import React from 'react';
+import { connect } from 'react-redux';
+import { compose } from 'recompose';
+import * as ROUTES from '../../constants/routes';
 
 // Actions
-import * as sessionActions from "../../../actions/session";
+import * as sessionActions from '../../../actions/session';
 
 // Components
-import clsx from "clsx";
-import { withRouter } from "react-router-dom";
+import { withRouter } from 'react-router-dom';
 
 // Styles
-import "./logout.css";
+import clsx from 'clsx';
+import { withStyles } from '@material-ui/core/styles';
+const styles = () => ({
+  btn: {
+    cursor: 'pointer',
+    '&:hover': {
+      cursor: 'pointer',
+    },
+  },
+  underlineNone: {
+    textDecoration: 'none',
+  },
+  h6: {
+    color: 'rgba(0, 0, 0, 0.87)',
+    fontSize: 18,
+    fontFamily: "'Roboto Condensed', 'sans-serif'",
+    fontWeight: 700,
+    lineHeight: 1.6,
+    textTransform: 'uppercase',
+  },
+  rightLink10: {
+    color: '#fff',
+    fontSize: '16px',
+    marginLeft: 24,
+  },
+  linkSecondary11: {
+    color: '#ff3366',
+  },
+});
 
-const Logout = ({ history, signOut }) => (
+const Logout = ({ classes, history, signOut }) => (
   <div
     className={clsx(
-      "Logout-btn",
-      "Logout-h6",
-      "Logout-underlineNone",
-      "Logout-rightLink-10",
-      "Logout-linkSecondary-11"
+      classes.btn,
+      classes.h6,
+      classes.underlineNone,
+      classes.rightLink10,
+      classes.linkSecondary11
     )}
     onClick={() => {
       signOut().then(() => {
-        history.push(ROUTES.SIGN_IN);
+        history.push(ROUTES.SIGN_IN_ROUTE);
       });
     }}
   >
@@ -33,10 +60,11 @@ const Logout = ({ history, signOut }) => (
 );
 
 const actionCreators = {
-  signOut: sessionActions.signOut
+  signOut: sessionActions.signOut,
 };
 
 export default compose(
+  withStyles(styles),
   connect(
     null,
     actionCreators

@@ -78,7 +78,7 @@ const SignUp = ({
   };
 
   if (!!user) {
-    history.push(ROUTES.SCOREBOARD);
+    history.push(ROUTES.SCOREBOARD_ROUTE);
   }
 
   if (isFetching) {

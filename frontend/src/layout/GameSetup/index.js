@@ -1,41 +1,41 @@
-import React from "react";
-import clsx from "clsx";
+import React from 'react';
+import clsx from 'clsx';
 
 // Components
-import Button from "../../modules/components/Button";
+import Button from '../../modules/components/Button';
 
 // Constants
-import * as ROUTES from "../../modules/constants/routes";
+import * as ROUTES from '../../modules/constants/routes';
 
 // Icons
-import AssessmentIcon from "@material-ui/icons/Assessment";
-import PlayArrowIcon from "@material-ui/icons/PlayArrow";
+import AssessmentIcon from '@material-ui/icons/Assessment';
+import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 
 // Styles
-import { withStyles } from "@material-ui/core/styles";
+import { withStyles } from '@material-ui/core/styles';
 const styles = () => ({
   button: {
-    alignItems: "center",
-    display: "flex",
-    flexDirection: "row",
+    alignItems: 'center',
+    display: 'flex',
+    flexDirection: 'row',
     minWidth: 200,
-    width: "100%"
+    width: '100%',
   },
   buttonTxt: {
-    marginLeft: 10
+    marginLeft: 10,
   },
   actionButton: {
-    backgroundColor: "#FFDE07"
+    backgroundColor: '#FFDE07',
   },
   container: {
     bottom: 0,
     left: 0,
     right: 0,
-    position: "fixed",
-    display: "flex",
-    flexDirection: "row",
-    width: "100%"
-  }
+    position: 'fixed',
+    display: 'flex',
+    flexDirection: 'row',
+    width: '100%',
+  },
 });
 
 const GameSetupLayout = ({ children, classes, isRulesRoute }) => {
@@ -49,11 +49,11 @@ const GameSetupLayout = ({ children, classes, isRulesRoute }) => {
           size="large"
           className={classes.button}
           component="a"
-          href={isRulesRoute ? ROUTES.RULES : ROUTES.SCOREBOARD}
+          href={isRulesRoute ? ROUTES.RULES_ROUTE : ROUTES.SCOREBOARD_ROUTE}
         >
           <AssessmentIcon />
           <div className={classes.buttonTxt}>
-            {isRulesRoute ? "Rules" : "Scoreboard"}
+            {isRulesRoute ? 'Rules' : 'Scoreboard'}
           </div>
         </Button>
         <Button
@@ -73,7 +73,7 @@ const GameSetupLayout = ({ children, classes, isRulesRoute }) => {
 };
 
 GameSetupLayout.defaultProps = {
-  isRulesRoute: true
+  isRulesRoute: true,
 };
 
 export default withStyles(styles)(GameSetupLayout);

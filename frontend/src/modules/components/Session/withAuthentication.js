@@ -1,15 +1,19 @@
-import React from "react";
-import { connect } from "react-redux";
-import { withRouter } from "react-router-dom";
-import { compose } from "recompose";
+import React from 'react';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+import { compose } from 'recompose';
 
 // ACTIONS
-import * as sessionActions from "../../../actions/session";
+import * as sessionActions from '../../../actions/session';
 
 // Constants
-import * as ROUTES from "../../constants/routes";
+import * as ROUTES from '../../constants/routes';
 
-const publicRoutes = [ROUTES.HOME, ROUTES.SIGN_IN, ROUTES.SIGN_UP];
+const publicRoutes = [
+  ROUTES.HOME_ROUTE,
+  ROUTES.SIGN_IN_ROUTE,
+  ROUTES.SIGN_UP_ROUTE,
+];
 
 /**
  * @description Check user Authentication
@@ -21,7 +25,7 @@ const withAuthentication = Component => {
 
       verifyToken().catch(() => {
         if (!publicRoutes.includes(location.pathname)) {
-          history.push(ROUTES.SIGN_IN);
+          history.push(ROUTES.SIGN_IN_ROUTE);
         }
       });
     }
@@ -32,7 +36,7 @@ const withAuthentication = Component => {
   }
 
   const actionCreators = {
-    verifyToken: sessionActions.verifyToken
+    verifyToken: sessionActions.verifyToken,
   };
 
   return compose(

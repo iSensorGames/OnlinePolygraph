@@ -18,9 +18,10 @@ const styles = theme => ({
     flexDirection: 'column',
     flex: 1,
     justifyContent: 'center',
+    height: '100%',
+    width: '100%',
   },
   images: {
-    marginTop: 80,
     display: 'flex',
     flexWrap: 'wrap',
     width: '100%',

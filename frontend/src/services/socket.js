@@ -1,4 +1,4 @@
-import io from "socket.io-client";
+import io from 'socket.io-client';
 
 import {
   RESPONSE_DISCONNECT,
@@ -13,8 +13,10 @@ import {
   RESPONSE_LEAVE_ROOM_PLAYER,
   RESPONSE_GAME_START,
   RESPONSE_GAME_UPDATE,
-  RESPONSE_GAME_SET
-} from "../actions/socket";
+  RESPONSE_GAME_SET,
+  RESPONSE_GAME_SENDMESSAGE,
+  RESPONSE_GAME_RECEIVEMESSAGE,
+} from '../actions/socket';
 
 let socket = null;
 
@@ -24,9 +26,9 @@ export const openConnection = (listener, user) => {
       socket = io.connect(`${process.env.PUBLIC_URL}`, {
         secure: true,
         rejectUnauthorized: false,
-        path: "/users/socket.io",
+        path: '/users/socket.io',
         forceNew: true,
-        reconnection: false
+        reconnection: false,
       });
 
       socket.emit(RESPONSE_CONNECT_USER, user);
@@ -51,6 +53,10 @@ export const openConnection = (listener, user) => {
         listener(RESPONSE_GAME_UPDATE, res);
       };
 
+      const receiveMessageListener = res => {
+        listener(RESPONSE_GAME_RECEIVEMESSAGE, res);
+      };
+
       const serverMessage = res => {
         listener(RESPONSE_SERVER_MESSAGE, res);
       };
@@ -64,6 +70,7 @@ export const openConnection = (listener, user) => {
       socket.on(RESPONSE_JOIN_ROOM_OPPONENT, joinRoomByOpponent);
       socket.on(RESPONSE_LEAVE_ROOM_PLAYER, leaveRoomByPlayer);
       socket.on(RESPONSE_GAME_UPDATE, gameUpdateListener);
+      socket.on(RESPONSE_GAME_RECEIVEMESSAGE, receiveMessageListener);
       socket.on(RESPONSE_SERVER_MESSAGE, serverMessage);
       socket.on(RESPONSE_DISCONNECT, disconnectListener);
 
@@ -109,10 +116,10 @@ export const leaveRoom = roomId => {
   });
 };
 
-export const startGame = roomId => {
+export const startGame = (roomId, detectorResponse) => {
   return new Promise((resolve, reject) => {
     try {
-      socket.emit(RESPONSE_GAME_START, roomId);
+      socket.emit(RESPONSE_GAME_START, { roomId, detectorResponse });
       resolve();
     } catch (error) {
       reject(error);
@@ -124,6 +131,17 @@ export const setGame = (roomId, params) => {
   return new Promise((resolve, reject) => {
     try {
       socket.emit(RESPONSE_GAME_SET, { roomId, params });
+      resolve();
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+export const sendMessage = (roomId, params) => {
+  return new Promise((resolve, reject) => {
+    try {
+      socket.emit(RESPONSE_GAME_SENDMESSAGE, { roomId, params });
       resolve();
     } catch (error) {
       reject(error);

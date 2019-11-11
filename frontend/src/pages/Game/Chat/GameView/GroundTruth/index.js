@@ -1,72 +1,75 @@
-import React from "react";
-import { connect } from "react-redux";
-import { compose } from "recompose";
+import React from 'react';
+import { connect } from 'react-redux';
+import { compose } from 'recompose';
 
 // Utility function
-import * as utils from "../../../../../utils";
+import * as utils from '../../../../../utils';
 
 // Constants
-import * as ROLES from "../../../../../modules/constants/roles";
+import * as ROLES from '../../../../../modules/constants/roles';
 
 // Components
-import Button from "../../../../../modules/components/Button";
-import Typography from "../../../../../modules/components/Typography";
+import Button from '../../../../../modules/components/Button';
+import Typography from '../../../../../modules/components/Typography';
 
 // Styles
-import { withStyles } from "@material-ui/core/styles";
+import { withStyles } from '@material-ui/core/styles';
 
 // Data
-import questionItems from "./data";
+import questionItems from './data';
 
 // Actions
-import * as chatActions from "../../../../../actions/chat";
+import * as chatActions from '../../../../../actions/chat';
 
 // Selecter
-import * as chatSelectors from "../../../../../reducers/chat";
+import * as chatSelectors from '../../../../../reducers/chat';
 
 const styles = () => ({
   container: {
-    alignItems: "center",
-    display: "flex",
-    flexDirection: "column",
+    alignItems: 'center',
+    display: 'flex',
+    flexDirection: 'column',
     flex: 1,
-    justifyContent: "center",
+    justifyContent: 'center',
     paddingRight: 20,
     paddingLeft: 20,
-    alignItems: "center",
-    textAlign: "center"
+    alignItems: 'center',
+    textAlign: 'center',
   },
   inputMsgWrite: {
-    alignItems: "center",
-    display: "flex",
-    flexDirection: "row",
-    position: "relative",
+    alignItems: 'center',
+    display: 'flex',
+    flexDirection: 'row',
+    position: 'relative',
     paddingRight: 20,
     paddingLeft: 20,
-    background: "white"
+    background: 'white',
   },
   writeMsg: {
-    "&:focus": {
-      outline: "none"
-    }
+    '&:focus': {
+      outline: 'none',
+    },
+  },
+  textQuestion: {
+    marginTop: 40,
   },
   button: {
-    minWidth: 200
+    minWidth: 200,
   },
   innerRoleExplanation: {
     marginTop: 20,
-    marginBottom: 40
+    marginBottom: 40,
   },
   outerRoleExplanation: {},
   buttonsContainer: {
     marginTop: 40,
     maxWidth: 500,
-    textAlign: "center"
-  }
+    textAlign: 'center',
+  },
 });
 
 const GroundTruth = ({ classes, game, room, setGame }) => {
-  const { outerRole, innerRole } = game;
+  const { gameRound, outerRole, innerRole } = game;
   const { topic } = room;
 
   const QuestionRenderer = () => {
@@ -74,7 +77,7 @@ const GroundTruth = ({ classes, game, room, setGame }) => {
       return questionItem.topic === topic;
     })[0];
     return (
-      <Typography variant="h4">
+      <Typography variant="h4" className={classes.textQuestion}>
         {
           groundTruthTopic.questions[
             utils.randomize(groundTruthTopic.questions.length)
@@ -85,28 +88,19 @@ const GroundTruth = ({ classes, game, room, setGame }) => {
   };
 
   const handleGroundTruthSelect = answer => {
-    setGame({ groundTruth: answer, tab: "messenger" });
+    setGame({ groundTruth: answer, gameRound, tab: 'messenger' });
   };
 
   return (
     <div className={classes.container}>
-      {ROLES.OUTER_ROLE[outerRole].ID === 1 ? (
+      <Typography variant="h6">
+        {`${ROLES.INNER_ROLE[innerRole].DESCRIPTION}`}
+      </Typography>
+      <Typography variant="h6">
+        {`${ROLES.INNER_ROLE[innerRole].DESCRIPTION2}`}
+      </Typography>
+      {ROLES.OUTER_ROLE[outerRole].ID !== 1 && (
         <React.Fragment>
-          <Typography variant="h6">
-            {`${ROLES.INNER_ROLE[innerRole].DESCRIPTION}`}
-          </Typography>
-          <Typography variant="h6">
-            {`${ROLES.INNER_ROLE[innerRole].DESCRIPTION2}`}
-          </Typography>
-        </React.Fragment>
-      ) : (
-        <React.Fragment>
-          <Typography variant="h6">
-            {`${ROLES.INNER_ROLE[innerRole].DESCRIPTION}`}
-          </Typography>
-          <Typography variant="h6">
-            {`${ROLES.INNER_ROLE[innerRole].DESCRIPTION2}`}
-          </Typography>
           <QuestionRenderer />
           <div className={classes.buttonsContainer}>
             <Button
@@ -114,7 +108,7 @@ const GroundTruth = ({ classes, game, room, setGame }) => {
               variant="contained"
               size="large"
               className={classes.button}
-              onClick={() => handleGroundTruthSelect("yes")}
+              onClick={() => handleGroundTruthSelect('yes')}
             >
               Yes
             </Button>
@@ -123,7 +117,7 @@ const GroundTruth = ({ classes, game, room, setGame }) => {
               variant="contained"
               size="large"
               className={classes.button}
-              onClick={() => handleGroundTruthSelect("no")}
+              onClick={() => handleGroundTruthSelect('no')}
             >
               No
             </Button>
@@ -137,12 +131,12 @@ const GroundTruth = ({ classes, game, room, setGame }) => {
 const mapStateToProps = state => {
   return {
     room: chatSelectors.getRoom(state),
-    game: chatSelectors.getGame(state)
+    game: chatSelectors.getGame(state),
   };
 };
 
 const actionCreators = {
-  setGame: chatActions.setGame
+  setGame: chatActions.setGame,
 };
 
 export default compose(

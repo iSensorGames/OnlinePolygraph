@@ -1,77 +1,74 @@
-import React from "react";
-import { connect } from "react-redux";
+import React from 'react';
+import { connect } from 'react-redux';
 
 // Assets
-import logo from "../../../static/img/logo.png";
+import logo from '../../../static/img/logo.png';
 
 // Components
-import clsx from "clsx";
-import { compose } from "recompose";
-import Typography from "../../../modules/components/Typography";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import Paper from "@material-ui/core/Paper";
+import clsx from 'clsx';
+import { compose } from 'recompose';
+import Typography from '../../../modules/components/Typography';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Paper from '@material-ui/core/Paper';
 
 // Layout
-import BaseLayout from "../../../layout/Base";
-import GameSetupLayout from "../../../layout/GameSetup";
+import BaseLayout from '../../../layout/Base';
+import GameSetupLayout from '../../../layout/GameSetup';
 
 // Actions
 
 // Styles
-import { withStyles } from "@material-ui/core/styles";
+import { withStyles } from '@material-ui/core/styles';
 const styles = theme => ({
   img: {
     height: 200,
-    maxWidth: "50%",
-    [theme.breakpoints.up("sm")]: {
-      height: "inherit",
-      maxHeight: 400
-    }
+    maxWidth: '50%',
+    [theme.breakpoints.up('sm')]: {
+      height: 'inherit',
+      maxHeight: 400,
+    },
   },
   h5: {
-    marginBottom: theme.spacing(4),
-    marginTop: theme.spacing(4),
-    [theme.breakpoints.up("sm")]: {
-      marginTop: theme.spacing(10)
-    }
+    marginBottom: 15,
+    marginTop: 15,
   },
   root: {
-    width: "100%",
+    width: '100%',
     marginTop: theme.spacing(3),
-    overflowX: "auto"
+    overflowX: 'auto',
   },
   table: {
-    minWidth: 700
+    minWidth: 700,
   },
   slogan: {
-    fontWeight: "bold",
-    fontSize: 25
+    fontWeight: 'bold',
+    fontSize: 25,
   },
   more: {
-    marginTop: theme.spacing(2)
-  }
+    marginTop: theme.spacing(2),
+  },
 });
 
 const StyledTableCell = withStyles(theme => ({
   head: {
     backgroundColor: theme.palette.common.black,
-    color: theme.palette.common.white
+    color: theme.palette.common.white,
   },
   body: {
-    fontSize: 14
-  }
+    fontSize: 14,
+  },
 }))(TableCell);
 
 const StyledTableRow = withStyles(theme => ({
   root: {
-    "&:nth-of-type(odd)": {
-      backgroundColor: theme.palette.background.default
-    }
-  }
+    '&:nth-of-type(odd)': {
+      backgroundColor: theme.palette.background.default,
+    },
+  },
 }))(TableRow);
 
 function createData(name, ranking, fat, carbs, protein) {
@@ -79,11 +76,11 @@ function createData(name, ranking, fat, carbs, protein) {
 }
 
 const rows = [
-  createData("John Smith", 159),
-  createData("Jennifer Oliveira", 237),
-  createData("Gustavo Lee", 262),
-  createData("Henry Tradford", 305),
-  createData("Katherine Jameson", 356)
+  createData('John Smith', 159),
+  createData('Jennifer Oliveira', 237),
+  createData('Gustavo Lee', 262),
+  createData('Henry Tradford', 305),
+  createData('Katherine Jameson', 356),
 ];
 
 const Scoreboard = ({ classes }) => {

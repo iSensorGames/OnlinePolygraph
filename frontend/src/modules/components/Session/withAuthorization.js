@@ -1,16 +1,16 @@
-import React from "react";
-import { connect } from "react-redux";
-import { withRouter } from "react-router-dom";
-import { compose } from "recompose";
+import React from 'react';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+import { compose } from 'recompose';
 
 // Selectors
-import * as sessionSelectors from "../../../reducers/session";
+import * as sessionSelectors from '../../../reducers/session';
 
 // Actions
-import * as sessionActions from "../../../actions/session";
+import * as sessionActions from '../../../actions/session';
 
 // Constants
-import * as ROUTES from "../../../modules/constants/routes";
+import * as ROUTES from '../../../modules/constants/routes';
 
 /**
  * @description Check user authorization
@@ -23,16 +23,16 @@ const withAuthorization = Component => {
         previousLocation,
         location,
         verifyToken,
-        history
+        history,
       } = this.props;
 
       // Only verify authorization only on initial page load
       // Redirect if token is expired
-      if (location.pathname !== "/" && previousLocation !== location.pathname) {
+      if (location.pathname !== '/' && previousLocation !== location.pathname) {
         updateLocation(location.pathname);
 
         verifyToken().catch(error => {
-          history.push(ROUTES.SIGN_IN);
+          history.push(ROUTES.SIGN_IN_ROUTE);
         });
       }
     }
@@ -51,13 +51,13 @@ const withAuthorization = Component => {
   const mapStateToProps = state => {
     return {
       previousLocation: sessionSelectors.getPreviousLocation(state),
-      session: sessionSelectors.getSession(state)
+      session: sessionSelectors.getSession(state),
     };
   };
 
   const actionCreators = {
     updateLocation: sessionActions.updateLocation,
-    verifyToken: sessionActions.verifyToken
+    verifyToken: sessionActions.verifyToken,
   };
 
   return compose(

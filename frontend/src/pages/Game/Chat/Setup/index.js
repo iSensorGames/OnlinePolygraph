@@ -24,6 +24,7 @@ const styles = () => ({
   container: {
     alignItems: 'center',
     display: 'flex',
+    flexDirection: 'column',
     flex: 1,
     justifyContent: 'center',
     position: 'relative',
