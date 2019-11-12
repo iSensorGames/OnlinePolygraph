@@ -14,17 +14,31 @@ import * as sessionSelectors from "../../../../../reducers/session";
 import SendIcon from "@material-ui/icons/Send";
 import PersonOutlineIcon from "@material-ui/icons/PersonOutline";
 
+// Contants
+import * as ROLES from "../../../../../modules/constants/roles";
+
 // Components
 import Button from "../../../../../modules/components/Button";
+import Typography from "../../../../../modules/components/Typography";
+
+// Assets
+import topicImages from "../../../../../modules/constants/topicImages";
 
 // Styles
 import { withStyles } from "@material-ui/core/styles";
-
-const styles = () => ({
+const styles = theme => ({
+  container: {
+    flex: 1,
+    display: "flex",
+    flexDirection: "row"
+  },
+  sideBar: {
+    backgroundColor: "var(--white)",
+    width: 200
+  },
   message: {
     padding: 0,
     width: "100%",
-    marginTop: 80,
     flex: 1,
     overflowY: "auto"
   },
@@ -40,9 +54,11 @@ const styles = () => ({
   },
   messageEmpty: {
     alignItems: "center",
-    color: "var(--gray-dark)",
+    color: "var(--realspiel-green)",
     display: "flex",
     flex: 1,
+    fontSize: 18,
+    fontWeight: "bold",
     height: "100%",
     justifyContent: "center"
   },
@@ -94,10 +110,6 @@ const styles = () => ({
     padding: "5px 20px",
     borderRadius: 7
   },
-  typeMessage: {
-    marginLeft: 5,
-    marginRight: 5
-  },
   inputMessageWrite: {
     alignItems: "center",
     display: "flex",
@@ -135,7 +147,27 @@ const styles = () => ({
     display: "flex",
     justifyContent: "space-evenly",
     padding: "0 40px",
-    fontWeight: "bold"
+    fontWeight: "bold",
+    zIndex: 1
+  },
+  imageSrc: {
+    position: "absolute",
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    backgroundSize: "cover",
+    backgroundPosition: "center 40%"
+  },
+  imageBackdrop: {
+    position: "absolute",
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    background: theme.palette.common.black,
+    opacity: 0.5,
+    transition: theme.transitions.create("opacity")
   },
   guessText: {
     color: "var(--gray-dark)",
@@ -150,7 +182,14 @@ const styles = () => ({
   }
 });
 
-const MessageContainer = ({ classes, sendMessage, game, user, startGame }) => {
+const MessageContainer = ({
+  classes,
+  sendMessage,
+  room,
+  game,
+  user,
+  startGame
+}) => {
   const [message, setMessage] = useState("");
   const handleSubmit = e => {
     e.preventDefault();
@@ -161,78 +200,94 @@ const MessageContainer = ({ classes, sendMessage, game, user, startGame }) => {
     startGame(detectorResponse);
   };
 
-  const { messages, outerRole } = game;
+  const { topic } = room;
+  const { messages, innerRole, outerRole } = game;
   const isDetector = outerRole === 1;
+  const topicImage = topicImages.filter(image => image.title === topic)[0];
 
   return (
-    <div className={classes.message}>
-      {isDetector && (
-        <div className={classes.guessContainer}>
-          <div className={classes.guessText}>Detector's guess: </div>
-          <div className={classes.buttonsContainer}>
-            <Button
-              color="primary"
-              variant="contained"
-              size="large"
-              className={classes.button}
-              onClick={() => handleDetectorResponse("saint")}
-            >
-              Saint
-            </Button>
-            <Button
-              color="secondary"
-              variant="contained"
-              size="large"
-              className={classes.button}
-              onClick={() => handleDetectorResponse("sinner")}
-            >
-              Sinner
-            </Button>
+    <div className={classes.container}>
+      <div className={classes.sideBar}>
+        <Typography variant="h6">{`The topic is: ${topic}`}</Typography>
+        <Typography variant="h6">
+          {`${ROLES.INNER_ROLE[innerRole] &&
+            ROLES.INNER_ROLE[innerRole].DESCRIPTION2}`}
+        </Typography>
+        {isDetector && (
+          <div className={classes.guessContainer}>
+            <div className={classes.guessText}>Detector's guess: </div>
+            <div className={classes.buttonsContainer}>
+              <Button
+                color="primary"
+                variant="contained"
+                size="large"
+                className={classes.button}
+                onClick={() => handleDetectorResponse("saint")}
+              >
+                Saint
+              </Button>
+              <Button
+                color="secondary"
+                variant="contained"
+                size="large"
+                className={classes.button}
+                onClick={() => handleDetectorResponse("sinner")}
+              >
+                Sinner
+              </Button>
+            </div>
           </div>
-        </div>
-      )}
-      <div
-        className={
-          isDetector
-            ? classes.messageHistory
-            : classes.messageHistorySpeakerRole
-        }
-      >
-        {messages.length === 0 ? (
-          <div className={classes.messageEmpty}>
-            Currently there are no messages
-          </div>
-        ) : (
-          messages.map(({ id, game_id, sender_id, message, created_at }) => {
-            const isAuthor = sender_id === user.id;
-            return isAuthor ? (
-              <div key={id} className={classes.incomingMessage}>
-                <div className={classes.incomingMessageImage}>
-                  <PersonOutlineIcon className={classes.icon} />
+        )}
+      </div>
+      <div className={classes.message}>
+        <div
+          className={classes.imageSrc}
+          style={{
+            backgroundImage: `url(${topicImage.url})`
+          }}
+        />
+        <div className={classes.imageBackdrop} />
+        <div
+          className={
+            isDetector
+              ? classes.messageHistory
+              : classes.messageHistorySpeakerRole
+          }
+        >
+          {messages.length === 0 ? (
+            <div className={classes.messageEmpty}>
+              Currently there are no messages
+            </div>
+          ) : (
+            messages.map(({ id, sender_id, message, created_at }) => {
+              const isAuthor = sender_id === user.id;
+              return isAuthor ? (
+                <div key={id} className={classes.incomingMessage}>
+                  <div className={classes.incomingMessageImage}>
+                    <PersonOutlineIcon className={classes.icon} />
+                  </div>
+                  <div className={classes.receivedMsg}>
+                    <div className={classes.receivedMsgWithdMsg}>
+                      <div>{message}</div>
+                      <span className={classes.timeDate}>
+                        {moment(created_at).fromNow()}
+                      </span>
+                    </div>
+                  </div>
                 </div>
-                <div className={classes.receivedMsg}>
-                  <div className={classes.receivedMsgWithdMsg}>
+              ) : (
+                <div className={classes.outgoingMessage}>
+                  <div className={classes.sentMessage}>
                     <div>{message}</div>
                     <span className={classes.timeDate}>
                       {moment(created_at).fromNow()}
                     </span>
                   </div>
                 </div>
-              </div>
-            ) : (
-              <div className={classes.outgoingMessage}>
-                <div className={classes.sentMessage}>
-                  <div>{message}</div>
-                  <span className={classes.timeDate}>
-                    {moment(created_at).fromNow()}
-                  </span>
-                </div>
-              </div>
-            );
-          })
-        )}
-      </div>
-      <div className={classes.typeMessage}>
+              );
+            })
+          )}
+        </div>
         <form onSubmit={handleSubmit} className={classes.inputMessageWrite}>
           <input
             type="text"
@@ -254,6 +309,7 @@ const MessageContainer = ({ classes, sendMessage, game, user, startGame }) => {
 const mapStateToProps = state => {
   return {
     game: chatSelectors.getGame(state),
+    room: chatSelectors.getRoom(state),
     user: sessionSelectors.getUser(state)
   };
 };
