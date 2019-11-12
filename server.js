@@ -353,7 +353,12 @@ io.on("connection", socket => {
                   creatorOuterRole,
                   opponentOuterRole,
                   creatorInnerRole,
-                  opponentInnerRole
+                  opponentInnerRole,
+                  readyToPlay: false,
+                  readyToPlayConfirmByOpponent: false,
+                  messages: [],
+                  question: null,
+                  groundTruth: null
                 };
                 io.in(roomId).emit("game_update", data);
               });

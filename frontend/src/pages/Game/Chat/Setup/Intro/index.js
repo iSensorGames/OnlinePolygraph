@@ -52,7 +52,7 @@ const styles = theme => ({
   button: {
     fontSize: 14,
     minHeight: 42,
-    margin: "20px auto 80px",
+    margin: "20px auto",
     padding: 0,
     width: "100%",
     [theme.breakpoints.down("sm")]: {

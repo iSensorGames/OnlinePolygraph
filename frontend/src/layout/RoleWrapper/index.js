@@ -108,7 +108,9 @@ const RoleWrapperLayout = ({ children, classes, game }) => {
         </div>
       )}
       {readyToStart && (
-        <div className={classes.questionContainer}>{question}</div>
+        <div
+          className={classes.questionContainer}
+        >{`Target Question: ${question}`}</div>
       )}
       {children}
     </div>

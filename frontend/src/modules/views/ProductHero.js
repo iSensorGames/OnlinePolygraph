@@ -65,8 +65,7 @@ const ProductHero = props => {
         variant="h5"
         className={classes.slogan}
       >
-        A multiplayer game for devious people. Enhance your detection and
-        persuading skills. Gain extra points. Be the winner.
+        A multiplayer game for devious people. Who can be the best deceiver?
       </Typography>
       <Button
         color="secondary"

@@ -265,7 +265,7 @@ const GroundTruth = ({
               size="large"
               className={classes.button}
               onClick={() => handleConfirm()}
-              disabled={!groundTruth}
+              disabled={!groundTruth || readyToPlay}
             >
               {confirmMessage}
             </Button>

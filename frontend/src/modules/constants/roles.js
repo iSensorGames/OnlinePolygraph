@@ -5,7 +5,7 @@ export const INNER_ROLE = {
     DESCRIPTION:
       "You must ask questions to determine whether your opponent is a Saint (Truth-telling) or a Sinner (Liar).",
     DESCRIPTION2:
-      "Be analytical to win. Ask as many questions needed. You will have 5 minutes."
+      "Be analytical to win. Ask as many questions needed. You have 5 minutes."
   },
   2: {
     ID: 2,

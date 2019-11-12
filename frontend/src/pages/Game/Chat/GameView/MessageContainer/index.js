@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
 import { compose } from "recompose";
+import clsx from "clsx";
 import moment from "moment";
 
 // Actions
@@ -26,31 +27,48 @@ import topicImages from "../../../../../modules/constants/topicImages";
 
 // Styles
 import { withStyles } from "@material-ui/core/styles";
+
 const styles = theme => ({
   container: {
     flex: 1,
     display: "flex",
-    flexDirection: "row"
+    flexDirection: "row",
+    width: "100%"
   },
   sideBar: {
-    backgroundColor: "var(--white)",
-    width: 200
+    padding: 20,
+    width: 400,
+    zIndex: 1
+  },
+  textTitle: {
+    color: "var(--realspiel-green)",
+    fontWeight: "bold",
+    fontSize: 18,
+    textAlign: "left",
+    width: "100%"
+  },
+  textDescription: {
+    color: "var(--realspiel-green)",
+    fontSize: 14,
+    marginTop: 15
+  },
+  textFooter: {
+    color: "var(--realspiel-green)",
+    fontSize: 14,
+    marginTop: 80
   },
   message: {
     padding: 0,
     width: "100%",
     flex: 1,
-    overflowY: "auto"
+    overflowY: "auto",
+    position: "relative"
   },
   messageHistory: {
-    height: "calc(100% - 135px)",
-    overflowY: "auto",
-    padding: 10
-  },
-  messageHistorySpeakerRole: {
     height: "calc(100% - 95px)",
     overflowY: "auto",
-    padding: 10
+    padding: 10,
+    zIndex: 1
   },
   messageEmpty: {
     alignItems: "center",
@@ -71,11 +89,13 @@ const styles = theme => ({
     flexDirection: "row"
   },
   incomingMessageImage: {
+    zIndex: 1,
     "& img": {
       width: 55
     }
   },
   receivedMsg: {
+    zIndex: 1,
     padding: "0 0 0 10px"
   },
   receivedMsgWithdMsg: {
@@ -108,7 +128,8 @@ const styles = theme => ({
     background: "var(--white)",
     color: "var(--gray-dark)",
     padding: "5px 20px",
-    borderRadius: 7
+    borderRadius: 7,
+    zIndex: 1
   },
   inputMessageWrite: {
     alignItems: "center",
@@ -118,6 +139,7 @@ const styles = theme => ({
     paddingRight: 20,
     paddingLeft: 20,
     background: "white",
+    zIndex: 1,
     "& input": {
       background: "rgba(0, 0, 0, 0) none repeat scroll 0 0",
       border: "medium none",
@@ -145,10 +167,11 @@ const styles = theme => ({
   guessContainer: {
     alignItems: "center",
     display: "flex",
-    justifyContent: "space-evenly",
-    padding: "0 40px",
+    flexDirection: "column",
+    justifyContent: "space-between",
     fontWeight: "bold",
-    zIndex: 1
+    zIndex: 1,
+    marginTop: 80
   },
   imageSrc: {
     position: "absolute",
@@ -170,15 +193,25 @@ const styles = theme => ({
     transition: theme.transitions.create("opacity")
   },
   guessText: {
+    color: "var(--realspiel-green)",
+    fontSize: 21,
+    fontWeight: "bold",
+    textTransform: "uppercase"
+  },
+  textUserTip: {
     color: "var(--gray-dark)",
-    fontSize: 12
+    display: "flex",
+    flexDirection: "column",
+    fontSize: 16,
+    textTransform: "uppercase"
   },
   buttonsContainer: {
     display: "flex",
     flexDirection: "row"
   },
   button: {
-    padding: "5px 10px"
+    padding: "10px 20px",
+    marginLeft: 10
   }
 });
 
@@ -208,13 +241,26 @@ const MessageContainer = ({
   return (
     <div className={classes.container}>
       <div className={classes.sideBar}>
-        <Typography variant="h6">{`The topic is: ${topic}`}</Typography>
-        <Typography variant="h6">
+        <Typography
+          variant="h6"
+          className={classes.textTitle}
+        >{`The topic is: ${topic}`}</Typography>
+        <Typography variant="h6" className={classes.textDescription}>
           {`${ROLES.INNER_ROLE[innerRole] &&
             ROLES.INNER_ROLE[innerRole].DESCRIPTION2}`}
         </Typography>
         {isDetector && (
           <div className={classes.guessContainer}>
+            <Typography variant="h6" className={clsx(classes.textTitle)}>
+              Question tips:
+            </Typography>
+            <Typography variant="h6" className={clsx(classes.textUserTip)}>
+              Who is it about? What happened? When did it take place? Where did
+              it take place? Why did it happen?
+            </Typography>
+            <Typography variant="h6" className={clsx(classes.textFooter)}>
+              {`You may give guess at any point. Remember, you get points for giving the right answer!`}
+            </Typography>
             <div className={classes.guessText}>Detector's guess: </div>
             <div className={classes.buttonsContainer}>
               <Button
@@ -247,13 +293,7 @@ const MessageContainer = ({
           }}
         />
         <div className={classes.imageBackdrop} />
-        <div
-          className={
-            isDetector
-              ? classes.messageHistory
-              : classes.messageHistorySpeakerRole
-          }
-        >
+        <div className={classes.messageHistory}>
           {messages.length === 0 ? (
             <div className={classes.messageEmpty}>
               Currently there are no messages
