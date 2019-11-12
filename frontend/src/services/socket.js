@@ -26,7 +26,7 @@ export const openConnection = (listener, user) => {
       socket = io.connect(`${process.env.PUBLIC_URL}`, {
         secure: true,
         rejectUnauthorized: false,
-        path: `/users/socket.io`,
+        path: `${process.env.PUBLIC_URL}/users/socket.io`,
         forceNew: true,
         reconnection: false
       });
