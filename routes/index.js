@@ -6,6 +6,7 @@
 module.exports = reqParams => {
   return {
     auth: require("./auth")(reqParams),
-    conversation: require("./conversation")(reqParams)
+    conversation: require("./conversation")(reqParams),
+    users: require("./users")(reqParams)
   };
 };

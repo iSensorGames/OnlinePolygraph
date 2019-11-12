@@ -1,43 +1,43 @@
-import React, { useEffect } from 'react';
-import { connect } from 'react-redux';
-import { compose } from 'recompose';
-import { withRouter } from 'react-router-dom';
+import React from "react";
+import { connect } from "react-redux";
+import { compose } from "recompose";
+import { withRouter } from "react-router-dom";
 
 // Selectors
-import * as sessionSelectors from '../../reducers/session';
+import * as sessionSelectors from "../../reducers/session";
 
 // Actions
-import * as sessionActions from '../../actions/session';
+import * as sessionActions from "../../actions/session";
 
 // Constants
-import * as ROUTES from '../../modules/constants/routes';
+import * as ROUTES from "../../modules/constants/routes";
 
 // Layout
-import BaseLayout from '../../layout/Base';
+import BaseLayout from "../../layout/Base";
 
 // Components
-import { Field, Form } from 'react-final-form';
-import Link from '@material-ui/core/Link';
-import Typography from '../../modules/components/Typography';
-import AppForm from '../../modules/views/AppForm';
-import { email, required } from '../../modules/form/validation';
-import RFTextField from '../../modules/form/RFTextField';
-import FormButton from '../../modules/form/FormButton';
-import FormFeedback from '../../modules/form/FormFeedback';
+import { Field, Form } from "react-final-form";
+import Link from "@material-ui/core/Link";
+import Typography from "../../modules/components/Typography";
+import AppForm from "../../modules/views/AppForm";
+import { email, required } from "../../modules/form/validation";
+import RFTextField from "../../modules/form/RFTextField";
+import FormButton from "../../modules/form/FormButton";
+import FormFeedback from "../../modules/form/FormFeedback";
 
 // Styles
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles } from "@material-ui/core/styles";
 const styles = theme => ({
   form: {
-    marginTop: theme.spacing(6),
+    marginTop: theme.spacing(6)
   },
   button: {
     marginTop: theme.spacing(3),
-    marginBottom: theme.spacing(2),
+    marginBottom: theme.spacing(2)
   },
   feedback: {
-    marginTop: theme.spacing(2),
-  },
+    marginTop: theme.spacing(2)
+  }
 });
 
 const SignIn = ({
@@ -46,10 +46,10 @@ const SignIn = ({
   user,
   isFetching,
   errorMessage,
-  signIn,
+  signIn
 }) => {
   const validate = values => {
-    const errors = required(['email', 'password'], values);
+    const errors = required(["email", "password"], values);
 
     if (!errors.email) {
       const emailError = email(values.email, values);
@@ -83,7 +83,7 @@ const SignIn = ({
             Sign In
           </Typography>
           <Typography variant="body2" align="center">
-            {'Not a member yet? '}
+            {"Not a member yet? "}
             <Link href={ROUTES.SIGN_UP} align="center" underline="always">
               Sign Up here
             </Link>
@@ -132,7 +132,7 @@ const SignIn = ({
                 color="secondary"
                 fullWidth
               >
-                {submitting || isFetching ? 'In progress…' : 'Sign In'}
+                {submitting || isFetching ? "In progress…" : "Sign In"}
               </FormButton>
             </form>
           )}
@@ -152,12 +152,12 @@ const mapStateToProps = state => {
   return {
     user: sessionSelectors.getUser(state),
     isFetching: sessionSelectors.getIsFetching(state),
-    errorMessage: sessionSelectors.getErrorMessage(state),
+    errorMessage: sessionSelectors.getErrorMessage(state)
   };
 };
 
 const actionCreators = {
-  signIn: sessionActions.signIn,
+  signIn: sessionActions.signIn
 };
 
 export default compose(

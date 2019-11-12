@@ -3,7 +3,8 @@ import {
   CHAT_OPPONENT_JOIN,
   CHAT_PLAYER_LEAVE,
   CHAT_SET_GAME_SUCCESS,
-  CHAT_SEND_MESSAGE_SUCCESS
+  CHAT_SEND_MESSAGE_SUCCESS,
+  CHAT_SET_GAME_READYTOPLAYOPPONENT
 } from "./chat";
 import * as sessionSelectors from "../reducers/session";
 import * as chatSelectors from "../reducers/chat";
@@ -29,6 +30,7 @@ export const RESPONSE_CREATE_ROOM = "create_room";
 
 export const RESPONSE_GAME_UPDATE = "game_update";
 export const RESPONSE_GAME_SET = "game_set";
+export const RESPONSE_GAME_SET_READYTOPLAY = "game_set_readytoplay";
 export const RESPONSE_GAME_START = "game_start";
 export const RESPONSE_GAME_SENDMESSAGE = "send_message";
 export const RESPONSE_GAME_RECEIVEMESSAGE = "receive_message";
@@ -101,14 +103,16 @@ export const openConnection = () => {
               innerRole: isAuthor ? creatorInnerRole : opponentInnerRole
             };
           }
-          console.log("RESPONSE_GAME_UPDATE data", data);
-
           return dispatch({
             type: CHAT_SET_GAME_SUCCESS,
             payload: {
               ...data,
               ...roleData
             }
+          });
+        case RESPONSE_GAME_SET_READYTOPLAY:
+          return dispatch({
+            type: CHAT_SET_GAME_READYTOPLAYOPPONENT
           });
         case RESPONSE_GAME_RECEIVEMESSAGE: {
           return dispatch({

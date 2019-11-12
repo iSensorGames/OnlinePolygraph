@@ -17,10 +17,24 @@ const styles = theme => ({
     minWidth: 200
   },
   h5: {
-    marginBottom: theme.spacing(4),
+    color: "var(--realspiel-green)",
+    fontSize: 24,
+    fontWeight: "bold",
+    maxWidth: 400,
+    marginBottom: theme.spacing(1),
     marginTop: theme.spacing(4),
     [theme.breakpoints.up("sm")]: {
-      marginTop: theme.spacing(10)
+      marginTop: theme.spacing(5)
+    }
+  },
+  slogan: {
+    color: "var(--realspiel-green)",
+    fontSize: 20,
+    maxWidth: 400,
+    marginBottom: theme.spacing(4),
+    marginTop: theme.spacing(1),
+    [theme.breakpoints.up("sm")]: {
+      marginTop: theme.spacing(1)
     }
   },
   more: {
@@ -33,8 +47,6 @@ const ProductHero = props => {
 
   return (
     <ProductHeroLayout>
-      {/* Increase the network loading priority of the background image. */}
-      <img style={{ display: "none" }} alt="increase priority" />
       <Typography color="inherit" align="center" variant="h2" marked="center">
         Upgrade your Senses
       </Typography>
@@ -46,6 +58,15 @@ const ProductHero = props => {
       >
         Enhancing your detection and convincing skills. Gain extra points. Be
         the winner.
+      </Typography>
+      <Typography
+        color="inherit"
+        align="center"
+        variant="h5"
+        className={classes.slogan}
+      >
+        A multiplayer game for devious people. Enhance your detection and
+        persuading skills. Gain extra points. Be the winner.
       </Typography>
       <Button
         color="secondary"

@@ -1,23 +1,19 @@
 import React from "react";
 import PropTypes from "prop-types";
-import clsx from "clsx";
-import { withStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 
-import productHeroWonder from "../../static/img/productHeroWonder.png";
-import productHeroArrowDown from "../../static/img/productHeroArrowDown.png";
-
+// Styles
+import { withStyles } from "@material-ui/core/styles";
 const styles = theme => ({
   root: {
-    color: theme.palette.common.white,
-    position: "relative",
-    display: "flex",
     alignItems: "center",
-    height: "100%"
+    color: theme.palette.common.white,
+    display: "flex",
+    height: "100%",
+    marginTop: 70,
+    position: "relative"
   },
   container: {
-    marginTop: theme.spacing(3),
-    marginBottom: theme.spacing(14),
     display: "flex",
     flexDirection: "column",
     alignItems: "center"
@@ -49,14 +45,11 @@ const styles = theme => ({
 });
 
 function ProductHeroLayout(props) {
-  const { backgroundClassName, children, classes } = props;
+  const { children, classes } = props;
 
   return (
     <section className={classes.root}>
-      <Container className={classes.container}>
-        <img src={productHeroWonder} alt="wonder" width="147" height="80" />
-        {children}
-      </Container>
+      <Container className={classes.container}>{children}</Container>
     </section>
   );
 }

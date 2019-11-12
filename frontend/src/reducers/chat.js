@@ -8,6 +8,7 @@ import {
   CHAT_SET_GAME_REQUEST,
   CHAT_SET_GAME_SUCCESS,
   CHAT_SET_GAME_FAILURE,
+  CHAT_SET_GAME_READYTOPLAYOPPONENT,
   CHAT_SEND_MESSAGE_SUCCESS,
   CHAT_AVAILABLEROOMS,
   CHAT_OPPONENT_JOIN,
@@ -21,16 +22,19 @@ const INITIAL_ROOM_STATE = {
     topic: null,
     name: "Game 1",
     opponent: null,
-    groundTruth: null,
     createdAt: null
   },
   game: {
     isStarted: false,
-    tab: "ground-truth",
+    tab: null,
+    groundTruth: null,
     gameRound: null,
     outerRole: null,
     innerRole: null,
-    messages: []
+    messages: [],
+    question: null,
+    readyToPlay: false,
+    readyToPlayConfirmByOpponent: false
   },
   isCreating: false,
   serverMessage: null,
@@ -90,7 +94,6 @@ const roomReducer = (state = INITIAL_ROOM_STATE, action) => {
       };
     }
     case CHAT_SET_GAME_SUCCESS: {
-      console.log("CHAT_SET_GAME_SUCCESS action.payload", action.payload);
       return {
         ...state,
         isCreating: false,
@@ -98,6 +101,18 @@ const roomReducer = (state = INITIAL_ROOM_STATE, action) => {
         game: {
           ...state.game,
           ...action.payload
+        }
+      };
+    }
+    case CHAT_SET_GAME_READYTOPLAYOPPONENT: {
+      return {
+        ...state,
+        isCreating: false,
+        errorMessage: null,
+        game: {
+          ...state.game,
+          tab: state.game.readyToPlay ? "messenger" : "ground-truth",
+          readyToPlayConfirmByOpponent: true
         }
       };
     }

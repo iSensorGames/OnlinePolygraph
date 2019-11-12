@@ -13,9 +13,6 @@ import MessageContainer from "./MessageContainer";
 
 const GameView = ({ game }) => {
   const { tab } = game;
-
-  console.log("GameView tab", tab);
-
   const ContentRenderer = () => {
     switch (tab) {
       case "ground-truth":

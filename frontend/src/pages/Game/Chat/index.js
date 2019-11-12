@@ -1,42 +1,43 @@
-import React from 'react';
-import { connect } from 'react-redux';
+import React from "react";
+import { connect } from "react-redux";
 
 // Selectors
-import * as chatSelectors from '../../../reducers/chat';
+import * as chatSelectors from "../../../reducers/chat";
 
 // Components
-import { compose } from 'recompose';
+import { compose } from "recompose";
 
 // View
-import ChatSetup from './Setup';
-import GameView from './GameView';
-import RoomMenu from './RoomMenu';
+import ChatSetup from "./Setup";
+import GameView from "./GameView";
+import RoomMenu from "./RoomMenu";
 
 // Layout
-import ChatLayout from '../../../layout/Chat';
+import ChatLayout from "../../../layout/Chat";
+import GameSetupLayout from "../../../layout/GameSetup";
 
 // Styles
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles } from "@material-ui/core/styles";
 const styles = theme => ({
   messaging: {
-    height: '100%',
-    width: '100%',
+    height: "100%",
+    width: "100%"
   },
   inboxMsg: {
-    display: 'flex',
-    flexDirection: 'row',
-    height: '100%',
+    display: "flex",
+    flexDirection: "row",
+    height: "100%"
   },
   sideBarContainer: {
-    display: 'none',
+    display: "none",
     width: 210,
-    [theme.breakpoints.up('sm')]: {
-      display: 'flex',
-    },
+    [theme.breakpoints.up("sm")]: {
+      display: "flex"
+    }
   },
   link: {
-    cursor: 'pointer',
-  },
+    cursor: "pointer"
+  }
 });
 
 const Chat = ({ classes, game }) => {
@@ -46,10 +47,18 @@ const Chat = ({ classes, game }) => {
     <ChatLayout>
       <div className={classes.messaging}>
         <div className={classes.inboxMsg}>
-          <div className={classes.sideBarContainer}>
-            <RoomMenu />
-          </div>
-          {isStarted ? <GameView /> : <ChatSetup />}
+          {isStarted ? (
+            <GameView />
+          ) : (
+            <React.Fragment>
+              <div className={classes.sideBarContainer}>
+                <RoomMenu />
+              </div>
+              <GameSetupLayout isStartScreen>
+                <ChatSetup />
+              </GameSetupLayout>
+            </React.Fragment>
+          )}
         </div>
       </div>
     </ChatLayout>
@@ -58,7 +67,7 @@ const Chat = ({ classes, game }) => {
 
 const mapStateToProps = state => {
   return {
-    game: chatSelectors.getGame(state),
+    game: chatSelectors.getGame(state)
   };
 };
 

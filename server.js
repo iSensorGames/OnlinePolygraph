@@ -223,7 +223,6 @@ io.on("connection", socket => {
   socket.on("disconnect", res => {
     console.log("---------------------------");
     console.log("DISCONNECTED");
-    console.log("user?", !!user);
     console.log("socket?", !!socket);
     console.log("disconnected from the server. " + res);
 
@@ -263,17 +262,23 @@ io.on("connection", socket => {
     });
   });
 
+  socket.on("game_set_readytoplay", ({ roomId }) => {
+    socket.to(roomId).emit("game_set_readytoplay");
+  });
+
   socket.on("game_set", ({ roomId, params }) => {
     const data = {
       ...params
     };
 
     const { gameRound, groundTruth } = params;
-    updateGroundTruth(roomId, gameRound, groundTruth).then(result => {
-      console.log("updateGroundTruth", result);
-      io.to(roomId).emit("game_update", data);
-      socket.broadcast.to(roomId).emit("game_update", data);
-    });
+    if (groundTruth) {
+      updateGroundTruth(roomId, gameRound, groundTruth).then(() => {
+        io.in(roomId).emit("game_update", data);
+      });
+    } else {
+      io.in(roomId).emit("game_update", data);
+    }
   });
 
   socket.on("game_start", ({ roomId, detectorResponse }) => {

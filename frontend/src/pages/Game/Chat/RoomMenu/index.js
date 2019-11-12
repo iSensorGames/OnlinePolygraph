@@ -1,113 +1,111 @@
-import React from 'react';
-import { compose } from 'recompose';
-import { connect } from 'react-redux';
-import moment from 'moment';
+import React from "react";
+import { compose } from "recompose";
+import { connect } from "react-redux";
+import moment from "moment";
 
 // Selectors
-import * as chatSelectors from '../../../../reducers/chat';
+import * as chatSelectors from "../../../../reducers/chat";
+import * as sessionSelectors from "../../../../reducers/session";
 
 // Actions
-import * as chatActions from '../../../../actions/chat';
+import * as chatActions from "../../../../actions/chat";
 
 // Styles
-import clsx from 'clsx';
-import { withStyles } from '@material-ui/core/styles';
+import clsx from "clsx";
+import { withStyles } from "@material-ui/core/styles";
 const styles = theme => ({
   inboxPeople: {
-    background: '#f8f8f8 none repeat scroll 0 0',
-    borderRight: '1px solid #c4c4c4',
-    display: 'flex',
-    flexDirection: 'column',
-    height: '100%',
-    width: '100%',
+    background: "#f8f8f8 none repeat scroll 0 0",
+    borderRight: "1px solid #c4c4c4",
+    display: "flex",
+    flexDirection: "column",
+    height: "100%",
+    width: "100%"
   },
   headingSearch: {
-    alignItems: 'center',
-    background: 'yellow',
-    color: 'var(--gray-dark)',
-    display: 'flex',
+    alignItems: "center",
+    background: "yellow",
+    color: "var(--gray-dark)",
+    display: "flex",
     fontSize: 14,
     height: 38,
-    padding: '0px 35px',
-    overflow: 'hidden',
-    borderBottom: '1px solid #c4c4c4',
+    padding: "0px 35px",
+    overflow: "hidden",
+    borderBottom: "1px solid #c4c4c4"
   },
   inboxChat: {
     flex: 1,
-    height: '100%',
-    overflowY: 'auto',
+    height: "100%",
+    overflowY: "auto"
   },
   body: {
-    color: 'var(--gray)',
+    color: "var(--gray)"
   },
   inboxNoChat: {
-    alignItems: 'center',
-    color: 'var(--gray-dark)',
-    display: 'flex',
+    alignItems: "center",
+    color: "var(--gray-dark)",
+    display: "flex",
     flex: 1,
-    height: '100%',
-    justifyContent: 'center',
-    marginTop: -35,
+    height: "100%",
+    justifyContent: "center",
+    marginTop: -35
   },
   chatList: {
-    borderBottom: '1px solid #c4c4c4',
+    borderBottom: "1px solid #c4c4c4",
     margin: 0,
-    padding: '18px 16px 10px',
-    '&:hover': {
-      background: '#b8b8b8',
-      cursor: 'pointer',
-    },
+    padding: "18px 16px 10px",
+    "&:hover": {
+      background: "#b8b8b8",
+      cursor: "pointer"
+    }
   },
   activeChat: {
-    background: '#b8b8b8',
+    background: "#b8b8b8"
   },
   fullRoomChat: {
-    background: 'var(--yellow)',
-    '&:hover': {
-      cursor: 'default',
-      background: 'var(--yellow)',
-    },
+    background: "var(--yellow)",
+    "&:hover": {
+      cursor: "default",
+      background: "var(--yellow)"
+    }
   },
   chatPeople: {
-    display: 'flex',
-    flexDirection: 'column',
+    display: "flex",
+    flexDirection: "column"
   },
   chat: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
     fontSize: 14,
-    fontWeight: 'bold',
-    color: '#464646',
-    margin: '0 0 8px 0',
+    fontWeight: "bold",
+    color: "#464646",
+    margin: "0 0 8px 0"
   },
   isAuthor: {
-    border: '1px solid',
-    padding: '2px 5px',
+    border: "1px solid",
+    padding: "2px 5px"
   },
   chatFooter: {
-    color: 'var(--gray)',
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    fontSize: 12,
-  },
+    color: "var(--gray)",
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    fontSize: 12
+  }
 });
 
 const RoomMenu = ({
   classes,
   setRoom,
-  userId,
+  user,
   room,
   rooms,
   joinRoom,
   fullMenuWidth,
-  setChatSetupTab,
+  setChatSetupTab
 }) => {
-  console.log('RoomMenu rooms', rooms);
-
   const activeRoomId = room.id;
-
   const handleRoomSelect = selectedRoomId => {
     const room = rooms[selectedRoomId];
     if (!!room) {
@@ -118,10 +116,10 @@ const RoomMenu = ({
         creatorId: creator_id,
         topic,
         name,
-        createdAt: created_at,
+        createdAt: created_at
       });
 
-      setChatSetupTab('room-join');
+      setChatSetupTab("room-join");
       joinRoom(id);
     }
   };
@@ -129,7 +127,7 @@ const RoomMenu = ({
   return (
     <div
       className={clsx(classes.inboxPeople, {
-        width: !fullMenuWidth && '30%',
+        width: !fullMenuWidth && "30%"
       })}
     >
       <div className={classes.headingSearch}>Join a Game</div>
@@ -139,7 +137,7 @@ const RoomMenu = ({
         ) : (
           Object.keys(rooms).map(id => {
             const { created_at, creator_id, length, name, topic } = rooms[id];
-            const isAuthor = created_at === userId;
+            const isAuthor = creator_id === user.id;
             const isActiveRoom = id === activeRoomId;
             const isRoomFull = length >= 2;
 
@@ -189,13 +187,14 @@ const mapStateToProps = state => {
   return {
     room: chatSelectors.getRoom(state),
     rooms: chatSelectors.getAvailableRooms(state),
+    user: sessionSelectors.getUser(state)
   };
 };
 
 const actionCreators = {
   setRoom: chatActions.setRoom,
   setChatSetupTab: chatActions.setChatSetupTab,
-  joinRoom: chatActions.joinRoom,
+  joinRoom: chatActions.joinRoom
 };
 
 export default compose(

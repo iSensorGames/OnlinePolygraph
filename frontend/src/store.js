@@ -11,7 +11,8 @@ import reducers from "./reducers";
 // Enhancers
 import { composeWithDevTools } from "remote-redux-devtools";
 const composeEnhancers = composeWithDevTools({
-  realtime: true
+  realtime: true,
+  suppressConnectErrors: false
 });
 
 const middleware = [ReduxThunk.withExtraArgument(services)];

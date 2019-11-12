@@ -1,89 +1,90 @@
-import React from 'react';
-import { connect } from 'react-redux';
+import React, { useEffect } from "react";
+import { connect } from "react-redux";
+import * as utils from "../../../utils";
 
-// Assets
-import logo from '../../../static/img/logo.png';
+// Actions
+import * as usersActions from "../../../actions/users";
+
+// Selectors
+import * as usersSelectors from "../../../reducers/users";
 
 // Components
-import clsx from 'clsx';
-import { compose } from 'recompose';
-import Typography from '../../../modules/components/Typography';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
+import clsx from "clsx";
+import { compose } from "recompose";
+import Typography from "../../../modules/components/Typography";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
+import Paper from "@material-ui/core/Paper";
 
 // Layout
-import BaseLayout from '../../../layout/Base';
-import GameSetupLayout from '../../../layout/GameSetup';
+import BaseLayout from "../../../layout/Base";
+import GameSetupLayout from "../../../layout/GameSetup";
 
 // Actions
 
 // Styles
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles } from "@material-ui/core/styles";
 const styles = theme => ({
   img: {
     height: 200,
-    maxWidth: '50%',
-    [theme.breakpoints.up('sm')]: {
-      height: 'inherit',
-      maxHeight: 400,
-    },
-  },
-  h5: {
-    marginBottom: 15,
-    marginTop: 15,
+    maxWidth: "50%",
+    [theme.breakpoints.up("sm")]: {
+      height: "inherit",
+      maxHeight: 400
+    }
   },
   root: {
-    width: '100%',
-    marginTop: theme.spacing(3),
-    overflowX: 'auto',
+    width: "100%",
+    overflowX: "auto"
   },
   table: {
     minWidth: 700,
+    minHeight: 400
   },
   slogan: {
-    fontWeight: 'bold',
+    color: "var(--realspiel-green)",
+    fontWeight: "bold",
     fontSize: 25,
+    marginBottom: 15,
+    marginTop: 15,
+    textAlign: "left"
   },
   more: {
-    marginTop: theme.spacing(2),
+    marginTop: theme.spacing(2)
   },
+  loading: {
+    alignItems: "center",
+    display: "flex",
+    justifyContent: "center"
+  }
 });
 
 const StyledTableCell = withStyles(theme => ({
   head: {
     backgroundColor: theme.palette.common.black,
-    color: theme.palette.common.white,
+    color: theme.palette.common.white
   },
   body: {
-    fontSize: 14,
-  },
+    fontSize: 14
+  }
 }))(TableCell);
 
 const StyledTableRow = withStyles(theme => ({
   root: {
-    '&:nth-of-type(odd)': {
-      backgroundColor: theme.palette.background.default,
-    },
-  },
+    "&:nth-of-type(odd)": {
+      backgroundColor: theme.palette.background.default
+    }
+  }
 }))(TableRow);
 
-function createData(name, ranking, fat, carbs, protein) {
-  return { name, ranking, fat, carbs, protein };
-}
+const Scoreboard = ({ classes, isFetching, users, getUsers }) => {
+  useEffect(() => {
+    getUsers();
+  }, []);
 
-const rows = [
-  createData('John Smith', 159),
-  createData('Jennifer Oliveira', 237),
-  createData('Gustavo Lee', 262),
-  createData('Henry Tradford', 305),
-  createData('Katherine Jameson', 356),
-];
-
-const Scoreboard = ({ classes }) => {
   return (
     <BaseLayout>
       <GameSetupLayout>
@@ -91,32 +92,41 @@ const Scoreboard = ({ classes }) => {
           color="inherit"
           align="center"
           variant="h5"
-          className={clsx(classes.h5, classes.slogan)}
+          className={classes.slogan}
         >
-          A multiplayer game for devious people. Enhance your detection and
-          persuading skills. Gain extra points. Be the winner.
+          Scoreboard
         </Typography>
         <Paper className={classes.root}>
-          <Table className={classes.table} aria-label="customized table">
-            <TableHead>
-              <TableRow>
-                <StyledTableCell>Scoreboard</StyledTableCell>
-                <StyledTableCell align="right">Ranking</StyledTableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {rows.map(row => (
-                <StyledTableRow key={row.name}>
-                  <StyledTableCell component="th" scope="row">
-                    {row.name}
-                  </StyledTableCell>
-                  <StyledTableCell align="right">
-                    {row.calories}
-                  </StyledTableCell>
-                </StyledTableRow>
-              ))}
-            </TableBody>
-          </Table>
+          {isFetching ? (
+            <div className={classes.loading}>Fetching scoreboard...</div>
+          ) : (
+            <Table className={classes.table} aria-label="customized table">
+              <TableHead>
+                <TableRow>
+                  <StyledTableCell>Player</StyledTableCell>
+                  <StyledTableCell align="right">Score</StyledTableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {!users ? (
+                  <div className={classes.loading}>No user(s) were found.</div>
+                ) : (
+                  Object.keys(users).map(key => {
+                    const { first_name, last_name, email } = users[key];
+                    const score = utils.randomize(100);
+                    return (
+                      <StyledTableRow key={email}>
+                        <StyledTableCell component="th" scope="row">
+                          {`${first_name} ${last_name} (${email})`}
+                        </StyledTableCell>
+                        <StyledTableCell align="right">{`${score} points`}</StyledTableCell>
+                      </StyledTableRow>
+                    );
+                  })
+                )}
+              </TableBody>
+            </Table>
+          )}
         </Paper>
       </GameSetupLayout>
     </BaseLayout>
@@ -124,10 +134,15 @@ const Scoreboard = ({ classes }) => {
 };
 
 const mapStateToProps = state => {
-  return {};
+  return {
+    users: usersSelectors.getUsers(state),
+    isFetching: usersSelectors.getIsFetching(state)
+  };
 };
 
-const actionCreators = {};
+const actionCreators = {
+  getUsers: usersActions.getUsers
+};
 
 export default compose(
   withStyles(styles),

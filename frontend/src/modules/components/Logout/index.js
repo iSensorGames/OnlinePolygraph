@@ -1,43 +1,50 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { compose } from 'recompose';
-import * as ROUTES from '../../constants/routes';
+import React from "react";
+import { connect } from "react-redux";
+import { compose } from "recompose";
+import * as ROUTES from "../../constants/routes";
 
 // Actions
-import * as sessionActions from '../../../actions/session';
+import * as sessionActions from "../../../actions/session";
 
 // Components
-import { withRouter } from 'react-router-dom';
+import { withRouter } from "react-router-dom";
+import Typography from "../Typography";
 
 // Styles
-import clsx from 'clsx';
-import { withStyles } from '@material-ui/core/styles';
+import clsx from "clsx";
+import { withStyles } from "@material-ui/core/styles";
+import theme from "../../theme";
 const styles = () => ({
   btn: {
-    cursor: 'pointer',
-    '&:hover': {
-      cursor: 'pointer',
-    },
+    cursor: "pointer",
+    "&:hover": {
+      cursor: "pointer"
+    }
   },
   underlineNone: {
-    textDecoration: 'none',
+    textDecoration: "none"
   },
   h6: {
-    color: 'rgba(0, 0, 0, 0.87)',
     fontSize: 18,
     fontFamily: "'Roboto Condensed', 'sans-serif'",
     fontWeight: 700,
     lineHeight: 1.6,
-    textTransform: 'uppercase',
+    textTransform: "uppercase"
   },
   rightLink10: {
-    color: '#fff',
-    fontSize: '16px',
-    marginLeft: 24,
+    color: "#e62958",
+    fontSize: 16,
+    marginLeft: 20,
+    [theme.breakpoints.down("sm")]: {
+      fontSize: 12
+    },
+    "&:hover": {
+      color: "#0056b3"
+    }
   },
   linkSecondary11: {
-    color: '#ff3366',
-  },
+    color: "#ff3366"
+  }
 });
 
 const Logout = ({ classes, history, signOut }) => (
@@ -55,12 +62,14 @@ const Logout = ({ classes, history, signOut }) => (
       });
     }}
   >
-    Logout
+    <Typography variant="h6" className={classes.rightLink10}>
+      Logout
+    </Typography>
   </div>
 );
 
 const actionCreators = {
-  signOut: sessionActions.signOut,
+  signOut: sessionActions.signOut
 };
 
 export default compose(
