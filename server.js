@@ -199,6 +199,7 @@ const getGameRoles = roomId => {
 io.on("connection", socket => {
   console.log("CONNECTED");
   console.log("socket object exists?", !!socket);
+  console.log("Object.keys(socket)", Object.keys(socket));
 
   const emitOnlineUsers = () => {
     socket.broadcast.emit("online_users", getOnlineUsers());
@@ -220,10 +221,10 @@ io.on("connection", socket => {
   });
 
   socket.on("disconnect", res => {
-    const { user } = socket;
-
     console.log("---------------------------");
-    console.log(user);
+    console.log("DISCONNECTED");
+    console.log("user?", !!user);
+    console.log("socket?", !!socket);
     console.log("disconnected from the server. " + res);
 
     emitOnlineUsers();

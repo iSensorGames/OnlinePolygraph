@@ -23,7 +23,7 @@ let socket = null;
 export const openConnection = (listener, user) => {
   return new Promise((resolve, reject) => {
     try {
-      socket = io.connect(`${process.env.PUBLIC_URL}`, {
+      socket = io.connect(`/`, {
         secure: true,
         rejectUnauthorized: false,
         path: `/users/socket.io`,
