@@ -32,6 +32,7 @@ export const RESPONSE_GAME_UPDATE = "game_update";
 export const RESPONSE_GAME_SET = "game_set";
 export const RESPONSE_GAME_SET_READYTOPLAY = "game_set_readytoplay";
 export const RESPONSE_GAME_START = "game_start";
+export const RESPONSE_GAME_ROUNDEND = "game_round_end";
 export const RESPONSE_GAME_SENDMESSAGE = "send_message";
 export const RESPONSE_GAME_RECEIVEMESSAGE = "receive_message";
 

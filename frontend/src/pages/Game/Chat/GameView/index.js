@@ -10,6 +10,8 @@ import RoleWrapperLayout from "../../../../layout/RoleWrapper";
 // Views
 import GroundTruth from "./GroundTruth";
 import MessageContainer from "./MessageContainer";
+import GameResult from "./GameResult";
+import RoundResult from "./RoundResult";
 
 const GameView = ({ game }) => {
   const { tab } = game;
@@ -19,6 +21,10 @@ const GameView = ({ game }) => {
         return <GroundTruth />;
       case "messenger":
         return <MessageContainer />;
+      case "round-result":
+        return <RoundResult />;
+      case "game-result":
+        return <GameResult />;
       default:
         return null;
     }
@@ -37,7 +43,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  null
-)(GameView);
+export default connect(mapStateToProps, null)(GameView);

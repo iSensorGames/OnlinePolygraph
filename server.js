@@ -281,6 +281,16 @@ io.on("connection", socket => {
     }
   });
 
+  socket.on("game_round_end", ({ roomId, detectorResponse }) => {
+    const data = {
+      tab: "round-result",
+      detectorResponse,
+      readyToPlay: false,
+      readyToPlayConfirmByOpponent: false
+    };
+    io.in(roomId).emit("game_round_end", data);
+  });
+
   socket.on("game_start", ({ roomId, detectorResponse }) => {
     getLastGame(roomId).then(result => {
       // Start a new game if there's none
@@ -348,17 +358,16 @@ io.on("connection", socket => {
                 const data = {
                   gameId: insertId,
                   isStarted: true,
-                  tab: "ground-truth",
                   gameRound: newGameRound,
                   creatorOuterRole,
                   opponentOuterRole,
                   creatorInnerRole,
                   opponentInnerRole,
+                  detectorResponse: null,
+                  groundTruth: null,
                   readyToPlay: false,
                   readyToPlayConfirmByOpponent: false,
-                  messages: [],
-                  question: null,
-                  groundTruth: null
+                  messages: []
                 };
                 io.in(roomId).emit("game_update", data);
               });

@@ -28,6 +28,7 @@ const INITIAL_ROOM_STATE = {
     isStarted: false,
     tab: null,
     groundTruth: null,
+    detectorResponse: null,
     gameRound: null,
     outerRole: null,
     innerRole: null,

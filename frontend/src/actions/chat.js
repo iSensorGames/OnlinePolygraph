@@ -154,6 +154,15 @@ export const startGame = detectorResponse => {
   };
 };
 
+export const gameRoundEnd = detectorResponse => {
+  return (dispatch, getState, { socket }) => {
+    const state = getState();
+    const room = chatSelectors.getRoom(state);
+
+    socket.gameRoundEnd(room.id, detectorResponse);
+  };
+};
+
 export const setChatSetupTab = tab => {
   return dispatch => {
     dispatch({

@@ -221,7 +221,7 @@ const MessageContainer = ({
   room,
   game,
   user,
-  startGame
+  gameRoundEnd
 }) => {
   const [message, setMessage] = useState("");
   const handleSubmit = e => {
@@ -230,7 +230,7 @@ const MessageContainer = ({
   };
 
   const handleDetectorResponse = detectorResponse => {
-    startGame(detectorResponse);
+    gameRoundEnd(detectorResponse);
   };
 
   const { topic } = room;
@@ -268,7 +268,7 @@ const MessageContainer = ({
                 variant="contained"
                 size="large"
                 className={classes.button}
-                onClick={() => handleDetectorResponse("saint")}
+                onClick={() => handleDetectorResponse(0)}
               >
                 Saint
               </Button>
@@ -277,7 +277,7 @@ const MessageContainer = ({
                 variant="contained"
                 size="large"
                 className={classes.button}
-                onClick={() => handleDetectorResponse("sinner")}
+                onClick={() => handleDetectorResponse(1)}
               >
                 Sinner
               </Button>
@@ -356,13 +356,10 @@ const mapStateToProps = state => {
 
 const actionCreators = {
   sendMessage: chatActions.sendMessage,
-  startGame: chatActions.startGame
+  gameRoundEnd: chatActions.gameRoundEnd
 };
 
 export default compose(
-  connect(
-    mapStateToProps,
-    actionCreators
-  ),
+  connect(mapStateToProps, actionCreators),
   withStyles(styles)
 )(MessageContainer);

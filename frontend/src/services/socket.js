@@ -15,6 +15,7 @@ import {
   RESPONSE_GAME_UPDATE,
   RESPONSE_GAME_SET,
   RESPONSE_GAME_SET_READYTOPLAY,
+  RESPONSE_GAME_ROUNDEND,
   RESPONSE_GAME_SENDMESSAGE,
   RESPONSE_GAME_RECEIVEMESSAGE
 } from "../actions/socket";
@@ -58,6 +59,10 @@ export const openConnection = (listener, user) => {
         listener(RESPONSE_GAME_SET_READYTOPLAY);
       };
 
+      const gameRoundEnd = res => {
+        listener(RESPONSE_GAME_UPDATE, res);
+      };
+
       const receiveMessageListener = res => {
         listener(RESPONSE_GAME_RECEIVEMESSAGE, res);
       };
@@ -76,6 +81,7 @@ export const openConnection = (listener, user) => {
       socket.on(RESPONSE_LEAVE_ROOM_PLAYER, leaveRoomByPlayer);
       socket.on(RESPONSE_GAME_UPDATE, gameUpdateListener);
       socket.on(RESPONSE_GAME_SET_READYTOPLAY, gameSetReadyToPlay);
+      socket.on(RESPONSE_GAME_ROUNDEND, gameRoundEnd);
       socket.on(RESPONSE_GAME_RECEIVEMESSAGE, receiveMessageListener);
       socket.on(RESPONSE_SERVER_MESSAGE, serverMessage);
       socket.on(RESPONSE_DISCONNECT, disconnectListener);
@@ -126,6 +132,17 @@ export const startGame = (roomId, detectorResponse) => {
   return new Promise((resolve, reject) => {
     try {
       socket.emit(RESPONSE_GAME_START, { roomId, detectorResponse });
+      resolve();
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+export const gameRoundEnd = (roomId, detectorResponse) => {
+  return new Promise((resolve, reject) => {
+    try {
+      socket.emit(RESPONSE_GAME_ROUNDEND, { roomId, detectorResponse });
       resolve();
     } catch (error) {
       reject(error);
