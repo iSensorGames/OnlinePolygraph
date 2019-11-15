@@ -60,7 +60,9 @@ const RoleWrapperLayout = ({ children, classes, game }) => {
   let [time, setTime] = useState(300000);
   let interval = null;
   useEffect(() => {
+    console.log("RoleWrapperLayout useEffect");
     interval = setInterval(() => {
+      console.log("RoleWrapperLayout useEffect setInterval");
       setTime(time - 1000);
     }, 1000);
 

@@ -57,7 +57,7 @@ const GameSetupLayout = ({
           size="large"
           className={classes.button}
           component="a"
-          href={isRulesRoute ? ROUTES.RULES_ROUTE : ROUTES.SCOREBOARD_ROUTE}
+          href={isRulesRoute ? ROUTES.RULES : ROUTES.SCOREBOARD}
         >
           <AssessmentIcon />
           <div className={classes.buttonTxt}>

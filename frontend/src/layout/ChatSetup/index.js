@@ -1,84 +1,84 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { compose } from 'recompose';
-import clsx from 'clsx';
+import React from "react";
+import { connect } from "react-redux";
+import { compose } from "recompose";
+import clsx from "clsx";
 
 // Components
-import Typography from '../../modules/components/Typography';
-import Grid from '@material-ui/core/Grid';
-import Container from '@material-ui/core/Container';
+import Typography from "../../modules/components/Typography";
+import Grid from "@material-ui/core/Grid";
+import Container from "@material-ui/core/Container";
 
 // Selectors
-import * as chatSelectors from '../../reducers/chat';
+import * as chatSelectors from "../../reducers/chat";
 
 // Assets
-import productHowItWorks1 from '../../static/img/productHowItWorks1.svg';
-import productHowItWorks2 from '../../static/img/productHowItWorks2.svg';
-import productHowItWorks3 from '../../static/img/productHowItWorks3.svg';
+import productHowItWorks1 from "../../static/img/productHowItWorks1.svg";
+import productHowItWorks2 from "../../static/img/productHowItWorks2.svg";
+import productHowItWorks3 from "../../static/img/productHowItWorks3.svg";
 
 // Styles
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles } from "@material-ui/core/styles";
 const styles = theme => ({
   container: {
-    marginBottom: 20,
+    marginBottom: 20
   },
   tabContainer: {
-    alignItems: 'center',
-    display: 'flex',
-    flexDirection: 'row',
-    position: 'absolute',
+    alignItems: "center",
+    display: "flex",
+    flexDirection: "row",
+    position: "absolute",
     left: 0,
     top: 0,
     right: 0,
     flex: 1,
-    borderBottom: '1px solid #c4c4c4',
+    borderBottom: "1px solid #c4c4c4"
   },
   tab: {
-    alignItems: 'center',
-    backgroundColor: '#b2c23d',
+    alignItems: "center",
+    backgroundColor: "#b2c23d",
     flex: 1,
-    display: 'flex',
+    display: "flex",
     height: 35,
-    justifyContent: 'center',
+    justifyContent: "center"
   },
   item: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: '0px 10px',
-    opacity: 0.3,
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    padding: "0px 10px",
+    opacity: 0.3
   },
   itemActive: {
-    opacity: 1,
+    opacity: 1
   },
   itemText: {
-    color: 'var(--dark-gray)',
-    fontSize: 12,
+    color: "var(--dark-gray)",
+    fontSize: 12
   },
   title: {
-    color: '#48542a',
+    color: "#48542a",
     fontSize: 16,
-    textAlign: 'center',
+    textAlign: "center",
     marginTop: 20,
-    marginBottom: 20,
+    marginBottom: 20
   },
   number: {
     color: theme.palette.secondary.main,
-    fontSize: 24,
+    fontSize: 14,
     fontFamily: theme.typography.fontFamily,
     fontWeight: theme.typography.fontWeightMedium,
-    marginRight: 15,
+    marginRight: 15
   },
   image: {
-    height: 55,
-    marginRight: 15,
-  },
+    height: 35,
+    marginRight: 15
+  }
 });
 
 const ChatSetupLayout = ({ children, classes, chatSetupTab }) => {
-  const isIntro = chatSetupTab === 'intro';
-  const isTopicSelect = chatSetupTab === 'topic';
-  const isReady = chatSetupTab === 'ready';
+  const isIntro = chatSetupTab === "intro";
+  const isTopicSelect = chatSetupTab === "topic";
+  const isReady = chatSetupTab === "ready";
 
   return (
     <React.Fragment>
@@ -92,7 +92,7 @@ const ChatSetupLayout = ({ children, classes, chatSetupTab }) => {
           How it works
         </Typography>
         <div>
-          <Grid container spacing={5}>
+          <Grid container spacing={2}>
             <Grid
               item
               xs={6}
@@ -166,7 +166,7 @@ const ChatSetupLayout = ({ children, classes, chatSetupTab }) => {
 
 const mapStateToProps = state => {
   return {
-    chatSetupTab: chatSelectors.getChatSetupTab(state),
+    chatSetupTab: chatSelectors.getChatSetupTab(state)
   };
 };
 

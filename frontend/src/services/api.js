@@ -46,7 +46,7 @@ export const signUp = params => {
  * @param {*} token
  */
 export const verifyToken = async token => {
-  if (!token) throw new Error("Token is null");
+  if (!token) throw new Error();
 
   try {
     const response = await post("/verify", {
@@ -65,7 +65,7 @@ export const verifyToken = async token => {
 };
 
 export const createConversation = async (token, params) => {
-  if (!token) throw new Error("Token is null");
+  if (!token) throw new Error();
 
   const response = await post("/addConversation", {
     ...params,

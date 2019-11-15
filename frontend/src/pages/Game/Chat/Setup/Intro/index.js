@@ -35,7 +35,7 @@ const styles = theme => ({
       outline: "none"
     },
     [theme.breakpoints.down("sm")]: {
-      fontSize: 30,
+      fontSize: 20,
       paddingLeft: 20,
       paddingRight: 20,
       paddingTop: 10,
@@ -57,7 +57,7 @@ const styles = theme => ({
     width: "100%",
     [theme.breakpoints.down("sm")]: {
       padding: 10,
-      fontSize: 24
+      fontSize: 16
     }
   },
   description: {

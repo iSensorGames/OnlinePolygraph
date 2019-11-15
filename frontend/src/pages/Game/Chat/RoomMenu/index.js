@@ -133,7 +133,7 @@ const RoomMenu = ({
       <div className={classes.headingSearch}>Join a Game</div>
       <div className={classes.inboxChat}>
         {rooms && rooms.length === 0 ? (
-          <div className={classes.inboxNoChat}>No room(s) available</div>
+          <div className={classes.inboxNoChat}>No game(s) available</div>
         ) : (
           Object.keys(rooms).map(id => {
             const { created_at, creator_id, length, name, topic } = rooms[id];
