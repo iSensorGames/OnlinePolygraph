@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { compose } from "recompose";
 import { connect } from "react-redux";
+import clsx from "clsx";
 
 // Views
 import Intro from "./Intro";
@@ -10,7 +11,7 @@ import Ready from "./Ready";
 
 // Components
 import Typography from "../../../../modules/components/Typography";
-import Container from "@material-ui/core/Container";
+import Button from "../../../../modules/components/Button";
 
 // Actions
 import * as chatActions from "../../../../actions/chat";
@@ -140,8 +141,5 @@ const actionCreators = {
 
 export default compose(
   withStyles(styles),
-  connect(
-    mapStateToProps,
-    actionCreators
-  )
+  connect(mapStateToProps, actionCreators)
 )(ChatSetup);

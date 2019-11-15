@@ -172,8 +172,5 @@ const mapStateToProps = state => {
 
 export default compose(
   withStyles(styles),
-  connect(
-    mapStateToProps,
-    null
-  )
+  connect(mapStateToProps, null)
 )(ChatSetupLayout);
