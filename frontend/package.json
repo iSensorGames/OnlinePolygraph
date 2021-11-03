@@ -28,7 +28,7 @@
     "remote-redux-devtools": "^0.5.16",
     "shards-react": "^1.0.3",
     "socket.io-client": "^2.3.0",
-    "validator": "^11.1.0"
+    "validator": "^13.7.0"
   },
   "proxy": "https://localhost:5000/",
   "scripts": {
